@@ -7,5 +7,5 @@ DataBase:
   Charset: utf8
   MaxIdleConns: 10
   MaxOpenConns: 10
-  TablePrefix: string
+  TablePrefix: sg
   SingularTable: true
