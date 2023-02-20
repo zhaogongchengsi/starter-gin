@@ -16,7 +16,7 @@ func CreateClaims[I any](loadInfo I, expireseAs int, issuer string) Claims[I] {
 	return Claims[I]{
 		Info: loadInfo,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * time.Duration(expireseAs))),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * time.Duration(expireseAs))),
 			Issuer:    issuer,
 		},
 	}
