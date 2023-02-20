@@ -5,3 +5,6 @@ Server:
   Mode: debug
   Prefix: api/v1
   Static: static
+Jwt:
+  SigningKey: starter_gin_231das_asdasd
+  Issuer: satrter_gin

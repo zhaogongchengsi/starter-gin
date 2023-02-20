@@ -16,6 +16,7 @@ const (
 var (
 	ServerConfig = &config.Server{}
 	DbConfig     = &config.DataBase{}
+	JwtConfig    = &config.Jwt{}
 	Server       = &http.Server{}
 	Db           = &gorm.DB{}
 )
