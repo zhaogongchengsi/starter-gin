@@ -1,7 +1,7 @@
 DataBase:
   Username: string
   Password: string
-  Port: int
+  Port: 1660
   Url: string
   DbName: admin
   Charset: utf8

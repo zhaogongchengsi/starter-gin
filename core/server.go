@@ -2,11 +2,12 @@ package core
 
 import (
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/server-gin/global"
 	"github.com/server-gin/routers"
-	"net/http"
-	"time"
 )
 
 func initServer(address string, router *gin.Engine) *http.Server {
@@ -19,10 +20,7 @@ func initServer(address string, router *gin.Engine) *http.Server {
 	}
 }
 
-func CreateAppServer()  {
-	// 初始化全局配置变量
-	global.InitGlobalValues()
-
+func CreateAppServer() {
 	gin.SetMode(global.Server.Mode)
 	// 初始化路由
 	router := routers.CreateAppRouter()
@@ -32,9 +30,10 @@ func CreateAppServer()  {
 
 	server := initServer(fmt.Sprintf(":%d", global.Server.Port), router)
 
+	fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", global.Server.Port)
+
 	if err := server.ListenAndServe(); err != nil {
-		fmt.Printf("服务器启动失败 %v", err)
+		fmt.Printf("Service startup failed %v\n", err)
 	}
 
 }
-

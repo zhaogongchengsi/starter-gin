@@ -2,45 +2,52 @@ package global
 
 import (
 	"fmt"
+
 	"github.com/server-gin/config"
 )
 
 const (
-	ConfigType string = "yaml"      // 配置文件类型
+	ConfigType    string = "yaml"    // 配置文件类型
 	ConfigDirPath string = "configs" // 配置文件路径
 )
 
 var (
-	Server = &config.Server{}
+	Server   = &config.Server{}
 	DbConfig = &config.DataBase{}
 )
 
-func initServer () {
-	err := config.ReadConfigs(ConfigDirPath + "/server.yaml", ConfigType, "Server", &Server)
+func initServer() error {
+	err := config.ReadConfigs(ConfigDirPath+"/server.yaml", ConfigType, "Server", &Server)
 	if err != nil {
-		Server = &config.Server {
-			Port: 3000,
-			Host: "0.0.0.0",
-			Mode: "debug",
+		Server = &config.Server{
+			Port:   3000,
+			Host:   "0.0.0.0",
+			Mode:   "debug",
 			Prefix: "api/v1",
 		}
-		fmt.Printf("服务配置读取失败: %v, 使用默认配置", err)
+		fmt.Printf("服务配置读取失败: %v, 使用默认配置\n", err)
+		return err
 	}
+	return nil
 }
 
-func initDbConfig ()  {
-	err := config.ReadConfigs(ConfigDirPath + "/database.yaml", ConfigType, "DataBase", &DbConfig)
+func initDbConfig() error {
+	err := config.ReadConfigs(ConfigDirPath+"/database.yaml", ConfigType, "DataBase", &DbConfig)
 	if err != nil {
-		fmt.Printf("数据库配置读取失败: %v", err)
+		fmt.Printf("数据库配置读取失败: %v\n", err)
+		return err
 	}
+	return nil
 }
 
+func InitGlobalValues() error {
+	err := initServer()
 
-func InitGlobalValues()  {
-	initServer()
-	initDbConfig()
+	if err != nil {
+		return err
+	}
+
+	err = initDbConfig()
+
+	return err
 }
-
-
-
-
