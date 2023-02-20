@@ -26,10 +26,14 @@ type DataBase struct {
 type Jwt struct {
 	SigningKey string
 	Issuer     string
+	ExpiresAt  int
 }
 
 func ReadConfigs(path, t, key string, value any) error {
 	vp, err := InitViper(path, t)
+	if err != nil {
+		return err
+	}
 	err = vp.UnmarshalKey(key, value)
 	return err
 }
