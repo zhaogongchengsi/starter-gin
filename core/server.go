@@ -6,8 +6,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/server-gin/global"
-	"github.com/server-gin/routers"
 )
 
 func initServer(address string, router *gin.Engine) *http.Server {
@@ -20,20 +18,7 @@ func initServer(address string, router *gin.Engine) *http.Server {
 	}
 }
 
-func CreateAppServer() {
-	gin.SetMode(global.Server.Mode)
-	// 初始化路由
-	router := routers.CreateAppRouter()
-
-	// 设置静态文件目录
-	router.Static("/static", global.Server.Static)
-
-	server := initServer(fmt.Sprintf(":%d", global.Server.Port), router)
-
-	fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", global.Server.Port)
-
-	if err := server.ListenAndServe(); err != nil {
-		fmt.Printf("Service startup failed %v\n", err)
-	}
-
+func CreateAppServer(router *gin.Engine, prot int, mode string) *http.Server {
+	gin.SetMode(mode)
+	return initServer(fmt.Sprintf(":%d", prot), router)
 }

@@ -14,7 +14,5 @@ func init() {
 }
 
 func main() {
-
-	core.CreateAppServer()
-
+	core.SetUp()
 }

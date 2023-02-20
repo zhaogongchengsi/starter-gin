@@ -4,8 +4,8 @@ DataBase:
   Port: 1660
   Url: string
   DbName: admin
-  Charset: utf8
+  Charset: utf8mb4
   MaxIdleConns: 10
-  MaxOpenConns: 10
+  MaxOpenConns: 100
   TablePrefix: sg
   SingularTable: true
