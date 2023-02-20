@@ -8,13 +8,20 @@ import (
 )
 
 func SetUp() {
+	db, err := CreateAppDataBase(global.DbConfig)
+
+	if err != nil {
+		panic(err)
+	}
+
+	global.Db = db
 
 	routers := routers.CreateAppRouter()
-	server := CreateAppServer(routers, global.Server.Port, global.Server.Mode)
+	global.Server = CreateAppServer(routers, global.ServerConfig.Port, global.ServerConfig.Mode)
 
-	fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", global.Server.Port)
+	fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", global.ServerConfig.Port)
 
-	if err := server.ListenAndServe(); err != nil {
+	if err := global.Server.ListenAndServe(); err != nil {
 		fmt.Printf("Service startup failed %v\n", err)
 	}
 }

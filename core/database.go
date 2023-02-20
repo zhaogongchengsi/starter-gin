@@ -2,15 +2,16 @@ package core
 
 import (
 	"fmt"
-	"github.com/server-gin/config"
 	"time"
+
+	"github.com/server-gin/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
 
-func CreateAppDataBase (config config.DataBase) ( *gorm.DB, error) {
+func CreateAppDataBase(config *config.DataBase) (*gorm.DB, error) {
 
 	dns := fmt.Sprintf(`%s:%s@tcp(%s:%v)/%s?charset=%s&parseTime=True&loc=Local`,
 		config.Username,

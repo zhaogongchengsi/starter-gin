@@ -1,9 +1,9 @@
 DataBase:
-  Username: string
-  Password: string
-  Port: 1660
-  Url: string
-  DbName: admin
+  Username: root
+  Password:
+  Port: 3306
+  Url: localhost
+  DbName: starter_gin
   Charset: utf8mb4
   MaxIdleConns: 10
   MaxOpenConns: 100

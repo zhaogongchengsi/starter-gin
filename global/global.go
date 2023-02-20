@@ -2,8 +2,10 @@ package global
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/server-gin/config"
+	"gorm.io/gorm"
 )
 
 const (
@@ -12,14 +14,16 @@ const (
 )
 
 var (
-	Server   = &config.Server{}
-	DbConfig = &config.DataBase{}
+	ServerConfig = &config.Server{}
+	DbConfig     = &config.DataBase{}
+	Server       = &http.Server{}
+	Db           = &gorm.DB{}
 )
 
 func initServer() error {
-	err := config.ReadConfigs(ConfigDirPath+"/server.yaml", ConfigType, "Server", &Server)
+	err := config.ReadConfigs(ConfigDirPath+"/server.yaml", ConfigType, "Server", &ServerConfig)
 	if err != nil {
-		Server = &config.Server{
+		ServerConfig = &config.Server{
 			Port:   3000,
 			Host:   "0.0.0.0",
 			Mode:   "debug",
