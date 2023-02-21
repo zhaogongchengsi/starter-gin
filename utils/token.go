@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -16,8 +17,12 @@ func CreateClaims[I any](loadInfo I, expireseAs int, issuer string) Claims[I] {
 	return Claims[I]{
 		Info: loadInfo,
 		RegisteredClaims: jwt.RegisteredClaims{
+			// 过期时间
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * time.Duration(expireseAs))),
-			Issuer:    issuer,
+			// 发布时间
+			IssuedAt: jwt.NewNumericDate(time.Now()),
+			// 签发人
+			Issuer: issuer,
 		},
 	}
 }
@@ -34,18 +39,35 @@ func CreateToken[I any](loadInfo I, SigningKey string, expiresAt int, issuer str
 }
 
 func ParseToken[C any](tokenString string, SigningKey string) (c C, e error) {
-	token, e := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+
+	cla := Claims[C]{}
+
+	token, e := jwt.ParseWithClaims(tokenString, &cla, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
 		return []byte(SigningKey), nil
 	})
 
-	if claims, ok := token.Claims.(Claims[C]); ok && token.Valid {
-		c = GetClaimsInfo(claims)
+	if e != nil {
+		if errors.Is(e, jwt.ErrTokenMalformed) {
+			return c, fmt.Errorf("that's not even a token")
+		} else if errors.Is(e, jwt.ErrTokenExpired) || errors.Is(e, jwt.ErrTokenNotValidYet) {
+			// Token is either expired or not active yet
+			return c, fmt.Errorf("timing is everything")
+		}
+	}
+
+	if !token.Valid {
+		return c, fmt.Errorf("token is valid")
+	}
+
+	claims, ok := token.Claims.(*Claims[C])
+
+	if ok {
+		c = GetClaimsInfo(*claims)
 		return c, nil
 	}
 
