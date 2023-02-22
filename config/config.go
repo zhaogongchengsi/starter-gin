@@ -29,6 +29,15 @@ type Jwt struct {
 	ExpiresAt  int
 }
 
+type Gen struct {
+	OutPath           string
+	FieldNullable     bool
+	FieldCoverable    bool
+	FieldSignable     bool
+	FieldWithIndexTag bool
+	FieldWithTypeTag  bool
+}
+
 func ReadConfigs(path, t, key string, value any) error {
 	vp, err := InitViper(path, t)
 	if err != nil {

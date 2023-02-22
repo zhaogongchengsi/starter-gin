@@ -7,5 +7,14 @@ DataBase:
   Charset: utf8mb4
   MaxIdleConns: 10
   MaxOpenConns: 100
-  TablePrefix: sg
+  TablePrefix:
   SingularTable: true
+Gen:
+  	OutPath:        "./modules" # Can be added directly to gitignore
+		FieldNullable:  true  # generate pointer when field is nullable
+		FieldCoverable: false # generate pointer when field has default value, to fix problem zero value cannot be assign: https://gorm.io/docs/create.html#Default-Values
+		FieldSignable:  false # detect integer field's unsigned type, adjust generated data type
+		# 生成 gorm 标签的字段索引属性
+		FieldWithIndexTag: false # generate with gorm index tag
+		# 生成 gorm 标签的字段类型属性
+		FieldWithTypeTag: true # generate with gorm column type tag

@@ -1,7 +1,6 @@
 package global
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/server-gin/config"
@@ -17,42 +16,39 @@ var (
 	ServerConfig = &config.Server{}
 	DbConfig     = &config.DataBase{}
 	JwtConfig    = &config.Jwt{}
-	Server       = &http.Server{}
-	Db           = &gorm.DB{}
+	GenConfig    = &config.Gen{}
 )
 
-func initServer() error {
-	err := config.ReadConfigs(ConfigDirPath+"/server.yaml", ConfigType, "Server", &ServerConfig)
+var (
+	Server = &http.Server{}
+	Db     = &gorm.DB{}
+)
+
+func InitGlobalValues() (err error) {
+
+	ServerConfig, err = config.ReadServerConfig()
+
 	if err != nil {
-		ServerConfig = &config.Server{
-			Port:   3000,
-			Host:   "0.0.0.0",
-			Mode:   "debug",
-			Prefix: "api/v1",
-		}
-		fmt.Printf("服务配置读取失败: %v, 使用默认配置\n", err)
 		return err
 	}
+
+	JwtConfig, err = config.ReadJwtConfig()
+
+	if err != nil {
+		return err
+	}
+
+	DbConfig, err = config.ReadDbConfig()
+
+	if err != nil {
+		return err
+	}
+
+	GenConfig, err = config.ReadGenConfig()
+
+	if err != nil {
+		return err
+	}
+
 	return nil
-}
-
-func initDbConfig() error {
-	err := config.ReadConfigs(ConfigDirPath+"/database.yaml", ConfigType, "DataBase", &DbConfig)
-	if err != nil {
-		fmt.Printf("数据库配置读取失败: %v\n", err)
-		return err
-	}
-	return nil
-}
-
-func InitGlobalValues() error {
-	err := initServer()
-
-	if err != nil {
-		return err
-	}
-
-	err = initDbConfig()
-
-	return err
 }
