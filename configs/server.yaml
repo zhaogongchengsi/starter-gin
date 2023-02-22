@@ -6,6 +6,6 @@ Server:
   Prefix: api/v1 # 统一url前缀
   Static: static # 静态文件目录
 Jwt:
-  SigningKey: starter_gin_231das_asdasd # 盐值
+  SigningKey: a37e5383b22eb950d1a3496540ceffcc # 盐值 md5(zzhstarter_gin)
   Issuer: satrter_gin # 签发人
   ExpiresAt: 10 # 过期时间(分钟)
