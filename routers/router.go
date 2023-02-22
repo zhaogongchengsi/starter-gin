@@ -8,7 +8,7 @@ func CreateAppRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	r.GET("/hello", hello)
+	r.GET("/", hello)
 	return r
 }
 
