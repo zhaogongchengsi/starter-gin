@@ -7,8 +7,9 @@ import (
 )
 
 func init() {
-	cmd.Parse(&global.ConfigDirPath, &global.ConfigType)
-
+	cmd.ParseServerOptions(&global.ConfigDirPath, &global.ConfigType)
+	cmd.ParseDevOptions(&global.IsInit)
+	cmd.Parse()
 	// 初始化全局配置变量
 	err := global.InitGlobalValues()
 	if err != nil {

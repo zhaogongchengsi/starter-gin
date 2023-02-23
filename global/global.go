@@ -17,6 +17,7 @@ var (
 	DbConfig     = &config.DataBase{}
 	JwtConfig    = &config.Jwt{}
 	GenConfig    = &config.Gen{}
+	IsInit       = false
 )
 
 var (
