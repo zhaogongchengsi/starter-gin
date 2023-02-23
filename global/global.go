@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const (
+var (
 	ConfigType    string = "yaml"    // 配置文件类型
 	ConfigDirPath string = "configs" // 配置文件路径
 )
@@ -25,30 +25,35 @@ var (
 )
 
 func InitGlobalValues() (err error) {
+	sc := config.NewConfig(ConfigDirPath, ConfigType, "server")
+	err = sc.ReadConfigs()
+	if err != nil {
+		return err
+	}
 
-	ServerConfig, err = config.ReadServerConfig()
+	err = sc.ReadValue(&ServerConfig, "Server")
+	if err != nil {
+		return err
+	}
+	err = sc.ReadValue(&JwtConfig, "Jwt")
+	if err != nil {
+		return err
+	}
+
+	dc := config.NewConfig(ConfigDirPath, ConfigType, "database")
+
+	err = dc.ReadValue(&DbConfig, "DataBase")
 
 	if err != nil {
 		return err
 	}
 
-	JwtConfig, err = config.ReadJwtConfig()
-
-	if err != nil {
-		return err
-	}
-
-	DbConfig, err = config.ReadDbConfig()
-
-	if err != nil {
-		return err
-	}
-
-	GenConfig, err = config.ReadGenConfig()
+	err = dc.ReadValue(&GenConfig, "Gen")
 
 	if err != nil {
 		return err
 	}
 
 	return nil
+
 }

@@ -1,11 +1,14 @@
 package main
 
 import (
+	"github.com/server-gin/cmd"
 	"github.com/server-gin/core"
 	"github.com/server-gin/global"
 )
 
 func init() {
+	cmd.Parse(&global.ConfigDirPath, &global.ConfigType)
+
 	// 初始化全局配置变量
 	err := global.InitGlobalValues()
 	if err != nil {
