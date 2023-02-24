@@ -1,11 +1,13 @@
 package config
 
 type Server struct {
-	Port   int
-	Host   string
-	Prefix string
-	Mode   string
-	Static string
+	Port       int
+	Host       string
+	Prefix     string
+	Mode       string
+	StaticName string
+	Static     string
+	IndexHtml  string
 }
 
 type DataBase struct {

@@ -2,7 +2,6 @@ package routers
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/server-gin/global"
@@ -13,11 +12,10 @@ func CreateAppRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	r.Static("/static", global.ServerConfig.Static)
+	r.Static(global.ServerConfig.StaticName, global.ServerConfig.Static)
+	r.StaticFile("/", global.ServerConfig.IndexHtml)
 
-	r.GET("/", func(ctx *gin.Context) {
-		ctx.Redirect(http.StatusFound, global.ServerConfig.Static+"/index.html")
-	})
+	// r.Static("/favicon.ico", "./dist/favicon.ico")
 
 	v1 := r.Group(fmt.Sprintf("/%s", global.ServerConfig.Prefix))
 
