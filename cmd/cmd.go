@@ -10,12 +10,12 @@ import (
 type Options struct {
 	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"configs"`
 	ConfigType string       `short:"t" long:"configType" description:"Type of configuration file" default:"yaml"`
-	Init       func(string) `short:"i" long:"init" description:"Initialize the database seed data parameter to database url"`
+	Seed       func(string) `short:"s" long:"seed" description:"Initialize the database seed data parameter to database url"`
 }
 
 func Parse() error {
 	var opt Options
-	opt.Init = func(s string) {
+	opt.Seed = func(s string) {
 		err := seed(s)
 		if err != nil {
 			panic(err)
