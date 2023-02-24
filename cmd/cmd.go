@@ -20,6 +20,7 @@ func Parse() error {
 		if err != nil {
 			panic(err)
 		}
+		os.Exit(0)
 	}
 
 	_, err := flags.Parse(&opt)

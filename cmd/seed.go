@@ -45,7 +45,7 @@ func seed(dsn string) error {
 		return fmt.Errorf("seed Error: database initialization failed")
 	}
 
-	db.Create(newUser("12312312312", "user", "admin", "123abc"))
+	db.Create(newUser("12312312312", "user", "admin", "a906449d5769fa7361d7ecc6aa3f6d28")) // 123abc
 
 	return nil
 }
