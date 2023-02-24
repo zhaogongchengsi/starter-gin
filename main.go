@@ -4,12 +4,18 @@ import (
 	"github.com/server-gin/cmd"
 	"github.com/server-gin/core"
 	"github.com/server-gin/global"
+	"github.com/server-gin/routers"
 )
 
 func init() {
 	cmd.ParseServerOptions(&global.ConfigDirPath, &global.ConfigType)
 	cmd.ParseDevOptions(&global.IsInit)
 	cmd.Parse()
+
+	err := global.InitGlobalValues()
+	if err != nil {
+		panic(err)
+	}
 }
 
 //go:generate go env -w GO111MODULE=on
@@ -18,5 +24,16 @@ func init() {
 //go:generate go mod download
 
 func main() {
-	core.SetUp()
+
+	db, err := core.CreateAppDataBase(global.DbConfig)
+	global.Db = db
+
+	if err != nil {
+		panic(err)
+	}
+
+	routers := routers.CreateAppRouter()
+
+	core.CreateAppServer(routers, global.ServerConfig.Port, global.ServerConfig.Mode)
+
 }

@@ -25,7 +25,7 @@ var (
 	Db     = &gorm.DB{}
 )
 
-func InitGlobalValues(signal chan int) (err error) {
+func InitGlobalValues() (err error) {
 	sc := config.NewConfig(ConfigDirPath, ConfigType, "server")
 	err = sc.ReadConfigs()
 	if err != nil {
@@ -54,8 +54,6 @@ func InitGlobalValues(signal chan int) (err error) {
 	if err != nil {
 		return err
 	}
-
-	signal <- 2
 
 	return nil
 }
