@@ -1,21 +1,23 @@
-# Golang 版本的后端模板
+# Using golang's gin-based backend template
 
 ## Start
+
 ```sh
 go run main.go
 go build main.go
 ```
 
-# 配置文件
+## Command
 
-## 配置文件路径
+```
+  -c, -config:      Directory where configuration files are stored (default: configs)
+  -t, -configType:  Type of configuration file (default: yaml)
+  -i, -init:        Initialize the database seed data parameter to database url
+```
 
-配置文件路径为 `configs/*.yaml`, 配置文件格式为 `yaml`。
+### Seed
 
-- database.yaml 数据库配置文件
-- server.yaml 服务配置文件
-
-### Specify profile directory
 ```sh
-go run main.go -config=configs -configType=yaml
+go run main.go --init "root@tcp(localhost:3306)/starter_gin?charset=utf8mb4&parseTime=True&loc=Local"
+go run main.go -i "root@tcp(localhost:3306)/starter_gin?charset=utf8mb4&parseTime=True&loc=Local"
 ```

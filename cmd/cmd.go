@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/jessevdk/go-flags"
@@ -16,9 +15,11 @@ type Options struct {
 
 func Parse() error {
 	var opt Options
-
-	opt.Init = func(dns string) {
-		fmt.Println("执行初始化")
+	opt.Init = func(s string) {
+		err := seed(s)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	_, err := flags.Parse(&opt)
@@ -28,11 +29,13 @@ func Parse() error {
 	}
 
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
 	global.ConfigDirPath = opt.ConfigDir
+	if ok := include([]string{"yaml", "json"}, opt.ConfigType); !ok {
+		global.ConfigType = "yaml"
+	}
 	global.ConfigType = opt.ConfigType
 
 	return nil
@@ -49,3 +52,5 @@ func include[T string | int | int64 | int32](arr []T, target T) bool {
 	}
 	return exist
 }
+
+// root:''@tcp(localhost:3306)/starter_gin?charset=utf8mb4&parseTime=True&loc=Local
