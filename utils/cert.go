@@ -9,7 +9,7 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
-	"log"
+	"fmt"
 	"math/big"
 	"net"
 	"os"
@@ -73,7 +73,7 @@ func (c *CertConfig) generatePriv() (any, error) {
 	case "P521":
 		priv, err = ecdsa.GenerateKey(elliptic.P521(), rand.Reader)
 	default:
-		log.Fatalf("Unrecognized elliptic curve: %q", ecdsaCurve)
+		return priv, fmt.Errorf("unrecognized elliptic curve: %q", ecdsaCurve)
 	}
 	if err != nil {
 		return priv, err
@@ -199,29 +199,25 @@ func (c *CertConfig) Generate(filepath, cetFileName, keyFileName string) error {
 		return err
 	}
 
+	// write cert
 	certPath := path.Join(filepath, cetFileName+".pem")
 	cretOut, err := os.OpenFile(certPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 		return err
 	}
 	if err := pem.Encode(cretOut, cert); err != nil {
-		log.Fatalf("Failed to write data to key.pem: %v", err)
-	}
-
-	ketPath := path.Join(filepath, keyFileName+".pem")
-	keyOut, err := os.OpenFile(ketPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
-
-	if err != nil {
 		return err
-	}
-
-	if err := pem.Encode(keyOut, cert); err != nil {
-		log.Fatalf("Failed to write data to key.pem: %v", err)
 	}
 	cretOut.Close()
 
+	// write ket
+	ketPath := path.Join(filepath, keyFileName+".pem")
+	keyOut, err := os.OpenFile(ketPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+	if err != nil {
+		return err
+	}
 	if err := pem.Encode(keyOut, key); err != nil {
-		log.Fatalf("Failed to write data to key.pem: %v", err)
+		return err
 	}
 	keyOut.Close()
 
