@@ -35,6 +35,6 @@ func main() {
 
 	routers := routers.CreateAppRouter()
 
-	core.CreateAppServer(routers, global.ServerConfig.Port, global.ServerConfig.Mode)
+	core.CreateAppServer(global.ServerConfig, routers)
 
 }

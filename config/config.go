@@ -8,6 +8,12 @@ type Server struct {
 	StaticName string
 	Static     string
 	IndexHtml  string
+	Https      HttpsConfig
+}
+
+type HttpsConfig struct {
+	CertFile string
+	KeyFile  string
 }
 
 type DataBase struct {

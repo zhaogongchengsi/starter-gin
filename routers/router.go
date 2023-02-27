@@ -29,4 +29,5 @@ func hello(c *gin.Context) {
 func CreateStaticRouter(r *gin.Engine) {
 	r.Static("/assets", "./static/assets")
 	r.StaticFile("/", "./static/index.html")
+	// http.Handle("/", http.FileServer(http.Dir("/static")))
 }

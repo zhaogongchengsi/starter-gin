@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/server-gin/config"
 )
 
 func initServer(address string, router *gin.Engine) *http.Server {
@@ -21,20 +22,21 @@ func initServer(address string, router *gin.Engine) *http.Server {
 	}
 }
 
-func CreateAppServer(router *gin.Engine, prot int, mode string) {
-	gin.SetMode(mode)
+func CreateAppServer(config *config.Server, router *gin.Engine) {
+	gin.SetMode(config.Mode)
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	srv := initServer(fmt.Sprintf(":%d", prot), router)
+	srv := initServer(fmt.Sprintf(":%d", config.Port), router)
 
-	go func() {
-		fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", prot)
-		if err := srv.ListenAndServe(); err != nil {
-			fmt.Printf("Service startup failed %v\n", err)
-		}
-	}()
+	fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", config.Port)
+
+	if config.Https.CertFile != "" && config.Https.KeyFile != "" {
+		go ListenAndServeTLS(srv, config.Https.CertFile, config.Https.KeyFile)
+	} else {
+		go ListenAppServe(srv)
+	}
 
 	<-ctx.Done()
 
@@ -44,4 +46,18 @@ func CreateAppServer(router *gin.Engine, prot int, mode string) {
 		fmt.Printf("Server forced to shutdown: %v", err)
 	}
 
+}
+
+func ListenAppServe(srv *http.Server) {
+	if err := srv.ListenAndServe(); err != nil {
+		fmt.Printf("Service startup failed %v\n", err)
+	}
+}
+
+func ListenAndServeTLS(srv *http.Server, certFile string, keyFile string) {
+
+	err := srv.ListenAndServeTLS(certFile, keyFile)
+	if err != nil {
+		fmt.Printf("Service startup failed %v\n", err)
+	}
 }
