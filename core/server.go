@@ -30,11 +30,11 @@ func CreateAppServer(config *config.Server, router *gin.Engine) {
 
 	srv := initServer(fmt.Sprintf(":%d", config.Port), router)
 
-	fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", config.Port)
-
 	if config.Https.CertFile != "" && config.Https.KeyFile != "" {
+		fmt.Printf("\nThe service started successfully, the address is https://localhost:%d\n", config.Port)
 		go ListenAndServeTLS(srv, config.Https.CertFile, config.Https.KeyFile)
 	} else {
+		fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", config.Port)
 		go ListenAppServe(srv)
 	}
 

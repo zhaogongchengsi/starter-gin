@@ -11,12 +11,21 @@ type Options struct {
 	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"configs"`
 	ConfigType string       `short:"t" long:"configType" description:"Type of configuration file" default:"yaml"`
 	Seed       func(string) `short:"s" long:"seed" description:"Initialize the database seed data parameter to database url"`
+	Ssl        func(string) `short:"g" long:"gsc" description:"Generate ssl certificate"`
 }
 
 func Parse() error {
 	var opt Options
 	opt.Seed = func(s string) {
 		err := seed(s)
+		if err != nil {
+			panic(err)
+		}
+		os.Exit(0)
+	}
+
+	opt.Ssl = func(s string) {
+		err := generateSsl(s)
 		if err != nil {
 			panic(err)
 		}
@@ -36,8 +45,9 @@ func Parse() error {
 	global.ConfigDirPath = opt.ConfigDir
 	if ok := include([]string{"yaml", "json"}, opt.ConfigType); !ok {
 		global.ConfigType = "yaml"
+	} else {
+		global.ConfigType = opt.ConfigType
 	}
-	global.ConfigType = opt.ConfigType
 
 	return nil
 }

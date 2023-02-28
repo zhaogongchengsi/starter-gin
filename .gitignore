@@ -37,3 +37,4 @@ model
 modules
 *.exe
 static/*
+ssl/*

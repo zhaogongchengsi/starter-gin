@@ -7,9 +7,10 @@ Server:
   StaticName: /assets # 静态文件的路径 一般为 static static/dist/index.html
   Static: static/assets # 静态文件目录 一般是vite 打包后的静态文件目录
   IndexHtml: static/dist/index.html
+  # 设置这个选项之后 会自动开启https 开发环境下 可以使用 go run main.go -g ssl 生成临时证书(有效期为一年)
   # Https:
-  #   certFile: string # path
-  #   keyFile: string # path
+  #   certFile: ssl/cert.pem # path
+  #   keyFile: ssl/key.pem # path
 Jwt:
   SigningKey: a37e5383b22eb950d1a3496540ceffcc # 盐值 md5(zzhstarter_gin)
   Issuer: satrter_gin # 签发人
