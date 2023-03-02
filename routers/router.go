@@ -5,28 +5,24 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/server-gin/global"
+	"github.com/server-gin/routers/system"
 )
 
 func CreateAppRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	CreateStaticRouter(r)
+
+	RegisterStaticRouter(r)
 
 	v1 := r.Group(fmt.Sprintf("/%s", global.ServerConfig.Prefix))
 
-	v1.GET("hello", hello)
+	system.RegisterBaseRouter(v1)
 
 	return r
 }
 
-func hello(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Hello starter Gin",
-	})
-}
-
-func CreateStaticRouter(r *gin.Engine) {
+func RegisterStaticRouter(r *gin.Engine) {
 	r.Static("/assets", "./static/assets")
 	r.StaticFile("/", "./static/index.html")
 	// http.Handle("/", http.FileServer(http.Dir("/static")))
