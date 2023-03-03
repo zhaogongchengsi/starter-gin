@@ -25,5 +25,6 @@ func CreateAppRouter() *gin.Engine {
 func RegisterStaticRouter(r *gin.Engine) {
 	r.Static("/assets", "./static/assets")
 	r.StaticFile("/", "./static/index.html")
+	r.StaticFile("/vite.svg", "./static/vite.svg")
 	// http.Handle("/", http.FileServer(http.Dir("/static")))
 }
