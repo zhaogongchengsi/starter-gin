@@ -26,7 +26,7 @@ func init() {
 
 func main() {
 
-	db, err := core.CreateAppDataBase(global.DbConfig)
+	db, err := core.ConnectDataBaseServer(global.DbConfig)
 	global.Db = db
 
 	if err != nil {

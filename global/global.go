@@ -17,7 +17,7 @@ var (
 	DbConfig     = &config.DataBase{}
 	JwtConfig    = &config.Jwt{}
 	GenConfig    = &config.Gen{}
-	IsInit       = false
+	RedisConfig  = &config.Redis{}
 )
 
 var (
@@ -50,6 +50,12 @@ func InitGlobalValues() (err error) {
 	}
 
 	err = dc.ReadValue(&GenConfig, "Gen")
+
+	if err != nil {
+		return err
+	}
+
+	err = dc.ReadValue(&RedisConfig, "Redis")
 
 	if err != nil {
 		return err

@@ -16,3 +16,7 @@ Gen:
   FieldSignable:  false # detect integer field's unsigned type, adjust generated data type
   FieldWithIndexTag: false # 生成 gorm 标签的字段索引属性
   FieldWithTypeTag: true # 生成 gorm 标签的字段类型属性
+Redis:
+  db: 0
+  addr: 127.0.0.1:8088
+  password: ""

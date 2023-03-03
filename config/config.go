@@ -46,6 +46,12 @@ type Gen struct {
 	FieldWithTypeTag  bool
 }
 
+type Redis struct {
+	Db       int
+	Addr     string
+	Password string
+}
+
 type Config struct {
 	Server
 	DataBase
