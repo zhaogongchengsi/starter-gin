@@ -22,7 +22,6 @@ Captcha:
   Length: 4
   DotCount: 80
   MaxSkew: 0.7
-
 # -------------数据库相关配置
 DataBase:
   Username: root

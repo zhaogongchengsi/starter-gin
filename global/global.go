@@ -5,6 +5,8 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/server-gin/config"
+
+	// "github.com/songzhibin97/gkit/cache/local_cache"
 	"gorm.io/gorm"
 )
 
@@ -26,6 +28,9 @@ var (
 	Server = &http.Server{}
 	Db     = &gorm.DB{}
 	Redis  = &redis.Client{}
+
+	// 本地缓存
+	// LocalCache local_cache.Cache
 )
 
 func ReadAppConfig() error {
