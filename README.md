@@ -1,5 +1,7 @@
 # Using golang's gin-based backend template
 
+
+[中文文档](./README-CN.md)
 ## Start
 
 ```sh
@@ -7,7 +9,7 @@ go run main.go
 go build main.go
 ```
 
-[在线 Api 文档](https://www.apifox.cn/apidoc/project-2379970/api-65717385)
+[Online API Documentation](https://www.apifox.cn/apidoc/project-2379970/api-65717385)
 
 
 ## Command
