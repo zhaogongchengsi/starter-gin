@@ -53,8 +53,9 @@ type Redis struct {
 }
 
 type Config struct {
-	Server
-	DataBase
-	Jwt
-	Gen
+	Server   Server
+	DataBase DataBase
+	Jwt      Jwt
+	Gen      Gen
+	Redis    Redis
 }

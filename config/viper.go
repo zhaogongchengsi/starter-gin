@@ -27,6 +27,10 @@ func (c *ConfingViper) ReadConfigs() error {
 	return c.viper.ReadInConfig()
 }
 
+func (c *ConfingViper) Unmarshal(val any) error {
+	return c.viper.Unmarshal(val)
+}
+
 func (c *ConfingViper) ReadValue(valu any, key string) error {
 	return c.viper.UnmarshalKey(key, valu)
 }

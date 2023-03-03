@@ -13,7 +13,7 @@ func init() {
 		panic(err)
 	}
 
-	err = global.InitGlobalValues()
+	err = global.ReadAppConfig()
 	if err != nil {
 		panic(err)
 	}
@@ -26,15 +26,24 @@ func init() {
 
 func main() {
 
-	db, err := core.ConnectDataBaseServer(global.DbConfig)
-	global.Db = db
+	db, err := core.ConnectDataBaseServer(global.AppConfig)
 
 	if err != nil {
 		panic(err)
 	}
 
+	global.Db = db
+
+	rdb, err := core.ConnectRedisServer(global.AppConfig)
+
+	if err != nil {
+		panic(err)
+	}
+
+	global.Redis = rdb
+
 	routers := routers.CreateAppRouter()
 
-	core.CreateAppServer(global.ServerConfig, routers)
+	core.CreateAppServer(global.AppConfig, routers)
 
 }

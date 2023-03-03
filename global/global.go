@@ -3,13 +3,14 @@ package global
 import (
 	"net/http"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/server-gin/config"
 	"gorm.io/gorm"
 )
 
 var (
-	ConfigType    string = "yaml"    // 配置文件类型
-	ConfigDirPath string = "configs" // 配置文件路径
+	ConfigType    string = "yaml" // 配置文件类型
+	ConfigDirPath string = "./"   // 配置文件路径
 )
 
 var (
@@ -18,44 +19,23 @@ var (
 	JwtConfig    = &config.Jwt{}
 	GenConfig    = &config.Gen{}
 	RedisConfig  = &config.Redis{}
+	AppConfig    = &config.Config{}
 )
 
 var (
 	Server = &http.Server{}
 	Db     = &gorm.DB{}
+	Redis  = &redis.Client{}
 )
 
-func InitGlobalValues() (err error) {
-	sc := config.NewConfig(ConfigDirPath, ConfigType, "server")
-	err = sc.ReadConfigs()
+func ReadAppConfig() error {
+	sc := config.NewConfig(ConfigDirPath, ConfigType, "config")
+	err := sc.ReadConfigs()
 	if err != nil {
 		return err
 	}
 
-	err = sc.ReadValue(&ServerConfig, "Server")
-	if err != nil {
-		return err
-	}
-	err = sc.ReadValue(&JwtConfig, "Jwt")
-	if err != nil {
-		return err
-	}
-
-	dc := config.NewConfig(ConfigDirPath, ConfigType, "database")
-
-	err = dc.ReadValue(&DbConfig, "DataBase")
-
-	if err != nil {
-		return err
-	}
-
-	err = dc.ReadValue(&GenConfig, "Gen")
-
-	if err != nil {
-		return err
-	}
-
-	err = dc.ReadValue(&RedisConfig, "Redis")
+	err = sc.Unmarshal(&AppConfig)
 
 	if err != nil {
 		return err

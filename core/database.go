@@ -11,7 +11,9 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-func ConnectDataBaseServer(config *config.DataBase) (*gorm.DB, error) {
+func ConnectDataBaseServer(cfg *config.Config) (*gorm.DB, error) {
+
+	config := cfg.DataBase
 
 	dns := fmt.Sprintf(`%s:%s@tcp(%s:%v)/%s?charset=%s&parseTime=True&loc=Local`,
 		config.Username,

@@ -7,7 +7,9 @@ import (
 	"github.com/server-gin/config"
 )
 
-func ConnectRedisServer(rdc *config.Redis) (*redis.Client, error) {
+func ConnectRedisServer(conf *config.Config) (*redis.Client, error) {
+	rdc := conf.Redis
+
 	client := redis.NewClient(&redis.Options{
 		Addr:     rdc.Addr,
 		Password: rdc.Password, // no password set

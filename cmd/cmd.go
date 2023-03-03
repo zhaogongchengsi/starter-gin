@@ -8,7 +8,7 @@ import (
 )
 
 type Options struct {
-	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"configs"`
+	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"./"`
 	ConfigType string       `short:"t" long:"configType" description:"Type of configuration file" default:"yaml"`
 	Seed       func(string) `short:"s" long:"seed" description:"Initialize the database seed data parameter to database url"`
 	Ssl        func(string) `short:"g" long:"gsc" description:"Generate ssl certificate"`

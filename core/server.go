@@ -22,7 +22,10 @@ func initServer(address string, router *gin.Engine) *http.Server {
 	}
 }
 
-func CreateAppServer(config *config.Server, router *gin.Engine) {
+func CreateAppServer(conf *config.Config, router *gin.Engine) {
+
+	config := conf.Server
+
 	gin.SetMode(config.Mode)
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
