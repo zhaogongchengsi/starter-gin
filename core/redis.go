@@ -2,14 +2,21 @@ package core
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/server-gin/config"
 )
 
+var ErrRedisNot = errors.New("error:redis service is not configured, missing address")
+
 func ConnectRedisServer(conf *config.Config) (*redis.Client, error) {
 	rdc := conf.Redis
+
+	if len(rdc.Addr) < 1 {
+		return nil, ErrRedisNot
+	}
 
 	client := redis.NewClient(&redis.Options{
 		Addr:     rdc.Addr,
