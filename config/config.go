@@ -52,10 +52,16 @@ type Redis struct {
 	Password string
 }
 
+type Captcha struct {
+	Width, Height, Length, DotCount int
+	MaxSkew                         float64
+}
+
 type Config struct {
 	Server   Server
 	DataBase DataBase
 	Jwt      Jwt
 	Gen      Gen
 	Redis    Redis
+	Captcha  Captcha
 }

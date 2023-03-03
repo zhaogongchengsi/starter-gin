@@ -34,7 +34,7 @@ func NewOkResponse() *Response[map[string]interface{}] {
 	return NewResponse(Ok, map[string]interface{}{}, "操作成功")
 }
 
-func NesFailResponse(code int) *Response[map[string]interface{}] {
+func NewFailResponse() *Response[map[string]interface{}] {
 	return NewResponse(Error, map[string]interface{}{}, "操作失败")
 }
 

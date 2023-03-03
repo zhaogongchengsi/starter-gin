@@ -4,18 +4,18 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/server-gin/global"
+	"github.com/server-gin/config"
 	"github.com/server-gin/routers/system"
 )
 
-func CreateAppRouter() *gin.Engine {
+func CreateAppRouter(conf *config.Config) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
 	RegisterStaticRouter(r)
 
-	v1 := r.Group(fmt.Sprintf("/%s", global.ServerConfig.Prefix))
+	v1 := r.Group(fmt.Sprintf("/%s", conf.Server.Prefix))
 
 	system.RegisterBaseRouter(v1)
 
