@@ -31,11 +31,9 @@ func seed(dsn string) error {
 		return fmt.Errorf("seed Error: database initialization failed : %v", err)
 	}
 
-	// newUser := system.NewUser("admin", "12345", "18312391231", "管理员", "zzh123123123@qq.com")
+	newUser := system.NewUser("admin", "12345", "18312391231", "管理员", "zzh123123123@qq.com")
 
-	// fmt.Println(*newUser)
-
-	// db.Create(*newUser)
+	db.Create(newUser)
 
 	return nil
 }
