@@ -3,26 +3,10 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/server-gin/modules/system"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
-
-type User struct {
-	gorm.Model
-	Phone    string
-	UserName string
-	NickName string
-	Password string
-}
-
-func newUser(ph, un, nn, pw string) *User {
-	return &User{
-		Phone:    ph,
-		Password: pw,
-		UserName: un,
-		NickName: nn,
-	}
-}
 
 func seed(dsn string) error {
 
@@ -39,13 +23,19 @@ func seed(dsn string) error {
 		return fmt.Errorf("seed Error: Database connection failed, please check %s and try again", dsn)
 	}
 
-	err = db.AutoMigrate(&User{})
+	var user system.User
+
+	err = db.AutoMigrate(user)
 
 	if err != nil {
-		return fmt.Errorf("seed Error: database initialization failed")
+		return fmt.Errorf("seed Error: database initialization failed : %v", err)
 	}
 
-	db.Create(newUser("12312312312", "user", "admin", "a906449d5769fa7361d7ecc6aa3f6d28")) // 123abc
+	// newUser := system.NewUser("admin", "12345", "18312391231", "管理员", "zzh123123123@qq.com")
+
+	// fmt.Println(*newUser)
+
+	// db.Create(*newUser)
 
 	return nil
 }

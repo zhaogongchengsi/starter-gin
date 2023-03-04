@@ -1,9 +1,6 @@
 package system
 
 import (
-	"context"
-	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/mojocn/base64Captcha"
 	"github.com/server-gin/common"
@@ -11,21 +8,6 @@ import (
 )
 
 var store = base64Captcha.DefaultMemStore
-
-func Login(c *gin.Context) {
-
-	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
-	defer cancel()
-
-	err := global.Redis.Set(ctx, "login-key", "asdasd", time.Hour).Err()
-
-	if err != nil {
-		common.NewFailResponse().ErrorToString(err).Send(c)
-		return
-	}
-
-	common.NewResponse(200, global.AppConfig, "配置读取成功").Send(c)
-}
 
 type CaptchaResponse struct {
 	Id  string `json:"id"`

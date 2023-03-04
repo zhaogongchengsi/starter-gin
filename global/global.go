@@ -33,6 +33,23 @@ var (
 	// LocalCache local_cache.Cache
 )
 
+func ReadConfig(ConfigDirPath, ConfigType, name string) (conf *config.Config, err error) {
+
+	sc := config.NewConfig(ConfigDirPath, ConfigType, name)
+	err = sc.ReadConfigs()
+	if err != nil {
+		return conf, err
+	}
+
+	err = sc.Unmarshal(conf)
+
+	if err != nil {
+		return conf, err
+	}
+
+	return conf, nil
+}
+
 func ReadAppConfig() error {
 	sc := config.NewConfig(ConfigDirPath, ConfigType, "config")
 	err := sc.ReadConfigs()
