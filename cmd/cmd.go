@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"os"
+	"strings"
 
 	"github.com/jessevdk/go-flags"
 	"github.com/server-gin/global"
@@ -10,14 +11,30 @@ import (
 type Options struct {
 	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"./"`
 	ConfigType string       `short:"t" long:"configType" description:"Type of configuration file" default:"yaml"`
-	Seed       func(string) `short:"s" long:"seed" description:"Initialize the database seed data parameter to database url"`
+	Seed       func(string) `short:"s" long:"seed" description:"filePath-fileType-fileName"`
 	Ssl        func(string) `short:"g" long:"gsc" description:"Generate ssl certificate"`
 }
 
 func Parse() error {
 	var opt Options
-	opt.Seed = func(s string) {
-		err := seed(s)
+	opt.Seed = func(file string) {
+		ags := strings.Split(file, "-")
+
+		var p = "./"
+		var t = "yaml"
+		var n = "config"
+		if len(ags[0]) != 0 {
+			p = ags[0]
+		}
+		if len(ags[1]) != 0 {
+			t = ags[1]
+		}
+		if len(ags[2]) != 0 {
+			n = ags[2]
+		}
+
+		err := seed(p, t, n)
+
 		if err != nil {
 			panic(err)
 		}

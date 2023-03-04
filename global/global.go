@@ -41,7 +41,7 @@ func ReadConfig(ConfigDirPath, ConfigType, name string) (conf *config.Config, er
 		return conf, err
 	}
 
-	err = sc.Unmarshal(conf)
+	err = sc.Unmarshal(&conf)
 
 	if err != nil {
 		return conf, err

@@ -24,10 +24,10 @@ go build main.go
 ```
 
 ### Seed
-
+filePath-fileType-fileName
 ```sh
-go run main.go --seed "root:123456@tcp(localhost:8089)/zzhstarter?charset=utf8mb4&parseTime=True&loc=Local"
-go run main.go -s "root:123456@tcp(localhost:3306)/zzhstarter?charset=utf8mb4&parseTime=True&loc=Local"
+go run main.go --seed ./-yaml
+go run main.go -s ./-yaml
 ```
 
 ### Gsc

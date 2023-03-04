@@ -21,10 +21,10 @@ go build main.go
 ```
 
 ### Seed
-
+filePath-fileType-fileName
 ```sh
-go run main.go --seed "root@tcp(localhost:3306)/starter_gin?charset=utf8mb4&parseTime=True&loc=Local"
-go run main.go -s "root@tcp(localhost:3306)/starter_gin?charset=utf8mb4&parseTime=True&loc=Local"
+go run main.go --seed ./-yaml
+go run main.go -s ./-yaml
 ```
 
 ### Gsc
