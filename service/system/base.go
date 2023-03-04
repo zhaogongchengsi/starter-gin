@@ -1,7 +1,10 @@
 package system
 
 import (
+	"fmt"
+
 	"github.com/server-gin/global"
+	"github.com/server-gin/modules/system"
 	"github.com/server-gin/utils"
 )
 
@@ -12,19 +15,27 @@ type Login struct {
 	Email    string `json:"email" validate:"email"`
 }
 
-func (L *Login) Login() (token string, err error) {
+func (L *Login) Login() (user *system.User, token string, err error) {
 
 	// 假装查询
 
-	jwtConf := global.AppConfig.Jwt
-	// 删除隐私信息
-	L.Password = ""
-	L.Phone = ""
+	user = system.NewFindUser(L.Phone, L.Password)
 
-	token, err = utils.CreateToken(L, jwtConf.SigningKey, jwtConf.ExpiresAt, jwtConf.Issuer)
+	user, err = user.FirstByPhone(global.Db)
+
 	if err != nil {
-		return "", err
+		return user, "", fmt.Errorf("user does not exist, please check and try again")
 	}
 
-	return token, nil
+	jwtConf := global.AppConfig.Jwt
+	// 删除隐私信息
+	user.Password = ""
+	user.Phone = ""
+
+	token, err = utils.CreateToken(user, jwtConf.SigningKey, jwtConf.ExpiresAt, jwtConf.Issuer)
+	if err != nil {
+		return user, "", err
+	}
+
+	return user, token, nil
 }

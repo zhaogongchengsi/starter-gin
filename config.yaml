@@ -25,10 +25,10 @@ Captcha:
 # -------------数据库相关配置
 DataBase:
   Username: root
-  Password:
-  Port: 3306
+  Password: 123456
+  Port: 8089
   Url: localhost
-  DbName: starter_gin
+  DbName: zzhstarter
   Charset: utf8mb4
   MaxIdleConns: 10
   MaxOpenConns: 100

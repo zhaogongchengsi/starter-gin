@@ -39,12 +39,12 @@ func Login(c *gin.Context) {
 		Email:    loginRes.Email,
 	}
 
-	token, err := login.Login()
+	user, token, err := login.Login()
 
 	if err != nil {
 		common.NewFailResponse().ErrorToString(err).Send(c)
 		return
 	}
 
-	common.NewResponse(200, token, "登录成功").Send(c)
+	common.NewResponse(200, map[string]any{"user": user, "token": token}, "登录成功").Send(c)
 }
