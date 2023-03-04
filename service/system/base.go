@@ -12,7 +12,7 @@ type Login struct {
 	Phone    string `json:"phone" validate:"required, len=11"`
 	Password string `form:"password" json:"password" binding:"required" validate:"gte=6,lte=18"`
 	NickName string `form:"nickName" json:"nickName"`
-	Email    string `json:"email" validate:"email"`
+	Email    string `json:"email" validate:"e-mail"`
 }
 
 func (L *Login) Login() (user *system.User, token string, err error) {
