@@ -1,6 +1,5 @@
 # Using golang's gin-based backend template
 
-
 [中文文档](./README-CN.md)
 ## Start
 
@@ -35,3 +34,7 @@ Before creating a certificate, you need to create a certificate storage
 go run main.go -g ssl
 ```
 ## Launch a local development environment
+
+```sh
+docker compose -f "docker-compose-dev.yaml" up -d --build
+```

@@ -1,6 +1,5 @@
 # 使用 golang 基于 gin 框架创建的一个后端模板
 
-[运行环境](./DEV.md)
 ## 启动
 
 ```sh
@@ -33,4 +32,10 @@ go run main.go -s ./-yaml
 
 ```
 go run main.go -g ssl
+```
+
+## 启动一个开发环境
+
+```sh
+docker compose -f "docker-compose-dev.yaml" up -d --build
 ```
