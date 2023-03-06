@@ -1,0 +1,57 @@
+
+# 开发使用的快速启动开发环境
+
+version: "3"
+
+# 声明一个名为network的networks,subnet为network的子网地址,默认网关是177.7.0.1
+# networks:
+#   network:
+#     ipam:
+#       driver: default
+#       config:
+#         - subnet: '177.7.0.0/16'
+        
+# 设置mysql，redis持久化保存 顶级声明可能会在其他服务用到
+volumes:
+  mysql:
+  redis: 
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: starter-mysql
+    hostname: starter-mysql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci #设置utf8字符集
+    restart: always
+    ports:
+      - "8089:3306"  # host物理直接映射端口为8089
+    environment:
+      #MYSQL_ROOT_PASSWORD: '123123' # root管理员用户密码
+      MYSQL_DATABASE: 'starter' # 初始化启动时要创建的数据库的名称
+      MYSQL_USER: 'root'
+      MYSQL_ROOT_PASSWORD: '123456'
+      # 容器卷数据持久化 根据自身目录而定
+    volumes:
+      # - type: bind # volume
+      #   source: mysql
+      #   target: /var/lib/mysql
+      - F:\mysql8\data:/var/lib/mysql
+    # networks:
+    #   network:
+    #     ipv4_address: 177.7.0.13
+
+  redis:
+    image: redis:6.0.6
+    container_name: starter-gin-redis  # 容器名
+    hostname: starter-redis
+    restart: always
+    ports:
+      - '8088:3306'
+    volumes:
+      # - type: volume #volume
+      #   source: redis
+      #   target: /data
+      - F:\redis-v\data:/var/lib/mysql
+    # networks:
+    #   network:
+    #     ipv4_address: 177.7.0.14
