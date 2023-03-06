@@ -78,5 +78,12 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	common.NewResponse(200, regUser, "注册成功").Send(c)
+	user, err := regUser.Register()
+
+	if err != nil {
+		common.NewFailResponse().ChangeCode(403).ErrorToString(err).Send(c)
+		return
+	}
+
+	common.NewResponse(200, user, "注册成功").Send(c)
 }
