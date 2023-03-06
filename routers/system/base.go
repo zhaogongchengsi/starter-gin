@@ -11,8 +11,4 @@ func RegisterBaseRouter(group *gin.RouterGroup) {
 
 		baseRouter.GET("captcha", apiSystem.Captcha)
 	}
-	userRouter := baseRouter.Group("user")
-	{
-		userRouter.POST("login", apiSystem.Login)
-	}
 }

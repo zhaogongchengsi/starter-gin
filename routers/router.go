@@ -18,6 +18,7 @@ func CreateAppRouter(conf *config.Config) *gin.Engine {
 	v1 := r.Group(fmt.Sprintf("/%s", conf.Server.Prefix))
 
 	system.RegisterBaseRouter(v1)
+	system.RegisterUserRouter(v1)
 
 	return r
 }

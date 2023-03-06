@@ -47,6 +47,11 @@ func (R *Response[D]) ErrorToString(err error) *Response[D] {
 	return R
 }
 
+func (R *Response[D]) ChangeCode(code int) *Response[D] {
+	R.Code = code
+	return R
+}
+
 func (R *Response[D]) SendAfterChangeData(data D, c *gin.Context) {
 	R.Data = data
 	c.JSON(http.StatusOK, R)

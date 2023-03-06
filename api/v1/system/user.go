@@ -3,7 +3,10 @@ package system
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/server-gin/common"
+	"github.com/server-gin/global"
+	"github.com/server-gin/modules/system"
 	systemService "github.com/server-gin/service/system"
+	"github.com/server-gin/utils"
 )
 
 type captcha struct {
@@ -14,6 +17,11 @@ type captcha struct {
 type LoginRes struct {
 	systemService.Login
 	Captcha captcha `binding:"required" json:"captcha"`
+}
+
+type LoginReq struct {
+	User  system.User `json:"user"`
+	Token string      `json:"token"`
 }
 
 func Login(c *gin.Context) {
@@ -39,12 +47,23 @@ func Login(c *gin.Context) {
 		Email:    loginRes.Email,
 	}
 
-	user, token, err := login.Login()
+	user, err := login.Login()
 
 	if err != nil {
-		common.NewFailResponse().ErrorToString(err).Send(c)
+		common.NewFailResponse().ChangeCode(401).ErrorToString(err).Send(c)
 		return
 	}
 
-	common.NewResponse(200, map[string]any{"user": user, "token": token}, "登录成功").Send(c)
+	jwtConf := global.AppConfig.Jwt
+	// 删除隐私信息
+	user.Password = ""
+	token := ""
+	token, err = utils.CreateToken(user, jwtConf.SigningKey, jwtConf.ExpiresAt, jwtConf.Issuer)
+
+	if err != nil {
+		common.NewFailResponse().ChangeCode(402).ErrorToString(err).Send(c)
+		return
+	}
+
+	common.NewResponse(200, LoginReq{*user, token}, "登录成功").Send(c)
 }
