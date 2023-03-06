@@ -36,5 +36,8 @@ go run main.go -g ssl
 ## Launch a local development environment
 
 ```sh
+# Check if the file is normal
+docker-compose -f docker-compose-dev.yaml config
+# start
 docker compose -f "docker-compose-dev.yaml" up -d --build
 ```
