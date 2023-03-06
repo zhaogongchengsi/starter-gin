@@ -46,7 +46,7 @@ services:
     hostname: starter-redis
     restart: always
     ports:
-      - '8088:3306'
+      - '8088:6379'
     volumes:
       # - type: volume #volume
       #   source: redis
