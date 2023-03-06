@@ -15,7 +15,7 @@ type captcha struct {
 }
 
 type LoginRes struct {
-	systemService.Login
+	systemService.User
 	Captcha captcha `binding:"required" json:"captcha"`
 }
 
@@ -35,12 +35,14 @@ func Login(c *gin.Context) {
 	// 使用 redis
 	// var store = core.NewRedisStore(global.Redis)
 
-	// if isOk := store.Verify(loginRes.Captcha.Id, loginRes.Captcha.Value, true); isOk {
-	// 	common.NewFailResponse().SendAfterChangeMessage("验证码验证失败", c)
-	// 	return
-	// }
+	if gin.Mode() == gin.ReleaseMode {
+		if isOk := store.Verify(loginRes.Captcha.Id, loginRes.Captcha.Value, true); isOk {
+			common.NewFailResponse().SendAfterChangeMessage("验证码验证失败", c)
+			return
+		}
+	}
 
-	login := systemService.Login{
+	login := systemService.User{
 		Phone:    loginRes.Phone,
 		Password: loginRes.Password,
 		NickName: loginRes.NickName,
@@ -66,4 +68,15 @@ func Login(c *gin.Context) {
 	}
 
 	common.NewResponse(200, LoginReq{*user, token}, "登录成功").Send(c)
+}
+
+func Register(c *gin.Context) {
+	var regUser systemService.User
+	err := c.ShouldBindJSON(&regUser)
+	if err != nil {
+		common.NewFailResponse().ErrorToString(err).Send(c)
+		return
+	}
+
+	common.NewResponse(200, regUser, "注册成功").Send(c)
 }

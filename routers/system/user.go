@@ -9,5 +9,6 @@ func RegisterUserRouter(group *gin.RouterGroup) {
 	userRouter := group.Group("user")
 	{
 		userRouter.POST("login", apiSystem.Login)
+		userRouter.POST("register", apiSystem.Register)
 	}
 }

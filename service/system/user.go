@@ -7,7 +7,7 @@ import (
 	"github.com/server-gin/modules/system"
 )
 
-type Login struct {
+type User struct {
 	Phone    string `json:"phone" validate:"required, len=11"`
 	Password string `form:"password" json:"password" binding:"required" validate:"gte=6,lte=18"`
 	NickName string `form:"nickName" json:"nickName"`
@@ -18,7 +18,7 @@ var ErrUserNotFound = errors.New("err:user does not exist, please check and try 
 var ErrWrongPassword = errors.New("err:wrong password(密码错误)")
 var ErrTokenSigningFailed = errors.New("err:Token signing failed(token 签发错误)")
 
-func (L *Login) Login() (user *system.User, err error) {
+func (L *User) Login() (user *system.User, err error) {
 
 	user = system.NewFindUser(L.Phone, L.Password)
 
