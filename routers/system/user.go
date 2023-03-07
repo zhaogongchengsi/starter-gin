@@ -11,4 +11,10 @@ func RegisterUserRouter(group *gin.RouterGroup) {
 		userRouter.POST("login", apiSystem.Login)
 		userRouter.POST("register", apiSystem.Register)
 	}
+	// 这个路由需要鉴权
+	userAuthRouter := group.Group("user")
+	{
+		userAuthRouter.POST("changepass", apiSystem.ChangePassword)
+		userAuthRouter.DELETE("deleteuser", apiSystem.DeleteUser)
+	}
 }

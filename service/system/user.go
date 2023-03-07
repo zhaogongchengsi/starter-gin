@@ -52,3 +52,27 @@ func (R *User) Register() (user *system.User, err error) {
 	return newUser, nil
 
 }
+
+func (R *User) ChangePassword(newPwd string) (user *system.User, err error) {
+	us, err := R.Login()
+	if err != nil {
+		return us, err
+	}
+
+	u, e := us.UpdatePwd(global.Db, newPwd)
+
+	if e != nil {
+		return u, e
+	}
+
+	return u, nil
+}
+
+func (R *User) DeletedUser() error {
+	user := system.User{
+		Phone: R.Phone,
+		Email: R.Email,
+	}
+
+	return user.UsePhoneDeleted(global.Db)
+}

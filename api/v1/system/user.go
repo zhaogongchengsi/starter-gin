@@ -87,3 +87,60 @@ func Register(c *gin.Context) {
 
 	common.NewResponse(200, user, "注册成功").Send(c)
 }
+
+type ChangePasswordReq struct {
+	Phone       string `json:"phone" binding:"required"`
+	OldPassword string `json:"old_password" binding:"required"`
+	NewPassword string `json:"new_password" binding:"required"`
+}
+
+func ChangePassword(c *gin.Context) {
+	var changeinfo ChangePasswordReq
+	err := c.ShouldBindJSON(&changeinfo)
+	if err != nil {
+		common.NewFailResponse().ErrorToString(err).Send(c)
+		return
+	}
+
+	user := systemService.User{
+		Phone:    changeinfo.Phone,
+		Password: changeinfo.OldPassword,
+	}
+
+	us, err := user.ChangePassword(changeinfo.NewPassword)
+
+	if err != nil {
+		common.NewFailResponse().ChangeCode(405).ErrorToString(err).Send(c)
+		return
+	}
+
+	common.NewResponse(200, us, "修改成功").Send(c)
+}
+
+type DeleteUserInfo struct {
+	Phone string `json:"phone" binding:"required"`
+	Email string `json:"email"`
+}
+
+func DeleteUser(c *gin.Context) {
+	var di DeleteUserInfo
+	err := c.ShouldBindJSON(&di)
+	if err != nil {
+		common.NewFailResponse().ErrorToString(err).Send(c)
+		return
+	}
+
+	regUser := systemService.User{
+		Phone: di.Phone,
+		Email: di.Email,
+	}
+
+	err = regUser.DeletedUser()
+
+	if err != nil {
+		common.NewFailResponse().ChangeCode(405).ErrorToString(err).Send(c)
+		return
+	}
+
+	common.NewOkResponse().SendAfterChangeMessage("删除成功", c)
+}
