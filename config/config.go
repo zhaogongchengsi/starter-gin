@@ -9,6 +9,7 @@ type Server struct {
 	Static     string
 	IndexHtml  string
 	Https      HttpsConfig
+	UploadDir  string
 }
 
 type HttpsConfig struct {
@@ -58,6 +59,7 @@ type Captcha struct {
 }
 
 type Config struct {
+	AppId    string
 	Server   Server
 	DataBase DataBase
 	Jwt      Jwt

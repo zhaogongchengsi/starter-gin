@@ -16,12 +16,7 @@ var (
 )
 
 var (
-	ServerConfig = &config.Server{}
-	DbConfig     = &config.DataBase{}
-	JwtConfig    = &config.Jwt{}
-	GenConfig    = &config.Gen{}
-	RedisConfig  = &config.Redis{}
-	AppConfig    = &config.Config{}
+	AppConfig = &config.Config{}
 )
 
 var (

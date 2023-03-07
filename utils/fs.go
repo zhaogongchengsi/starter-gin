@@ -6,7 +6,7 @@ import (
 )
 
 func CreateFile(path string, content string) error {
-	f, err := os.OpenFile("test.txt", os.O_CREATE|os.O_RDWR, 0644)
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0644)
 	if err != nil {
 		return err
 	}

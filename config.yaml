@@ -1,4 +1,5 @@
 # ------ 服务相关配置
+AppId: "satrter-gin"
 Server:
   Port: 3000 # 服务端口
   Host: 0.0.0.0
@@ -12,6 +13,7 @@ Server:
   # Https:
   #   certFile: ssl/cert.pem # path
   #   keyFile: ssl/key.pem # path
+  UploadDir: "upload"
 Jwt:
   SigningKey: a37e5383b22eb950d1a3496540ceffcc # 盐值 md5(zzhstarter_gin)
   Issuer: satrter_gin # 签发人
