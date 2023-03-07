@@ -12,7 +12,8 @@ const (
 	// 执行成功
 	Ok = 1
 	// 执行失败
-	Failed          = 0
+	Failed = 0
+	// 参数错误
 	ParamsErrorCode = 3
 	// 服务器内部错误
 	ServerError = 500
@@ -60,7 +61,8 @@ func NewParamsError(c *gin.Context, err error) {
 		Code: ParamsErrorCode,
 		Data: map[string]interface{}{},
 	}
-	res.AddError(err, "参数错误或缺失，请检查后重试!")
+	res.Error = fmt.Sprintf(`[%s] [%s] %s`, AppId, c.FullPath(), err.Error())
+	res.Message = "参数错误或者缺失"
 	res.Send(c)
 }
 
