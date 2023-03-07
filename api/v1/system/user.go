@@ -28,7 +28,7 @@ func Login(c *gin.Context) {
 	var loginRes LoginRes
 	err := c.ShouldBindJSON(&loginRes)
 	if err != nil {
-		common.NewFailResponse().ErrorToString(err).Send(c)
+		common.NewParamsError(c, err)
 		return
 	}
 
@@ -49,10 +49,10 @@ func Login(c *gin.Context) {
 		Email:    loginRes.Email,
 	}
 
-	user, err := login.Login()
+	user, msg, err := login.Login()
 
 	if err != nil {
-		common.NewFailResponse().ChangeCode(401).ErrorToString(err).Send(c)
+		common.NewFailResponse().ChangeCode(common.AuthFailed).AddError(err, msg).Send(c)
 		return
 	}
 
@@ -63,29 +63,29 @@ func Login(c *gin.Context) {
 	token, err = utils.CreateToken(user, jwtConf.SigningKey, jwtConf.ExpiresAt, jwtConf.Issuer)
 
 	if err != nil {
-		common.NewFailResponse().ChangeCode(402).ErrorToString(err).Send(c)
+		common.NewFailResponse().ChangeCode(common.AccreditFail).AddError(err, "token 签发失败").Send(c)
 		return
 	}
 
-	common.NewResponse(200, LoginReq{*user, token}, "登录成功").Send(c)
+	common.NewResponse(common.Ok, LoginReq{*user, token}, msg).Send(c)
 }
 
 func Register(c *gin.Context) {
 	var regUser systemService.User
 	err := c.ShouldBindJSON(&regUser)
 	if err != nil {
-		common.NewFailResponse().ErrorToString(err).Send(c)
+		common.NewParamsError(c, err)
 		return
 	}
 
-	user, err := regUser.Register()
+	user, msg, err := regUser.Register()
 
 	if err != nil {
-		common.NewFailResponse().ChangeCode(403).ErrorToString(err).Send(c)
+		common.NewFailResponse().AddError(err, msg).Send(c)
 		return
 	}
 
-	common.NewResponse(200, user, "注册成功").Send(c)
+	common.NewResponse(200, user, msg).Send(c)
 }
 
 type ChangePasswordReq struct {
@@ -98,7 +98,7 @@ func ChangePassword(c *gin.Context) {
 	var changeinfo ChangePasswordReq
 	err := c.ShouldBindJSON(&changeinfo)
 	if err != nil {
-		common.NewFailResponse().ErrorToString(err).Send(c)
+		common.NewParamsError(c, err)
 		return
 	}
 
@@ -110,7 +110,7 @@ func ChangePassword(c *gin.Context) {
 	us, err := user.ChangePassword(changeinfo.NewPassword)
 
 	if err != nil {
-		common.NewFailResponse().ChangeCode(405).ErrorToString(err).Send(c)
+		common.NewFailResponse().AddError(err, "修改失败").Send(c)
 		return
 	}
 
@@ -126,7 +126,7 @@ func DeleteUser(c *gin.Context) {
 	var di DeleteUserInfo
 	err := c.ShouldBindJSON(&di)
 	if err != nil {
-		common.NewFailResponse().ErrorToString(err).Send(c)
+		common.NewParamsError(c, err)
 		return
 	}
 
@@ -138,7 +138,7 @@ func DeleteUser(c *gin.Context) {
 	err = regUser.DeletedUser()
 
 	if err != nil {
-		common.NewFailResponse().ChangeCode(405).ErrorToString(err).Send(c)
+		common.NewFailResponse().AddError(err, "删除失败").Send(c)
 		return
 	}
 

@@ -1,21 +1,37 @@
 package common
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 const (
-	Ok       = 200
-	Error    = 500
+	AppId = "Starter-Gin-App"
+	// 执行成功
+	Ok = 1
+	// 执行失败
+	Failed          = 0
+	ParamsErrorCode = 3
+	// 服务器内部错误
+	ServerError = 500
+	// 资源找不到
 	NotFound = 404
+	// 认证失败
+	AuthFailed = 401
+	// 授权失败
+	AccreditFail = 403
 )
 
 type Response[D any] struct {
-	Code    int    `json:"code"`
-	Data    D      `json:"data"`
+	Code int `json:"code"`
+	Data D   `json:"data"`
+
+	// 给普通人的错误提示
 	Message string `json:"message"`
+	// 给程序员看的错误
+	Error string `json:"error"`
 }
 
 func NewResponse[D any](code int, data D, msg string) *Response[D] {
@@ -23,11 +39,12 @@ func NewResponse[D any](code int, data D, msg string) *Response[D] {
 		Code:    code,
 		Data:    data,
 		Message: msg,
+		Error:   "",
 	}
 }
 
 func NewResponseWithData[D any](data D) *Response[D] {
-	return NewResponse(Ok, data, "操作成果")
+	return NewResponse(Ok, data, "操作成功")
 }
 
 func NewOkResponse() *Response[map[string]interface{}] {
@@ -35,15 +52,25 @@ func NewOkResponse() *Response[map[string]interface{}] {
 }
 
 func NewFailResponse() *Response[map[string]interface{}] {
-	return NewResponse(Error, map[string]interface{}{}, "操作失败")
+	return NewResponse(Failed, map[string]interface{}{}, "操作失败")
+}
+
+func NewParamsError(c *gin.Context, err error) {
+	res := Response[map[string]interface{}]{
+		Code: ParamsErrorCode,
+		Data: map[string]interface{}{},
+	}
+	res.AddError(err, "参数错误或缺失，请检查后重试!")
+	res.Send(c)
 }
 
 func (R *Response[D]) Send(c *gin.Context) {
 	c.JSON(http.StatusOK, R)
 }
 
-func (R *Response[D]) ErrorToString(err error) *Response[D] {
-	R.Message = err.Error()
+func (R *Response[D]) AddError(err error, msg string) *Response[D] {
+	R.Error = fmt.Sprintf(`[%s] %s`, AppId, err.Error())
+	R.Message = msg
 	return R
 }
 

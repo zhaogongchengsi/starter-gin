@@ -14,47 +14,49 @@ type User struct {
 	Email    string `json:"email" validate:"e-mail"`
 }
 
-var ErrUserNotFound = errors.New("err:user does not exist, please check and try again(用户不存在)")
-var ErrWrongPassword = errors.New("err:wrong password(密码错误)")
-var ErrTokenSigningFailed = errors.New("err:Token signing failed(token 签发错误)")
-var ErrUserExt = errors.New("err:User already exists(用户已存在)")
+var ErrUserNotFound = errors.New("err: user does not exist, please check and try again")
+var ErrWrongPassword = errors.New("err: wrong password")
+var ErrTokenSigningFailed = errors.New("err: Token signing failed")
+var ErrUserExt = errors.New("err: User already exists")
 
-func (L *User) Login() (user *system.User, err error) {
+func (L *User) Login() (user *system.User, msg string, err error) {
 
 	user = system.NewFindUser(L.Phone, L.Password)
 
 	u, err := user.FirstByPhone(global.Db)
 
 	if err != nil {
-		return user, ErrUserNotFound
+		return user, "账号不存在", ErrUserNotFound
 	}
 
 	if !user.ComparePassword(u.Password) {
-		return user, ErrWrongPassword
+		return user, "密码错误", ErrWrongPassword
 	}
 
-	return u, nil
+	return u, "登录成功", nil
 }
 
-func (R *User) Register() (user *system.User, err error) {
-	user = system.CreateUser(R.Password, R.Phone, R.NickName, R.Email)
+func (R *User) Register() (*system.User, string, error) {
+	user := system.CreateUser(R.Password, R.Phone, R.NickName, R.Email)
 	oldu, err := user.FirstByPhone(global.Db)
+
 	if err == nil {
-		return oldu, ErrUserExt
+		return oldu, "用户已存在", ErrUserExt
 	}
 
 	newUser, err := user.CreateUser(global.Db)
 
-	if err == nil {
-		return user, err
+	if err != nil {
+		return user, "创建失败", err
 	}
 
-	return newUser, nil
+	return newUser, "注册成功", nil
 
 }
 
-func (R *User) ChangePassword(newPwd string) (user *system.User, err error) {
-	us, err := R.Login()
+func (R *User) ChangePassword(newPwd string) (*system.User, error) {
+	us, _, err := R.Login()
+
 	if err != nil {
 		return us, err
 	}

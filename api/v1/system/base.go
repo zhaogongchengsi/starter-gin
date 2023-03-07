@@ -25,9 +25,9 @@ func Captcha(ctx *gin.Context) {
 	id, b64s, err := cp.Generate()
 
 	if err != nil {
-		common.NewFailResponse().ErrorToString(err).Send(ctx)
+		common.NewParamsError(ctx, err)
 		return
 	}
 
-	common.NewResponse(200, CaptchaResponse{id, b64s}, "验证码获取成功").Send(ctx)
+	common.NewResponseWithData(CaptchaResponse{id, b64s}).Send(ctx)
 }
