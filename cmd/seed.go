@@ -1,33 +1,16 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/server-gin/core"
-	"github.com/server-gin/global"
-	"github.com/server-gin/modules/system"
-	"gorm.io/gorm"
 )
 
 func seedAction(file string) {
-	ags := strings.Split(file, "-")
+	ags := strings.Split(file, ",")
 
-	var p = "./"
-	var t = "yaml"
-	var n = "config"
-	if len(ags[0]) != 0 {
-		p = ags[0]
-	}
-	if len(ags[1]) != 0 {
-		t = ags[1]
-	}
-	if len(ags[2]) != 0 {
-		n = ags[2]
-	}
-
-	err := seed(p, t, n)
+	err := seed(ags)
 
 	if err != nil {
 		panic(err)
@@ -35,48 +18,43 @@ func seedAction(file string) {
 	os.Exit(0)
 }
 
-func ConnDb(file, typ, name string) (*gorm.DB, error) {
+func seed(ms []string) error {
 
-	conf, err := global.ReadConfig(file, typ, name)
-
-	if err != nil {
-		return &gorm.DB{}, fmt.Errorf("seed Error: The specified parameters are wrong, and the database configuration cannot be obtained. %s %s %v", file, typ, err)
-	}
-
-	db, err := core.ConnectDataBaseServer(conf)
-
-	if err != nil {
-		return &gorm.DB{}, fmt.Errorf("seed Error: Database connection failed, please check %s and try again", err)
-	}
-
-	return db, nil
-}
-
-func seed(file, typ, name string) error {
-
-	conf, err := global.ReadConfig(file, typ, name)
-
-	if err != nil {
-		return fmt.Errorf("seed Error: The specified parameters are wrong, and the database configuration cannot be obtained. %s %s %v", file, typ, err)
-	}
-
-	db, err := core.ConnectDataBaseServer(conf)
+	db, err := ConnDb(*c, *t, *n)
 
 	if err != nil {
 		return fmt.Errorf("seed Error: Database connection failed, please check %s and try again", err)
 	}
 
-	var user system.User
+	if name := strings.TrimSpace(ms[0]); name == "all" {
+		for name, data := range moduleSeedMap {
+			module, ok := moduleMap[name]
+			if !ok {
+				fmt.Printf("%s 不存在", name)
+				return errors.New(name + "不存在")
+			}
 
-	err = db.AutoMigrate(user)
-
-	if err != nil {
-		return fmt.Errorf("seed Error: database initialization failed : %v", err)
+			if err := db.Model(module).Create(data).Error; err != nil {
+				return err
+			}
+		}
+		return nil
 	}
 
-	newUser := system.NewUser("admin", "12345", "18312391231", "管理员", "zzh123123123@qq.com")
+	for _, v := range ms {
+		name := strings.TrimSpace(v)
 
-	db.Create(newUser)
+		md, ok := moduleSeedMap[name]
+		if !ok {
+			fmt.Printf("%s model does not exist", v)
+			continue
+		}
+
+		err := db.Create(md).Error
+		if err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

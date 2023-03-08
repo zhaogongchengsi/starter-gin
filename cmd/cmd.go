@@ -10,16 +10,19 @@ import (
 
 var c = flag.String("c", "./", "Directory where configuration files are stored")
 var t = flag.String("t", "yaml", "Type of configuration file")
+var n = flag.String("n", "config", "Name of the configuration file")
 
 type Options struct {
 	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"./"`
 	ConfigType string       `short:"t" long:"configType" description:"Type of configuration file" default:"yaml"`
+	ConfigName string       `short:"n" long:"configName" description:"Name of the configuration file" default:"config"`
 	Seed       func(string) `short:"s" long:"seed" description:"filePath-fileType-fileName"`
 	Ssl        func(string) `short:"g" long:"gsc" description:"Generate ssl certificate"`
 	AutoMig    func(string) `short:"a" long:"auto" description:"Initialize model"`
 }
 
 func Parse() error {
+
 	var opt Options
 	opt.Seed = seedAction
 	opt.Ssl = sslAction

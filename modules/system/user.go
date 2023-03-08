@@ -22,12 +22,12 @@ type User struct {
 	Enable    int       `json:"enable" gorm:"default:1;comment:账号使用状态 1 正常 2 封禁"`
 }
 
-func createPassworld(paw string) string {
+func CreatePassworld(paw string) string {
 	bytes, _ := bcrypt.GenerateFromPassword([]byte(paw), bcrypt.DefaultCost)
 	return string(bytes)
 }
 
-func bcryptCheck(password, hash string) bool {
+func BcryptCheck(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
@@ -39,7 +39,7 @@ func NewUser(uname, pass, phone, nname, email string) *User {
 	return &User{
 		UUID:     uuid,
 		UserName: uname,
-		Password: createPassworld(pass),
+		Password: CreatePassworld(pass),
 		Phone:    phone,
 		NickName: nname,
 		Email:    email,
@@ -52,7 +52,7 @@ func CreateUser(pass, phone, nname, email string) *User {
 	return &User{
 		UUID:     uuid,
 		Phone:    phone,
-		Password: createPassworld(pass),
+		Password: CreatePassworld(pass),
 		NickName: nname,
 		Email:    email,
 	}
@@ -92,7 +92,7 @@ func (user *User) FirstByPhone(db *gorm.DB) (*User, error) {
 
 // 明文 = 密码
 func (user *User) ComparePassword(pass string) bool {
-	return bcryptCheck(user.Password, pass)
+	return BcryptCheck(user.Password, pass)
 }
 
 func (user *User) CreateUser(db *gorm.DB) (*User, error) {
@@ -108,7 +108,7 @@ func (user *User) Conditions(db *gorm.DB, query any, args ...any) *gorm.DB {
 }
 
 func (user *User) UpdatePwd(db *gorm.DB, newPwd string) (*User, error) {
-	result := user.Conditions(db, "phone = ? AND password = ?", user.Phone, user.Password).Update("password", createPassworld(newPwd))
+	result := user.Conditions(db, "phone = ? AND password = ?", user.Phone, user.Password).Update("password", CreatePassworld(newPwd))
 	if result.Error != nil {
 		return &User{}, result.Error
 	}

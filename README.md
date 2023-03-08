@@ -21,11 +21,29 @@ go build main.go
   -h, --help:        help
 ```
 
-### Seed
-filePath-fileType-fileName
+### Precommand
 ```sh
-go run main.go --seed ./-yaml
-go run main.go -s ./-yaml
+-c="./" # Specify the configuration file directory
+-t="yaml" # Specify configuration file type
+-n="config" # Specify the configuration file name
+```
+
+### AutoMigrate
+Automatic model migration
+```sh
+go run main.go --auto all
+go run main.go -a all
+go run main.go -a "user1,user2" # Can be specified, multiple are separated by commas
+go run main.go -c "./configs" -t yaml -n config -a "user" # Specify the configuration file to specify the database
+```
+
+### Seed
+Generate seed data
+```sh
+go run main.go --seed all
+go run main.go -s all
+go run main.go -s "user1,user2" # Can be specified, multiple are separated by commas
+go run main.go -c "./configs" -t yaml -n config -s "user1" # Specify the configuration file to specify the database
 ```
 
 ### Gsc
@@ -41,3 +59,4 @@ docker-compose -f docker-compose-dev.yaml config
 # start
 docker compose -f "docker-compose-dev.yaml" up -d --build
 ```
+

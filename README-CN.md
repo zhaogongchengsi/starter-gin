@@ -19,11 +19,29 @@ go build main.go
   -h, --help:        帮助
 ```
 
-### Seed
-filePath-fileType-fileName
+### 前置指令
 ```sh
-go run main.go --seed ./-yaml
-go run main.go -s ./-yaml
+-c="./" # 指定配置文件目录
+-t="yaml" # 指定配置文件类型
+-n="config" # 指定配置文件名字
+```
+
+### AutoMigrate
+Automatic model migration
+```sh
+go run main.go --auto all
+go run main.go -a all
+go run main.go -a "user1,user2" # 指定模型名字 多个使用逗号分隔
+go run main.go -c "./configs" -t yaml -n config -a "user" # 指定配置文件 以指定数据库
+```
+
+### Seed
+Generate seed data
+```sh
+go run main.go --seed all
+go run main.go -s all
+go run main.go -s "user1,user2" # 指定模型名字 多个使用逗号分隔
+go run main.go -c "./configs" -t yaml -n config -s "user1" # 指定配置文件 以指定数据库
 ```
 
 ### Gsc

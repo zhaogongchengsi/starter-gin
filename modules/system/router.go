@@ -12,7 +12,7 @@ type RouterMeTa struct {
 
 type RouterRecord struct {
 	common.BaseMode
-	Meta      RouterMeTa `json:"meta" gorm:"comment:路由元信息"`
+	Meta      RouterMeTa `json:"meta" gorm:"embedded;comment:路由元信息"`
 	Pid       int        `json:"pid" gorm:"index;comment:根据此pid判断父级路由是谁"`
 	Component string     `json:"component" gorm:"comment:路由组件"`
 	Path      string     `json:"path" gorm:"comment:路由path"`    // 路由path
