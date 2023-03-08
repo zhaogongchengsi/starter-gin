@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/server-gin/modules/system"
 )
 
 func autoMigAction(ms string) {
@@ -39,6 +41,13 @@ func AutoMigrateModule(ms []string) error {
 		if !ok {
 			fmt.Printf("%s model does not exist", v)
 			continue
+		}
+
+		if name == "languages" {
+			err := db.SetupJoinTable(&system.Languages{}, "Languages", &system.LanguageKeys{})
+			if err != nil {
+				return err
+			}
 		}
 
 		err := db.AutoMigrate(md)

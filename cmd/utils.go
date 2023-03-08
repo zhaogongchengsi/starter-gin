@@ -94,7 +94,7 @@ var moduleSeedMap = map[string]any{
 		{
 			Name:  "英文",
 			Value: "en",
-			Languages: []system.Language{
+			Languages: []*system.Language{
 				{
 					Key:   "hello",
 					Value: "hello",
@@ -104,7 +104,7 @@ var moduleSeedMap = map[string]any{
 		{
 			Name:  "中文",
 			Value: "cn",
-			Languages: []system.Language{
+			Languages: []*system.Language{
 				{
 					Key:   "hello",
 					Value: "你好",
