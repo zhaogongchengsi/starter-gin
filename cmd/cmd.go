@@ -1,53 +1,29 @@
 package cmd
 
 import (
+	"flag"
 	"os"
-	"strings"
 
 	"github.com/jessevdk/go-flags"
 	"github.com/server-gin/global"
 )
+
+var c = flag.String("c", "./", "Directory where configuration files are stored")
+var t = flag.String("t", "yaml", "Type of configuration file")
 
 type Options struct {
 	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"./"`
 	ConfigType string       `short:"t" long:"configType" description:"Type of configuration file" default:"yaml"`
 	Seed       func(string) `short:"s" long:"seed" description:"filePath-fileType-fileName"`
 	Ssl        func(string) `short:"g" long:"gsc" description:"Generate ssl certificate"`
+	AutoMig    func(string) `short:"a" long:"auto" description:"Initialize model"`
 }
 
 func Parse() error {
 	var opt Options
-	opt.Seed = func(file string) {
-		ags := strings.Split(file, "-")
-
-		var p = "./"
-		var t = "yaml"
-		var n = "config"
-		if len(ags[0]) != 0 {
-			p = ags[0]
-		}
-		if len(ags[1]) != 0 {
-			t = ags[1]
-		}
-		if len(ags[2]) != 0 {
-			n = ags[2]
-		}
-
-		err := seed(p, t, n)
-
-		if err != nil {
-			panic(err)
-		}
-		os.Exit(0)
-	}
-
-	opt.Ssl = func(s string) {
-		err := generateSsl(s)
-		if err != nil {
-			panic(err)
-		}
-		os.Exit(0)
-	}
+	opt.Seed = seedAction
+	opt.Ssl = sslAction
+	opt.AutoMig = autoMigAction
 
 	_, err := flags.Parse(&opt)
 
@@ -80,5 +56,3 @@ func include[T string | int | int64 | int32](arr []T, target T) bool {
 	}
 	return exist
 }
-
-// root:''@tcp(localhost:3306)/starter_gin?charset=utf8mb4&parseTime=True&loc=Local

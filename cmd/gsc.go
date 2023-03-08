@@ -1,6 +1,18 @@
 package cmd
 
-import "github.com/server-gin/utils"
+import (
+	"os"
+
+	"github.com/server-gin/utils"
+)
+
+func sslAction(s string) {
+	err := generateSsl(s)
+	if err != nil {
+		panic(err)
+	}
+	os.Exit(0)
+}
 
 func generateSsl(path string) error {
 	if len(path) == 0 {
