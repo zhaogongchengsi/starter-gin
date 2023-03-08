@@ -30,8 +30,8 @@ func seed(ms []string) error {
 		for name, data := range moduleSeedMap {
 			module, ok := moduleMap[name]
 			if !ok {
-				fmt.Printf("%s 不存在", name)
-				return errors.New(name + "不存在")
+				fmt.Printf("%s does not exist", name)
+				return errors.New(name + "does not exist")
 			}
 
 			if err := db.Model(module).Create(data).Error; err != nil {
