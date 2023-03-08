@@ -5,6 +5,7 @@ import (
 	"github.com/mojocn/base64Captcha"
 	"github.com/server-gin/common"
 	"github.com/server-gin/global"
+	modules "github.com/server-gin/modules/system"
 	"github.com/server-gin/service/system"
 )
 
@@ -53,6 +54,24 @@ func UpLoad(c *gin.Context) {
 	common.NewResponseWithData(ce).Send(c)
 
 }
+
 func UploadMult(c *gin.Context) {
-	// form, _ := c.MultipartForm()
+	form, _ := c.MultipartForm()
+	files := form.File["files"]
+
+	succFile := []modules.File{}
+	failFile := []string{}
+
+	for _, file := range files {
+		fileinfo := system.UpdateFileInfo{FileName: file.Filename, FileHeader: file}
+		ce, err := fileinfo.SaveFile()
+		if err != nil {
+			failFile = append(failFile, file.Filename)
+		} else {
+			succFile = append(succFile, ce)
+		}
+
+	}
+
+	common.NewResponseWithData(gin.H{"fail": failFile, "success": succFile}).Send(c)
 }

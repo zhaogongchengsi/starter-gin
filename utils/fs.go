@@ -1,37 +1,44 @@
 package utils
 
 import (
-	"io/ioutil"
+	"io"
+	"mime/multipart"
 	"os"
+	"path"
+	"path/filepath"
 )
 
-func CreateFile(path string, content string) error {
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0644)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
+// dir 需要保存的目录
+func SaveFileHeader(fh *multipart.FileHeader, dir string) (string, error) {
 
-	_, err = f.WriteString(content)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func ReadFile(path string) (string, error) {
-	f, err := os.Open(path)
+	src, err := fh.Open()
 	if err != nil {
 		return "", err
 	}
-	defer f.Close()
+	defer src.Close()
 
-	data, err := ioutil.ReadAll(f)
+	filename := fh.Filename
+	fileext := filepath.Ext(filename)
+
+	filename = MD5([]byte(filename)) + fileext
+
+	target := path.Join(dir, filename)
+
+	if err = os.MkdirAll(filepath.Dir(dir), os.ModePerm); err != nil {
+		return "", err
+	}
+
+	out, err := os.Create(target)
+	if err != nil {
+		return "", err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, src)
 	if err != nil {
 		return "", err
 	}
 
-	return string(data), nil
+	return filename, nil
+
 }
