@@ -17,11 +17,22 @@ type CaptchaResponse struct {
 }
 
 func Captcha(ctx *gin.Context) {
+	config := global.AppConfig.Captcha
+	// qw := ctx.DefaultQuery("width", strconv.FormatInt(int64(config.Height), 10))
+	// qh := ctx.DefaultQuery("height", strconv.FormatInt(int64(config.Width), 10))
+	// width, err := strconv.ParseInt(qw, 10, 8)
+	// if err != nil {
+	// 	common.NewFailResponse().AddError(err, "参数(宽度)无法转换为数字").Send(ctx)
+	// }
+	// height, err := strconv.ParseInt(qh, 10, 8)
+
+	// if err != nil {
+	// 	common.NewFailResponse().AddError(err, "参数(长度)无法转换为数字").Send(ctx)
+	// }
 
 	// 使用 redis
 	// var store = core.NewRedisStore(global.Redis)
 
-	config := global.AppConfig.Captcha
 	driver := base64Captcha.NewDriverDigit(config.Height, config.Width, config.Length, config.MaxSkew, config.DotCount)
 	cp := base64Captcha.NewCaptcha(driver, store)
 	id, b64s, err := cp.Generate()
