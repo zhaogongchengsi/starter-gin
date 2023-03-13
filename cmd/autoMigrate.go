@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/server-gin/modules/system"
 )
 
 func autoMigAction(ms string) {
@@ -41,14 +43,13 @@ func AutoMigrateModule(ms []string) error {
 			continue
 		}
 
-		// if name == "languages" {
-
-		// 	err = db.AutoMigrate(&system.Languages{}, &system.Language{})
-		// 	if err != nil {
-		// 		return err
-		// 	}
-		// 	return nil
-		// }
+		if name == "languages" {
+			err = db.AutoMigrate(&system.Languages{}, &system.Language{})
+			if err != nil {
+				return err
+			}
+			return nil
+		}
 
 		err := db.AutoMigrate(md)
 		if err != nil {
