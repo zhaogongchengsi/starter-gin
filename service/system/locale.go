@@ -31,12 +31,14 @@ func (L *Messages) GetMessages() ([]Languages, error) {
 		return messages, err
 	}
 
-	for _, l := range langs {
+	messages = make([]Languages, len(langs))
+	for i, l := range langs {
 		lang := NewLanguages(l.Value, l.Name)
 		for _, l2 := range l.Languages {
 			lang.Languages[l2.Key] = l2.Value
 		}
-		messages = append(messages, *lang)
+		messages[i] = *lang
+		// messages = append(messages, *lang)
 	}
 
 	return messages, err
