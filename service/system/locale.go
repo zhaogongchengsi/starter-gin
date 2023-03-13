@@ -8,9 +8,9 @@ import (
 type Messages struct{}
 
 type Languages struct {
-	Name      string `json:"name"`
-	Label     string `json:"label"`
-	Languages map[string]string
+	Name      string            `json:"name"`
+	Label     string            `json:"label"`
+	Languages map[string]string `json:"languages"`
 }
 
 func NewLanguages(name, label string) *Languages {
