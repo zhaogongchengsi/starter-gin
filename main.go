@@ -42,8 +42,8 @@ func main() {
 
 	global.Redis = rdb
 
-	routers := routers.CreateAppRouter(global.AppConfig)
+	r := routers.CreateAppRouter(global.AppConfig)
 
-	core.CreateAppServer(global.AppConfig, routers)
+	core.CreateAppServer(global.AppConfig, r)
 
 }
