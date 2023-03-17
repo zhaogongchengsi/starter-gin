@@ -1,7 +1,9 @@
 package utils_test
 
 import (
+	"errors"
 	"testing"
+	"time"
 
 	"github.com/server-gin/utils"
 )
@@ -23,7 +25,9 @@ const (
 )
 
 func TestCreateClaims(t *testing.T) {
-	claims := utils.CreateClaims(info, expireseAs, issuer)
+	it := time.Now()
+	et := it.Add(expireseAs + time.Minute)
+	claims := utils.CreateClaims(info, it, et, issuer)
 	if claims.Info != info {
 		t.Error("claims info not equal")
 	}
@@ -45,8 +49,10 @@ func TestCreateClaims(t *testing.T) {
 }
 
 func TestCreateToken(t *testing.T) {
+	it := time.Now()
+	et := it.Add(expireseAs + time.Minute)
 
-	token, err := utils.CreateToken(info, SigningKey, expireseAs, issuer)
+	token, err := utils.CreateToken(info, SigningKey, it, et, issuer)
 
 	if err != nil {
 		t.Error(err)
@@ -59,7 +65,10 @@ func TestCreateToken(t *testing.T) {
 }
 
 func TestParseToken(t *testing.T) {
-	token, err := utils.CreateToken(info, SigningKey, expireseAs, issuer)
+
+	it := time.Now()
+	et := it.Add(expireseAs * time.Minute)
+	token, err := utils.CreateToken(info, SigningKey, it, et, issuer)
 
 	if err != nil {
 		t.Error(err)
@@ -69,6 +78,7 @@ func TestParseToken(t *testing.T) {
 
 	if err != nil {
 		t.Error(err)
+		return
 	}
 
 	if c.Username != info.Username {
@@ -77,6 +87,25 @@ func TestParseToken(t *testing.T) {
 
 	if c.Nickname != info.Nickname {
 		t.Error("claims info not equal")
+	}
+
+	it = time.Now()
+	et = it.Add(expireseAs * time.Microsecond)
+	token, err = utils.CreateToken(info, SigningKey, it, et, issuer)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	time.Sleep(expireseAs * time.Microsecond)
+
+	c, err = utils.ParseToken[Info](token, SigningKey)
+
+	if err != nil {
+		if !errors.Is(err, utils.ErrTokenIsNotValidPeriod) {
+			t.Error(err)
+		}
+		return
 	}
 
 }

@@ -13,14 +13,18 @@ type Claims[I any] struct {
 	jwt.RegisteredClaims
 }
 
-func CreateClaims[I any](loadInfo I, expireseAs int, issuer string) Claims[I] {
+var (
+	ErrTokenIsNotValidPeriod = errors.New("token is not valid period") // 令牌不在有效期
+)
+
+func CreateClaims[I any](loadInfo I, issuedAt, express time.Time, issuer string) Claims[I] {
 	return Claims[I]{
 		Info: loadInfo,
 		RegisteredClaims: jwt.RegisteredClaims{
 			// 过期时间
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * time.Duration(expireseAs))),
+			ExpiresAt: jwt.NewNumericDate(express),
 			// 发布时间
-			IssuedAt: jwt.NewNumericDate(time.Now()),
+			IssuedAt: jwt.NewNumericDate(issuedAt),
 			// 签发人
 			Issuer: issuer,
 		},
@@ -31,8 +35,8 @@ func GetClaimsInfo[I any](cla Claims[I]) I {
 	return cla.Info
 }
 
-func CreateToken[I any](loadInfo I, SigningKey string, expiresAt int, issuer string) (string, error) {
-	claims := CreateClaims(loadInfo, expiresAt, issuer)
+func CreateToken[I any](loadInfo I, SigningKey string, issuedAt, express time.Time, issuer string) (string, error) {
+	claims := CreateClaims(loadInfo, issuedAt, express, issuer)
 	// Sign and get the complete encoded token as a string using the secret
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(SigningKey))
@@ -52,11 +56,11 @@ func ParseToken[C any](tokenString string, SigningKey string) (c C, e error) {
 	})
 
 	if e != nil {
-		if errors.Is(e, jwt.ErrTokenMalformed) {
-			return c, fmt.Errorf("that's not even a token")
-		} else if errors.Is(e, jwt.ErrTokenExpired) || errors.Is(e, jwt.ErrTokenNotValidYet) {
+		if errors.Is(e, jwt.ErrTokenExpired) || errors.Is(e, jwt.ErrTokenNotValidYet) {
 			// Token is either expired or not active yet
-			return c, fmt.Errorf("timing is everything")
+			return c, ErrTokenIsNotValidPeriod
+		} else {
+			return c, e
 		}
 	}
 
