@@ -14,7 +14,7 @@ const (
 	// 执行失败
 	Failed = 0
 	// 参数错误
-	ParamsErrorCode = 3
+	ParamsErrorCode = 2
 	// 服务器内部错误
 	ServerError = 500
 	// 资源找不到
