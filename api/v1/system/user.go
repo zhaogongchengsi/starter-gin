@@ -7,6 +7,7 @@ import (
 	"github.com/server-gin/modules/system"
 	systemService "github.com/server-gin/service/system"
 	"github.com/server-gin/utils"
+	"time"
 )
 
 type captcha struct {
@@ -19,9 +20,14 @@ type LoginRes struct {
 	Captcha captcha `binding:"required" json:"captcha"`
 }
 
+type Token struct {
+	IssuedAt  time.Time `json:"issued_at"`
+	ExpressAt time.Time `json:"express_at"`
+	Token     string    `json:"token"`
+}
 type LoginReq struct {
 	User  system.User `json:"user"`
-	Token string      `json:"token"`
+	Token Token       `json:"authorization"`
 }
 
 // 登录
@@ -61,14 +67,20 @@ func Login(c *gin.Context) {
 	// 删除隐私信息
 	user.Password = ""
 	token := ""
-	token, err = utils.CreateToken(user, jwtConf.SigningKey, jwtConf.ExpiresAt, jwtConf.Issuer)
+	it := time.Now()
+	et := it.Add(time.Duration(jwtConf.ExpiresAt) * time.Minute)
+	token, err = utils.CreateToken(user, jwtConf.SigningKey, it, et, jwtConf.Issuer)
 
 	if err != nil {
 		common.NewFailResponse().ChangeCode(common.AccreditFail).AddError(err, "token 签发失败").Send(c)
 		return
 	}
 
-	common.NewResponse(common.Ok, LoginReq{*user, token}, msg).Send(c)
+	common.NewResponse(common.Ok, LoginReq{*user, Token{
+		ExpressAt: et,
+		IssuedAt:  it,
+		Token:     token,
+	}}, msg).Send(c)
 }
 
 // 注册用户
@@ -150,5 +162,11 @@ func DeleteUser(c *gin.Context) {
 }
 
 func GetUsers(c *gin.Context) {
-	common.NewOkResponse().SendAfterChangeMessage("获取成功", c)
+	uc, ok := utils.GetUserWith(c)
+	if !ok {
+		common.NewFailResponse().SendAfterChangeMessage("获取失败", c)
+		return
+	}
+
+	common.NewResponseWithData(uc).SendAfterChangeMessage("获取成功", c)
 }

@@ -3,6 +3,8 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/server-gin/modules/system"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -77,4 +79,22 @@ func ParseToken[C any](tokenString string, SigningKey string) (c C, e error) {
 
 	return c, e
 
+}
+
+var key = "claims"
+
+func ShouldBindUserWith(c *gin.Context, claims system.User) {
+	c.Set(key, claims)
+}
+
+func GetUserWith(c *gin.Context) (system.User, bool) {
+	userClaims, ok := c.Get(key)
+	if !ok {
+		return system.User{}, false
+	}
+	user, is := userClaims.(system.User)
+	if !is {
+		return system.User{}, false
+	}
+	return user, true
 }
