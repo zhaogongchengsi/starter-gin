@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -27,14 +26,8 @@ func seed(ms []string) error {
 	}
 
 	if name := strings.TrimSpace(ms[0]); name == "all" {
-		for name, data := range moduleSeedMap {
-			module, ok := moduleMap[name]
-			if !ok {
-				fmt.Printf("%s does not exist", name)
-				return errors.New(name + "does not exist")
-			}
-
-			if err := db.Model(module).Create(data).Error; err != nil {
+		for _, seedfun := range moduleSeedMap {
+			if err := seedfun(db); err != nil {
 				return err
 			}
 		}
@@ -44,13 +37,13 @@ func seed(ms []string) error {
 	for _, v := range ms {
 		name := strings.TrimSpace(v)
 
-		md, ok := moduleSeedMap[name]
+		mdc, ok := moduleSeedMap[name]
 		if !ok {
 			fmt.Printf("%s model does not exist", v)
 			continue
 		}
 
-		err := db.Create(md).Error
+		err := mdc(db)
 		if err != nil {
 			return err
 		}

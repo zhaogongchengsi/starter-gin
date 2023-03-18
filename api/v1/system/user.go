@@ -161,6 +161,7 @@ func DeleteUser(c *gin.Context) {
 	common.NewOkResponse().SendAfterChangeMessage("删除成功", c)
 }
 
+// todo: 获取用户列表
 func GetUsers(c *gin.Context) {
 	uc, ok := utils.GetUserWith(c)
 	if !ok {
@@ -168,8 +169,5 @@ func GetUsers(c *gin.Context) {
 		return
 	}
 
-	//c.Header("new-authorization", "asdjasiodhaoisdhaiosdh")
-	//c.Header("new-expires-at", "asdjasiodhaoisdhaiosdh")
-	//c.Header("new-issued-at", "asdjasiodhaoisdhaiosdh")
 	common.NewResponseWithData(uc).SendAfterChangeMessage("获取成功", c)
 }

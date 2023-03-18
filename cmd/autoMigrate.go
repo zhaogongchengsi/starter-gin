@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/server-gin/modules/system"
 )
 
 func autoMigAction(ms string) {
@@ -25,8 +23,8 @@ func AutoMigrateModule(ms []string) error {
 	}
 
 	if name := strings.TrimSpace(ms[0]); name == "all" {
-		for _, module := range moduleMap {
-			err := db.AutoMigrate(module)
+		for _, fun := range moduleMap {
+			err := fun(db)
 			if err != nil {
 				return fmt.Errorf("autoMigrate Error: %v", err.Error())
 			}
@@ -37,21 +35,13 @@ func AutoMigrateModule(ms []string) error {
 	for _, v := range ms {
 		name := strings.TrimSpace(v)
 
-		md, ok := moduleMap[name]
+		defunct, ok := moduleMap[name]
 		if !ok {
 			fmt.Printf("%s model does not exist", v)
 			continue
 		}
 
-		if name == "languages" {
-			err = db.AutoMigrate(&system.Languages{}, &system.Language{})
-			if err != nil {
-				return err
-			}
-			return nil
-		}
-
-		err := db.AutoMigrate(md)
+		err := defunct(db)
 		if err != nil {
 			fmt.Printf("autoMigrate Error: %v", err.Error())
 		}
