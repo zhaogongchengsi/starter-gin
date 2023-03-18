@@ -6,7 +6,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/server-gin/common"
 	"github.com/server-gin/global"
-	"github.com/server-gin/modules/system"
+	"github.com/server-gin/module"
 	"github.com/server-gin/utils"
 	"math"
 	"strings"
@@ -24,7 +24,7 @@ func JWTAuth() gin.HandlerFunc {
 
 		token = strings.Replace(token, "Bearer ", "", 1)
 
-		claims, err := utils.ParseToken[system.User](token, global.AppConfig.Jwt.SigningKey)
+		claims, err := utils.ParseToken[module.User](token, global.AppConfig.Jwt.SigningKey)
 
 		if err != nil {
 			if errors.Is(err, utils.ErrTokenIsNotValidPeriod) {
@@ -51,7 +51,7 @@ func JWTAuth() gin.HandlerFunc {
 			c.Header("new-issued-at", it.String())
 		}
 
-		utils.ShouldBindUserWith[system.User](c, claims)
+		utils.ShouldBindUserWith[module.User](c, claims)
 		c.Next()
 	}
 }

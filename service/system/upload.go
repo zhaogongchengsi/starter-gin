@@ -1,10 +1,10 @@
 package system
 
 import (
+	"github.com/server-gin/module"
 	"mime/multipart"
 
 	"github.com/server-gin/global"
-	"github.com/server-gin/modules/system"
 	"github.com/server-gin/utils"
 )
 
@@ -13,12 +13,12 @@ type UpdateFileInfo struct {
 	FileHeader *multipart.FileHeader `json:"-"`
 }
 
-func (u *UpdateFileInfo) SaveFile() (system.File, error) {
+func (u *UpdateFileInfo) SaveFile() (module.File, error) {
 
 	fn, err := utils.SaveFileHeader(u.FileHeader, global.AppConfig.Server.UploadDir)
 	if err != nil {
-		return system.File{}, err
+		return module.File{}, err
 	}
 
-	return system.File{FileName: fn}, nil
+	return module.File{FileName: fn}, nil
 }

@@ -1,4 +1,4 @@
-package system
+package module
 
 import (
 	"gorm.io/gorm"

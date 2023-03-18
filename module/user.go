@@ -1,16 +1,15 @@
-package system
+package module
 
 import (
 	"errors"
 
 	uuid "github.com/satori/go.uuid"
-	common "github.com/server-gin/modules"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	common.BaseMode
+	BaseMode
 	UUID       uuid.UUID   `json:"uuid" gorm:"index;comment:用户UUID"`
 	UserName   string      `json:"username" gorm:"index;comment:用户登录名"`
 	NickName   string      `json:"nickname" gorm:"comment:用户昵称"`

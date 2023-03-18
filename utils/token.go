@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/server-gin/modules/system"
+	"github.com/server-gin/module"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -91,14 +91,14 @@ func ShouldBindUserWith[C any](c *gin.Context, claims any) {
 	}
 }
 
-func GetUserWith(c *gin.Context) (system.User, bool) {
+func GetUserWith(c *gin.Context) (module.User, bool) {
 	userClaims, ok := c.Get(key)
 	if !ok {
-		return system.User{}, false
+		return module.User{}, false
 	}
-	user, is := userClaims.(system.User)
+	user, is := userClaims.(module.User)
 	if !is {
-		return system.User{}, false
+		return module.User{}, false
 	}
 	return user, true
 }

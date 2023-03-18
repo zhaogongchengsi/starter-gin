@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/server-gin/common"
 	"github.com/server-gin/global"
-	"github.com/server-gin/modules/system"
+	"github.com/server-gin/module"
 	systemService "github.com/server-gin/service/system"
 	"github.com/server-gin/utils"
 	"time"
@@ -26,7 +26,7 @@ type Token struct {
 	Token     string    `json:"token"`
 }
 type LoginReq struct {
-	User  system.User `json:"user"`
+	User  module.User `json:"user"`
 	Token Token       `json:"authorization"`
 }
 

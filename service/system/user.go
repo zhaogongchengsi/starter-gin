@@ -2,9 +2,9 @@ package system
 
 import (
 	"errors"
+	"github.com/server-gin/module"
 
 	"github.com/server-gin/global"
-	"github.com/server-gin/modules/system"
 )
 
 type User struct {
@@ -19,9 +19,9 @@ var ErrWrongPassword = errors.New("err: wrong password")
 var ErrTokenSigningFailed = errors.New("err: Token signing failed")
 var ErrUserExt = errors.New("err: User already exists")
 
-func (L *User) Login() (user *system.User, msg string, err error) {
+func (L *User) Login() (user *module.User, msg string, err error) {
 
-	user = system.NewFindUser(L.Phone, L.Password)
+	user = module.NewFindUser(L.Phone, L.Password)
 
 	u, err := user.FirstByPhone(global.Db)
 
@@ -36,8 +36,8 @@ func (L *User) Login() (user *system.User, msg string, err error) {
 	return u, "登录成功", nil
 }
 
-func (R *User) Register() (*system.User, string, error) {
-	user := system.CreateUser(R.Password, R.Phone, R.NickName, R.Email)
+func (R *User) Register() (*module.User, string, error) {
+	user := module.CreateUser(R.Password, R.Phone, R.NickName, R.Email)
 	oldu, err := user.FirstByPhone(global.Db)
 
 	if err == nil {
@@ -54,7 +54,7 @@ func (R *User) Register() (*system.User, string, error) {
 
 }
 
-func (R *User) ChangePassword(newPwd string) (*system.User, error) {
+func (R *User) ChangePassword(newPwd string) (*module.User, error) {
 	us, _, err := R.Login()
 
 	if err != nil {
@@ -71,7 +71,7 @@ func (R *User) ChangePassword(newPwd string) (*system.User, error) {
 }
 
 func (R *User) DeletedUser() error {
-	user := system.User{
+	user := module.User{
 		Phone: R.Phone,
 		Email: R.Email,
 	}

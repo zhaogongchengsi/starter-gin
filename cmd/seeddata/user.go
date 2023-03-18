@@ -2,28 +2,25 @@ package seeddata
 
 import (
 	uuid "github.com/satori/go.uuid"
-	"github.com/server-gin/modules/system"
+	"github.com/server-gin/module"
 	"gorm.io/gorm"
 )
 
 func CreateUserTable(db *gorm.DB) error {
-	err := db.AutoMigrate(system.User{})
-	if err != nil {
-		return err
-	}
-	return CreateAuthorityTable(db)
+	return db.AutoMigrate(module.User{}, module.Authority{})
 }
 
-var Users = []system.User{
+var Users = []module.User{
 	{
-		Phone:    "12312312312",
-		Password: system.CreatePassworld("123456"),
-		UUID:     uuid.NewV4(),
-		UserName: "admin",
-		NickName: "超级管理员",
+		Phone:      "12312312312",
+		Password:   module.CreatePassworld("123456"),
+		UUID:       uuid.NewV4(),
+		UserName:   "admin",
+		NickName:   "超级管理员",
+		Authoritys: Authoritys,
 	},
 }
 
 func CrateUserSeedData(db *gorm.DB) error {
-	return db.Model(system.User{}).Create(Users).Error
+	return db.Model(module.User{}).Create(Users).Error
 }

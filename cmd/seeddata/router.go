@@ -1,21 +1,25 @@
 package seeddata
 
 import (
-	"github.com/server-gin/modules/system"
+	"github.com/server-gin/module"
 	"gorm.io/gorm"
 )
 
 func CreateRouter(db *gorm.DB) error {
-	return db.AutoMigrate(system.RouterRecord{})
+	return db.AutoMigrate(module.RouterRecord{})
 }
 
-var Routers = []system.RouterRecord{
+func CrateRouterSeedData(db *gorm.DB) error {
+	return db.Model(module.RouterRecord{}).Create(Routers).Error
+}
+
+var Routers = []module.RouterRecord{
 	{
 		Pid:       0,
 		Path:      "dashboard",
 		Component: "/views/dashboard",
 		Name:      "dashboard",
-		Meta: system.RouterMeTa{
+		Meta: module.RouterMeTa{
 			Title:  "router.title.dashboard",
 			Auth:   false,
 			IsMenu: true,
@@ -27,7 +31,7 @@ var Routers = []system.RouterRecord{
 		Path:      "workplace",
 		Component: "/views/dashboard/workplace.vue",
 		Name:      "workplace",
-		Meta: system.RouterMeTa{
+		Meta: module.RouterMeTa{
 			Title:  "router.title.workbench",
 			Auth:   false,
 			IsMenu: true,
@@ -39,7 +43,7 @@ var Routers = []system.RouterRecord{
 		Path:      "notComponent",
 		Component: "/views/notComponent",
 		Name:      "notExist",
-		Meta: system.RouterMeTa{
+		Meta: module.RouterMeTa{
 			Title:  "router.title.abnormal",
 			Auth:   false,
 			IsMenu: true,
@@ -51,7 +55,7 @@ var Routers = []system.RouterRecord{
 		Path:      "utils",
 		Component: "/views/utils",
 		Name:      "utils",
-		Meta: system.RouterMeTa{
+		Meta: module.RouterMeTa{
 			Title:  "router.title.toolLibrary",
 			Auth:   false,
 			IsMenu: true,
@@ -63,15 +67,11 @@ var Routers = []system.RouterRecord{
 		Path:      "fileSplit",
 		Component: "/views/utils/FileSplit",
 		Name:      "fileSplit",
-		Meta: system.RouterMeTa{
+		Meta: module.RouterMeTa{
 			Title:  "router.title.fileSplitting",
 			Auth:   false,
 			IsMenu: true,
 			Icon:   "icon-file",
 		},
 	},
-}
-
-func CrateRouterSeedData(db *gorm.DB) error {
-	return db.Model(system.RouterRecord{}).Create(Routers).Error
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/server-gin/config"
-	"github.com/server-gin/routers/system"
 )
 
 func CreateAppRouter(conf *config.Config) *gin.Engine {
@@ -17,8 +16,8 @@ func CreateAppRouter(conf *config.Config) *gin.Engine {
 
 	v1 := r.Group(fmt.Sprintf("/%s", conf.Server.Prefix))
 
-	system.RegisterBaseRouter(v1)
-	system.RegisterUserRouter(v1)
+	RegisterBaseRouter(v1)
+	RegisterUserRouter(v1)
 
 	return r
 }

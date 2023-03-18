@@ -1,4 +1,4 @@
-package system
+package routers
 
 import (
 	"github.com/gin-gonic/gin"

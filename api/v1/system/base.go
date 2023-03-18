@@ -5,7 +5,7 @@ import (
 	"github.com/mojocn/base64Captcha"
 	"github.com/server-gin/common"
 	"github.com/server-gin/global"
-	modules "github.com/server-gin/modules/system"
+	"github.com/server-gin/module"
 	"github.com/server-gin/service/system"
 )
 
@@ -70,7 +70,7 @@ func UploadMult(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	files := form.File["files"]
 
-	succFile := []modules.File{}
+	succFile := []module.File{}
 	failFile := []string{}
 
 	for _, file := range files {

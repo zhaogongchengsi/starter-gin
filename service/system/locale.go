@@ -2,7 +2,7 @@ package system
 
 import (
 	"github.com/server-gin/global"
-	"github.com/server-gin/modules/system"
+	"github.com/server-gin/module"
 )
 
 type Messages struct{}
@@ -24,7 +24,7 @@ func NewLanguages(name, label string) *Languages {
 func (L *Messages) GetMessages() ([]Languages, error) {
 
 	var messages []Languages
-	lang := system.Languages{}
+	lang := module.Languages{}
 	langs, err := lang.GetLanguagess(global.Db)
 
 	if err != nil {

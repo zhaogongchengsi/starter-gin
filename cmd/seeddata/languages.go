@@ -1,22 +1,22 @@
 package seeddata
 
 import (
-	"github.com/server-gin/modules/system"
+	"github.com/server-gin/module"
 	"gorm.io/gorm"
 )
 
 func CreateLanguages(db *gorm.DB) error {
-	return db.AutoMigrate(&system.Languages{}, &system.Language{})
+	return db.AutoMigrate(&module.Languages{}, &module.Language{})
 }
 func CreateLanguage(db *gorm.DB) error {
-	return db.AutoMigrate(&system.Language{})
+	return db.AutoMigrate(&module.Language{})
 }
 
-var Languages = []system.Languages{
+var Languages = []module.Languages{
 	{
 		Name:  "英文",
 		Value: "en",
-		Languages: []system.Language{
+		Languages: []module.Language{
 			{Key: "hello", Value: "hello"},
 			{Key: "loginpage.from.place.account", Value: "Please enter your phone number"},
 			{Key: "loginpage.from.place.password", Value: "Please enter your password"},
@@ -38,7 +38,7 @@ var Languages = []system.Languages{
 	{
 		Name:  "中文",
 		Value: "cn",
-		Languages: []system.Language{
+		Languages: []module.Language{
 			{Key: "hello", Value: "你好"},
 			{Key: "loginpage.from.place.account", Value: "请输入手机号"},
 			{Key: "loginpage.from.place.password", Value: "请输入密码"},
@@ -60,5 +60,5 @@ var Languages = []system.Languages{
 }
 
 func CrateLanguagesSeedData(db *gorm.DB) error {
-	return db.Model(system.Languages{}).Create(Languages).Error
+	return db.Model(module.Languages{}).Create(Languages).Error
 }
