@@ -3,11 +3,14 @@ package middleware
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/server-gin/common"
 	"github.com/server-gin/global"
 	"github.com/server-gin/modules/system"
 	"github.com/server-gin/utils"
+	"math"
 	"strings"
+	"time"
 )
 
 func JWTAuth() gin.HandlerFunc {
@@ -21,7 +24,7 @@ func JWTAuth() gin.HandlerFunc {
 
 		token = strings.Replace(token, "Bearer ", "", 1)
 
-		userclaims, err := utils.ParseToken[system.User](token, global.AppConfig.Jwt.SigningKey)
+		claims, err := utils.ParseToken[system.User](token, global.AppConfig.Jwt.SigningKey)
 
 		if err != nil {
 			if errors.Is(err, utils.ErrTokenIsNotValidPeriod) {
@@ -33,7 +36,48 @@ func JWTAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		utils.ShouldBindUserWith(c, userclaims)
+
+		p := timeprogress(claims.IssuedAt.Time, claims.ExpiresAt.Time)
+
+		// token 有效时间小于十分之一 重新签发新token
+		if p < 10 {
+			jwtConf := global.AppConfig.Jwt
+			it := time.Now()
+			et := it.Add(time.Duration(jwtConf.ExpiresAt) * time.Minute)
+			user := claims.Info
+			token, err = utils.CreateToken(user, jwtConf.SigningKey, it, et, jwtConf.Issuer)
+			c.Header("new-authorization", token)
+			c.Header("new-expires-at", et.String())
+			c.Header("new-issued-at", it.String())
+		}
+
+		utils.ShouldBindUserWith[system.User](c, claims)
 		c.Next()
 	}
+}
+
+func getunix(date *jwt.NumericDate) int64 {
+	return date.Time.Unix()
+}
+
+func timeprogress(startdate, enddate time.Time) int {
+	now := time.Now().Unix()
+	sut := startdate.Unix()
+	eut := enddate.Unix()
+
+	if now > eut {
+		return 0
+	}
+
+	if now < sut {
+		return 100
+	}
+
+	xaxised := eut - sut
+	xaxising := eut - now
+
+	scale := math.Ceil(float64((xaxised) / 100)) // 计算出刻度
+	plan := math.Ceil(float64(xaxising) / scale) // 根据刻度计算出当前时间占用的进度
+
+	return int(plan)
 }

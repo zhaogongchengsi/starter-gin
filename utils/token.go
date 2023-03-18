@@ -12,6 +12,11 @@ import (
 
 type Claims[I any] struct {
 	Info I
+	CustomClaims
+}
+
+type CustomClaims struct {
+	//BufferTime time.Time
 	jwt.RegisteredClaims
 }
 
@@ -22,13 +27,15 @@ var (
 func CreateClaims[I any](loadInfo I, issuedAt, express time.Time, issuer string) Claims[I] {
 	return Claims[I]{
 		Info: loadInfo,
-		RegisteredClaims: jwt.RegisteredClaims{
-			// 过期时间
-			ExpiresAt: jwt.NewNumericDate(express),
-			// 发布时间
-			IssuedAt: jwt.NewNumericDate(issuedAt),
-			// 签发人
-			Issuer: issuer,
+		CustomClaims: CustomClaims{
+			RegisteredClaims: jwt.RegisteredClaims{
+				// 过期时间
+				ExpiresAt: jwt.NewNumericDate(express),
+				// 发布时间
+				IssuedAt: jwt.NewNumericDate(issuedAt),
+				// 签发人
+				Issuer: issuer,
+			},
 		},
 	}
 }
@@ -44,7 +51,7 @@ func CreateToken[I any](loadInfo I, SigningKey string, issuedAt, express time.Ti
 	return token.SignedString([]byte(SigningKey))
 }
 
-func ParseToken[C any](tokenString string, SigningKey string) (c C, e error) {
+func ParseToken[C any](tokenString string, SigningKey string) (Claims[C], error) {
 
 	cla := Claims[C]{}
 
@@ -60,31 +67,28 @@ func ParseToken[C any](tokenString string, SigningKey string) (c C, e error) {
 	if e != nil {
 		if errors.Is(e, jwt.ErrTokenExpired) || errors.Is(e, jwt.ErrTokenNotValidYet) {
 			// Token is either expired or not active yet
-			return c, ErrTokenIsNotValidPeriod
+			return cla, ErrTokenIsNotValidPeriod
 		} else {
-			return c, e
+			return cla, e
 		}
 	}
 
 	if !token.Valid {
-		return c, fmt.Errorf("token is valid")
+		return cla, fmt.Errorf("token is valid")
 	}
 
-	claims, ok := token.Claims.(*Claims[C])
-
-	if ok {
-		c = GetClaimsInfo(*claims)
-		return c, nil
-	}
-
-	return c, e
+	return cla, nil
 
 }
 
 var key = "claims"
 
-func ShouldBindUserWith(c *gin.Context, claims system.User) {
-	c.Set(key, claims)
+func ShouldBindUserWith[C any](c *gin.Context, claims any) {
+	cla, ok := claims.(Claims[C])
+	if ok {
+		info := GetClaimsInfo(cla)
+		c.Set(key, info)
+	}
 }
 
 func GetUserWith(c *gin.Context) (system.User, bool) {

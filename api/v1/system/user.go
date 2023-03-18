@@ -168,5 +168,8 @@ func GetUsers(c *gin.Context) {
 		return
 	}
 
+	//c.Header("new-authorization", "asdjasiodhaoisdhaiosdh")
+	//c.Header("new-expires-at", "asdjasiodhaoisdhaiosdh")
+	//c.Header("new-issued-at", "asdjasiodhaoisdhaiosdh")
 	common.NewResponseWithData(uc).SendAfterChangeMessage("获取成功", c)
 }
