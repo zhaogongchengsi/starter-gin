@@ -20,7 +20,7 @@ type User struct {
 	Mode       string      `json:"mode" gorm:"default:dark; comment:用户使用的主题  黑色(dark)或白色(light)"`
 	AvatarUrl  string      `json:"avatarUrl" gorm:"comment:用户头像url"`
 	Enable     int         `json:"enable" gorm:"default:1;comment:账号使用状态 1 正常 2 封禁"`
-	Authoritys []Authority `json:"authoritys" gorm:"many2many:user_authoritys"`
+	Authoritys []Authority `json:"-" gorm:"many2many:user_authoritys"`
 }
 
 func CreatePassworld(paw string) string {
@@ -68,7 +68,7 @@ func NewFindUser(phone, pass string) *User {
 
 func (user *User) FirstUser(db *gorm.DB, query any, values ...any) (*User, error) {
 	var u User
-	result := db.Model(u).Where(query, values...).Preload("Authoritys").First(&u)
+	result := db.Model(u).Where(query, values...).First(&u)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return &User{}, gorm.ErrRecordNotFound
 	}
@@ -124,8 +124,10 @@ func (user *User) UsePhoneDeleted(db *gorm.DB) error {
 	return nil
 }
 
-func (user *User) GetAuths(db *gorm.DB) (list []Authority, err error) {
+func (user *User) GetAuthoritysByPhone(db *gorm.DB) (list []Authority, err error) {
 	var u User
-	err = db.Model(u).Where("phone = ?", user.Phone).Preload("Authoritys.RouterRecords").Preload(clause.Associations).First(&u).Error
+	pre := "Authoritys.RouterRecords" // 用这个可以把权限内的路由一起带出来
+	//pre := "Authoritys"
+	err = db.Model(u).Where("phone = ?", user.Phone).Preload(pre).Preload(clause.Associations).First(&u).Error
 	return u.Authoritys, err
 }

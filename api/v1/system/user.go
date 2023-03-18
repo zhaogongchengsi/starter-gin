@@ -172,7 +172,12 @@ func GetUsers(c *gin.Context) {
 	common.NewResponseWithData(uc).SendAfterChangeMessage("获取成功", c)
 }
 
-func GetAuths(c *gin.Context) {
+const (
+	router = iota
+	auths
+)
+
+func getability(c *gin.Context, t int) {
 	uc, ok := utils.GetUserWith(c)
 	if !ok {
 		common.NewFailResponse().SendAfterChangeMessage("用户未登录请重试", c)
@@ -186,11 +191,31 @@ func GetAuths(c *gin.Context) {
 		Email:    uc.Email,
 	}
 
-	list, msg, err := userscrvice.GetAuths()
-	if err != nil {
-		common.NewFailResponse().AddError(err, msg).Send(c)
-		return
+	if t == router {
+		list, msg, err := userscrvice.GetUserRouters()
+		if err != nil {
+			common.NewFailResponse().AddError(err, msg).Send(c)
+			return
+		}
+
+		common.NewResponseWithData(list).Send(c)
+	} else if t == auths {
+		list, msg, err := userscrvice.GetAuths()
+		if err != nil {
+			common.NewFailResponse().AddError(err, msg).Send(c)
+			return
+		}
+
+		common.NewResponseWithData(list).Send(c)
+
 	}
 
-	common.NewResponseWithData(list).Send(c)
+}
+
+func GetAuths(c *gin.Context) {
+	getability(c, auths)
+}
+
+func GetUserRouters(c *gin.Context) {
+	getability(c, router)
 }

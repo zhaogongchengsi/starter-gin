@@ -82,10 +82,25 @@ func (R *User) DeletedUser() error {
 func (R *User) GetAuths() ([]module.Authority, string, error) {
 	var list []module.Authority
 	user := module.NewFindUser(R.Phone, R.Password)
-	list, err := user.GetAuths(global.Db)
+	list, err := user.GetAuthoritysByPhone(global.Db)
 	if err != nil {
 		return list, "获取失败", err
 	}
 
 	return list, "获取成功", nil
+}
+
+func (R *User) GetUserRouters() ([]module.RouterRecord, string, error) {
+	user := module.NewFindUser(R.Phone, R.Password)
+	list, err := user.GetAuthoritysByPhone(global.Db)
+	if err != nil {
+		return []module.RouterRecord{}, "获取路由失败", err
+	}
+	routers := []module.RouterRecord{}
+
+	for _, authority := range list {
+		routers = append(routers, authority.RouterRecords...)
+	}
+
+	return routers, "获取成功", nil
 }

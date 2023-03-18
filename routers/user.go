@@ -19,6 +19,7 @@ func RegisterUserRouter(group *gin.RouterGroup) {
 		userAuthRouter.GET("getusers", apiSystem.GetUsers)
 		userAuthRouter.DELETE("deleteuser", apiSystem.DeleteUser)
 		userAuthRouter.GET("authoritys", apiSystem.GetAuths)
+		userAuthRouter.GET("routers", apiSystem.GetUserRouters)
 	}
 
 }
