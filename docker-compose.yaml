@@ -1,5 +1,5 @@
 
-# 开发使用的快速启动开发环境
+# 部署
 
 version: "3"
 
@@ -35,7 +35,7 @@ services:
       # - type: bind # volume
       #   source: mysql
       #   target: /var/lib/mysql
-      - F:\mysql8\data:/var/lib/mysql
+      - /usr/src/app/mysql8/data:/var/lib/mysql
     # networks:
     #   network:
     #     ipv4_address: 177.7.0.13
@@ -51,7 +51,7 @@ services:
       # - type: volume #volume
       #   source: redis
       #   target: /data
-      - F:\redis-v\data:/data
+      - /usr/src/app/redis/data:/data
     # networks:
     #   network:
     #     ipv4_address: 177.7.0.14
