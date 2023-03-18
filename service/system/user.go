@@ -78,3 +78,14 @@ func (R *User) DeletedUser() error {
 
 	return user.UsePhoneDeleted(global.Db)
 }
+
+func (R *User) GetAuths() ([]module.Authority, string, error) {
+	var list []module.Authority
+	user := module.NewFindUser(R.Phone, R.Password)
+	list, err := user.GetAuths(global.Db)
+	if err != nil {
+		return list, "获取失败", err
+	}
+
+	return list, "获取成功", nil
+}

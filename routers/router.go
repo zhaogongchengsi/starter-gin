@@ -18,6 +18,7 @@ func CreateAppRouter(conf *config.Config) *gin.Engine {
 
 	RegisterBaseRouter(v1)
 	RegisterUserRouter(v1)
+	RegisterAuthorityRouter(v1)
 
 	return r
 }

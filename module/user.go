@@ -2,6 +2,7 @@ package module
 
 import (
 	"errors"
+	"gorm.io/gorm/clause"
 
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -67,7 +68,7 @@ func NewFindUser(phone, pass string) *User {
 
 func (user *User) FirstUser(db *gorm.DB, query any, values ...any) (*User, error) {
 	var u User
-	result := db.Where(query, values...).First(&u)
+	result := db.Model(u).Where(query, values...).Preload("Authoritys").First(&u)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return &User{}, gorm.ErrRecordNotFound
 	}
@@ -121,4 +122,10 @@ func (user *User) UsePhoneDeleted(db *gorm.DB) error {
 		return result.Error
 	}
 	return nil
+}
+
+func (user *User) GetAuths(db *gorm.DB) (list []Authority, err error) {
+	var u User
+	err = db.Model(u).Where("phone = ?", user.Phone).Preload("Authoritys.RouterRecords").Preload(clause.Associations).First(&u).Error
+	return u.Authoritys, err
 }

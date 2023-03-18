@@ -171,3 +171,26 @@ func GetUsers(c *gin.Context) {
 
 	common.NewResponseWithData(uc).SendAfterChangeMessage("获取成功", c)
 }
+
+func GetAuths(c *gin.Context) {
+	uc, ok := utils.GetUserWith(c)
+	if !ok {
+		common.NewFailResponse().SendAfterChangeMessage("用户未登录请重试", c)
+		return
+	}
+
+	userscrvice := systemService.User{
+		Phone:    uc.Phone,
+		Password: uc.Password,
+		NickName: uc.NickName,
+		Email:    uc.Email,
+	}
+
+	list, msg, err := userscrvice.GetAuths()
+	if err != nil {
+		common.NewFailResponse().AddError(err, msg).Send(c)
+		return
+	}
+
+	common.NewResponseWithData(list).Send(c)
+}
