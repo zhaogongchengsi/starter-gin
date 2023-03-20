@@ -1,18 +1,22 @@
-
-# ! Under development
-FROM ubuntu
-LABEL MAINTAINER="zzh1586169624@163.com"
-
-FROM golang:alpine
+FROM golang:alpine as StarterServer
+LABEL MAINTAINER="zzg<zzh1586169624@163.com>"
 WORKDIR /usr/src/app
+COPY . .
 
-#COPY ./web /usr/src/app/web
-COPY . /usr/src/app/server
-COPY ./config.yaml /usr/src/app/server/config.yaml
+RUN go env -w GO111MODULE=on \
+    && go env -w GOPROXY=https://goproxy.cn,direct \
+    && go env -w CGO_ENABLED=0 \
+    && go env \
+#    && go mod tidy \
+#    && go build -o server .
 
-RUN echo "LANG=en_US.utf8" > /etc/locale.conf  \
-    && go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct
-EXPOSE 80
+EXPOSE 8888
 
-# FROM redis
-# FROM mysql
+#ENTRYPOINT ./server -c ./ -t yaml -n config.pro
+#FROM alpine:latest
+#WORKDIR /usr/src/app
+#COPY --from=0 /usr/src/app ./
+#COPY --from=0 /usr/src/app/resource ./resource/
+#COPY --from=0 /usr/src/app/config.pro.yaml ./
+
+

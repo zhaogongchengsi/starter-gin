@@ -1,0 +1,49 @@
+# ------ 服务相关配置
+AppId: "satrter-gin"
+Server:
+  Port: 3000 # 服务端口
+  Host: 0.0.0.0
+  #  debug release test
+  Mode: debug # 运行模式
+  Prefix: api/v1 # 统一url前缀
+  StaticName: /assets # 静态文件的路径 一般为 static static/dist/index.html
+  Static: static/assets # 静态文件目录 一般是vite 打包后的静态文件目录
+  IndexHtml: static/dist/index.html
+  # 设置这个选项之后 会自动开启https 开发环境下 可以使用 go run main.go -g ssl 生成临时证书(有效期为一年)
+  # Https:
+  #   certFile: ssl/cert.pem # path
+  #   keyFile: ssl/key.pem # path
+  UploadDir: "upload"
+Jwt:
+  SigningKey: a37e5383b22eb950d1a3496540ceffcc # 盐值 md5(zzhstarter_gin)
+  Issuer: satrter_gin # 签发人
+  ExpiresAt: 10 # 过期时间(分钟)
+Captcha:
+  Width: 240
+  Height: 80
+  Length: 4
+  DotCount: 80
+  MaxSkew: 0.7
+# -------------数据库相关配置
+DataBase:
+  Username: root
+  Password: 123456
+  Port: 3306
+  Url: 177.7.0.13
+  DbName: starter
+  Charset: utf8mb4
+  MaxIdleConns: 10
+  MaxOpenConns: 100
+  TablePrefix:
+  SingularTable: true
+Gen:
+  OutPath: './modules' # Can be added directly to gitignore
+  FieldNullable:  true  # generate pointer when field is nullable
+  FieldCoverable: false # generate pointer when field has default value, to fix problem zero value cannot be assign: https://gorm.io/docs/create.html#Default-Values
+  FieldSignable:  false # detect integer field's unsigned type, adjust generated data type
+  FieldWithIndexTag: false # 生成 gorm 标签的字段索引属性
+  FieldWithTypeTag: true # 生成 gorm 标签的字段类型属性
+Redis:
+  db: 0
+  addr: 177.7.0.14:6379
+  password: ""

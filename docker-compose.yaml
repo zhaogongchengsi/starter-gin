@@ -2,14 +2,13 @@
 # 部署
 
 version: "3"
-
 # 声明一个名为network的networks,subnet为network的子网地址,默认网关是177.7.0.1
-# networks:
-#   network:
-#     ipam:
-#       driver: default
-#       config:
-#         - subnet: '177.7.0.0/16'
+networks:
+   network:
+     ipam:
+       driver: default
+       config:
+         - subnet: '177.8.0.0/16'
         
 # 设置mysql，redis持久化保存 顶级声明可能会在其他服务用到
 volumes:
@@ -17,6 +16,23 @@ volumes:
   redis: 
 
 services:
+  server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: starter-server
+    restart: always
+    ports:
+      - '8888:3000'
+    depends_on:
+      - mysql
+      - redis
+    links:
+      - mysql
+      - redis
+    networks:
+      network:
+        ipv4_address: 177.8.0.12
   mysql:
     image: mysql:latest
     container_name: starter-mysql
@@ -32,13 +48,10 @@ services:
       MYSQL_ROOT_PASSWORD: '123456'
       # 容器卷数据持久化 根据自身目录而定
     volumes:
-      # - type: bind # volume
-      #   source: mysql
-      #   target: /var/lib/mysql
-      - /usr/src/app/mysql8/data:/var/lib/mysql
-    # networks:
-    #   network:
-    #     ipv4_address: 177.7.0.13
+      - mysql:/var/lib/mysql
+    networks:
+       network:
+         ipv4_address: 177.8.0.13
 
   redis:
     image: redis:6.0.6
@@ -48,10 +61,7 @@ services:
     ports:
       - '8088:6379'
     volumes:
-      # - type: volume #volume
-      #   source: redis
-      #   target: /data
-      - /usr/src/app/redis/data:/data
-    # networks:
-    #   network:
-    #     ipv4_address: 177.7.0.14
+      - redis:/data
+    networks:
+       network:
+         ipv4_address: 177.8.0.14
