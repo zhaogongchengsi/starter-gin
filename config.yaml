@@ -24,6 +24,16 @@ Captcha:
   Length: 4
   DotCount: 80
   MaxSkew: 0.7
+# ------ 日志相关 ---
+Zap:
+  level: info
+  format: console
+  prefix: "[starter-server]-"
+  director: logs
+  show-line: true
+  encode-level: LowercaseColorLevelEncoder
+  stacktrace-key: stacktrace
+  log-in-console: true
 # -------------数据库相关配置
 DataBase:
   Username: root

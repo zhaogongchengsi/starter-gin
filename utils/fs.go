@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"io"
 	"mime/multipart"
 	"os"
@@ -41,4 +42,20 @@ func SaveFileHeader(fh *multipart.FileHeader, dir string) (string, error) {
 
 	return filename, nil
 
+}
+
+var ErrFileSameName = errors.New("err: File with the same name")
+
+func DirPathExists(path string) (bool, error) {
+	fi, err := os.Stat(path)
+	if err == nil {
+		if fi.IsDir() {
+			return true, nil
+		}
+		return false, ErrFileSameName
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
 }

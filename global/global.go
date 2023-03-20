@@ -1,10 +1,9 @@
 package global
 
 import (
-	"net/http"
-
 	"github.com/go-redis/redis/v8"
 	"github.com/zhaogongchengsi/starter-gin/config"
+	"go.uber.org/zap"
 
 	// "github.com/songzhibin97/gkit/cache/local_cache"
 	"gorm.io/gorm"
@@ -20,10 +19,14 @@ var (
 )
 
 var (
-	Server = &http.Server{}
-	Db     = &gorm.DB{}
-	Redis  = &redis.Client{}
 
+	//Server = &http.Server{}
+
+	Db = &gorm.DB{}
+
+	Redis = &redis.Client{}
+
+	Logger = &zap.Logger{}
 	// 本地缓存
 	// LocalCache local_cache.Cache
 )

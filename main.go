@@ -5,6 +5,7 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/core"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/routers"
+	"go.uber.org/zap"
 )
 
 func init() {
@@ -25,6 +26,16 @@ func init() {
 //go:generate go mod download
 
 func main() {
+
+	logger, err := core.CreateLogger(global.AppConfig)
+
+	if err != nil {
+		panic(err)
+	}
+
+	global.Logger = logger
+
+	zap.ReplaceGlobals(global.Logger)
 
 	db, err := core.ConnectDataBaseServer(global.AppConfig)
 
