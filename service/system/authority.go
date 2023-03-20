@@ -1,6 +1,6 @@
 package system
 
-import "github.com/server-gin/module"
+import "github.com/zhaogongchengsi/starter-gin/module"
 
 type AuthorityService struct {
 	UserInfo module.User

@@ -1,7 +1,7 @@
 package seeddata
 
 import (
-	"github.com/server-gin/module"
+	"github.com/zhaogongchengsi/starter-gin/module"
 	"gorm.io/gorm"
 )
 

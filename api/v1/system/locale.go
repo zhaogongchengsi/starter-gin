@@ -2,8 +2,8 @@ package system
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/server-gin/common"
-	"github.com/server-gin/service/system"
+	"github.com/zhaogongchengsi/starter-gin/common"
+	"github.com/zhaogongchengsi/starter-gin/service/system"
 )
 
 func Getlocale(c *gin.Context) {

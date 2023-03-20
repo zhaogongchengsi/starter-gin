@@ -5,7 +5,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/server-gin/utils"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
 func TestNewCertCnfig(t *testing.T) {

@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/server-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/config"
 )
 
 func initServer(address string, router *gin.Engine) *http.Server {

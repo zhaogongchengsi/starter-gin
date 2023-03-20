@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/server-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

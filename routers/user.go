@@ -2,8 +2,8 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	apiSystem "github.com/server-gin/api/v1/system"
-	"github.com/server-gin/middleware"
+	apiSystem "github.com/zhaogongchengsi/starter-gin/api/v1/system"
+	"github.com/zhaogongchengsi/starter-gin/middleware"
 )
 
 func RegisterUserRouter(group *gin.RouterGroup) {

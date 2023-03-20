@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/server-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/config"
 )
 
 func CreateAppRouter(conf *config.Config) *gin.Engine {

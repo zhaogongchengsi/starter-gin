@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/server-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/config"
 
 	// "github.com/songzhibin97/gkit/cache/local_cache"
 	"gorm.io/gorm"

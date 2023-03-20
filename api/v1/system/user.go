@@ -2,11 +2,11 @@ package system
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/server-gin/common"
-	"github.com/server-gin/global"
-	"github.com/server-gin/module"
-	systemService "github.com/server-gin/service/system"
-	"github.com/server-gin/utils"
+	"github.com/zhaogongchengsi/starter-gin/common"
+	"github.com/zhaogongchengsi/starter-gin/global"
+	"github.com/zhaogongchengsi/starter-gin/module"
+	systemService "github.com/zhaogongchengsi/starter-gin/service/system"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 	"time"
 )
 

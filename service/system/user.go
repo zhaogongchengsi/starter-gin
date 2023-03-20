@@ -2,9 +2,9 @@ package system
 
 import (
 	"errors"
-	"github.com/server-gin/module"
+	"github.com/zhaogongchengsi/starter-gin/module"
 
-	"github.com/server-gin/global"
+	"github.com/zhaogongchengsi/starter-gin/global"
 )
 
 type User struct {

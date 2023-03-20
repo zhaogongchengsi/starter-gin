@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/server-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/config"
 )
 
 var ErrRedisNot = errors.New("error:redis service is not configured, missing address")

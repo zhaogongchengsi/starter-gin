@@ -1,11 +1,11 @@
 package system
 
 import (
-	"github.com/server-gin/module"
+	"github.com/zhaogongchengsi/starter-gin/module"
 	"mime/multipart"
 
-	"github.com/server-gin/global"
-	"github.com/server-gin/utils"
+	"github.com/zhaogongchengsi/starter-gin/global"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
 type UpdateFileInfo struct {

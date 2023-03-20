@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/server-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/config"
 )
 
 func formatPath(path string) string {

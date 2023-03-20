@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/server-gin/utils"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
 func sslAction(s string) {

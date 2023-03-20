@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/server-gin/module"
+	"github.com/zhaogongchengsi/starter-gin/module"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"

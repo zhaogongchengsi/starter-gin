@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/server-gin/utils"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
 type Info struct {

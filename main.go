@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/server-gin/cmd"
-	"github.com/server-gin/core"
-	"github.com/server-gin/global"
-	"github.com/server-gin/routers"
+	"github.com/zhaogongchengsi/starter-gin/cmd"
+	"github.com/zhaogongchengsi/starter-gin/core"
+	"github.com/zhaogongchengsi/starter-gin/global"
+	"github.com/zhaogongchengsi/starter-gin/routers"
 )
 
 func init() {

@@ -2,7 +2,7 @@ package seeddata
 
 import (
 	uuid "github.com/satori/go.uuid"
-	"github.com/server-gin/module"
+	"github.com/zhaogongchengsi/starter-gin/module"
 	"gorm.io/gorm"
 )
 

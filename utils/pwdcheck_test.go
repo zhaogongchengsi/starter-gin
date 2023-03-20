@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/server-gin/utils"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
 func TestPwdStrengthCheck(t *testing.T) {

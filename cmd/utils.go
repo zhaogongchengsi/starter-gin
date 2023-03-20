@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/server-gin/cmd/seeddata"
+	"github.com/zhaogongchengsi/starter-gin/cmd/seeddata"
 
-	"github.com/server-gin/core"
-	"github.com/server-gin/global"
+	"github.com/zhaogongchengsi/starter-gin/core"
+	"github.com/zhaogongchengsi/starter-gin/global"
 	"gorm.io/gorm"
 )
 

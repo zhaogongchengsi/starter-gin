@@ -1,4 +1,4 @@
-module github.com/server-gin
+module github.com/zhaogongchengsi/starter-gin
 
 go 1.18
 
