@@ -1,7 +1,7 @@
 # ------ 服务相关配置
 AppId: "satrter-gin"
 Server:
-  Port: 3000 # 服务端口
+  Port: 8000 # 服务端口
   Host: 0.0.0.0
   #  debug release test
   Mode: debug # 运行模式

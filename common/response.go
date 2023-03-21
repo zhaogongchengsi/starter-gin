@@ -9,19 +9,19 @@ import (
 
 const (
 	AppId = "Starter-Gin-App"
-	// 执行成功
+	// Ok 执行成功
 	Ok = 1
-	// 执行失败
+	// Failed 执行失败
 	Failed = 0
-	// 参数错误
+	// ParamsErrorCode 参数错误
 	ParamsErrorCode = 2
-	// 服务器内部错误
+	// ServerError 服务器内部错误
 	ServerError = 500
-	// 资源找不到
+	// NotFound 资源找不到
 	NotFound = 404
-	// 认证失败
+	// AuthFailed 认证失败
 	AuthFailed = 401
-	// 授权失败
+	// AccreditFail 授权失败
 	AccreditFail = 403
 )
 
