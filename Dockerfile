@@ -10,7 +10,7 @@ RUN go env -w GO111MODULE=on \
     && go mod tidy \
     && go build -o server .
 ENTRYPOINT ./server -c ./ -t yaml -n config.pro
-EXPOSE 8000
+EXPOSE 80
 
 #ENTRYPOINT ./server -c ./ -t yaml -n config.pro
 #FROM alpine:latest
