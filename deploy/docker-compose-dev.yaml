@@ -41,7 +41,7 @@ services:
     #     ipv4_address: 177.7.0.13
 
   redis:
-    image: redis:6.0.6
+    image: redis:latest
     container_name: starter-gin-redis  # 容器名
     hostname: starter-redis
     restart: always

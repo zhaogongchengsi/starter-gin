@@ -18,8 +18,8 @@ volumes:
 services:
   server:
     build:
-      context: .
-      dockerfile: ./Dockerfile
+      context: ..
+      dockerfile: Dockerfile
     container_name: starter-server
     restart: always
     ports:

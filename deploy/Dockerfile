@@ -1,7 +1,7 @@
 FROM golang:alpine as StarterServer
 LABEL MAINTAINER="zzg<zzh1586169624@163.com>"
 WORKDIR /usr/src/app
-COPY . .
+COPY .. .
 
 RUN go env -w GO111MODULE=on \
     && go env -w GOPROXY=https://goproxy.cn,direct \
