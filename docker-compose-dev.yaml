@@ -14,7 +14,7 @@ version: "3"
 # 设置mysql，redis持久化保存 顶级声明可能会在其他服务用到
 volumes:
   mysql:
-  redis: 
+  redis:
 
 services:
   mysql:

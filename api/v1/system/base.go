@@ -7,6 +7,7 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/module"
 	"github.com/zhaogongchengsi/starter-gin/service/system"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
 var store = base64Captcha.DefaultMemStore
@@ -16,6 +17,7 @@ type CaptchaResponse struct {
 	Url string `json:"url"`
 }
 
+// 获取验证码
 func Captcha(ctx *gin.Context) {
 	config := global.AppConfig.Captcha
 	// qw := ctx.DefaultQuery("width", strconv.FormatInt(int64(config.Height), 10))
@@ -45,6 +47,7 @@ func Captcha(ctx *gin.Context) {
 	common.NewResponseWithData(CaptchaResponse{id, b64s}).Send(ctx)
 }
 
+// 文件上传
 func UpLoad(c *gin.Context) {
 
 	file, err := c.FormFile("file")
@@ -66,6 +69,7 @@ func UpLoad(c *gin.Context) {
 
 }
 
+// 多个文件上传
 func UploadMult(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	files := form.File["files"]
@@ -85,4 +89,31 @@ func UploadMult(c *gin.Context) {
 	}
 
 	common.NewResponseWithData(gin.H{"fail": failFile, "success": succFile}).Send(c)
+}
+
+func Health(c *gin.Context) {
+	var health utils.Health
+	os := utils.NewOs()
+	health.Os = *os
+	cpu, err := utils.NewCpu()
+	if err != nil {
+		common.NewFailResponse().AddError(err, "获取cpu 状态失败").Send(c)
+		return
+	}
+	health.Cpu = cpu
+	ram, err := utils.NewRAM()
+	if err != nil {
+		common.NewFailResponse().AddError(err, "获取ram 状态失败").Send(c)
+		return
+	}
+	health.Ram = ram
+
+	disk, err := utils.NewDisk()
+	if err != nil {
+		common.NewFailResponse().AddError(err, "获取disk 状态失败").Send(c)
+		return
+	}
+	health.Disk = disk
+
+	common.NewResponseWithData(health).Send(c)
 }

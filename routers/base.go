@@ -11,7 +11,7 @@ func RegisterBaseRouter(group *gin.RouterGroup) {
 		baseRouter.GET("captcha", apiSystem.Captcha)
 		baseRouter.POST("upload", apiSystem.UpLoad)
 		baseRouter.POST("upload_mult", apiSystem.UploadMult)
-
+		baseRouter.GET("health", apiSystem.Health)
 	}
 
 	locale := baseRouter.Group("locale")
