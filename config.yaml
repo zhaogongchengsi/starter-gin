@@ -43,7 +43,7 @@ DataBase:
   Port: 8090
   Url: localhost
   # starter(mysql) | root (postgres)
-  DbName: root
+  DbName: initdb
   Charset: utf8mb4
   MaxIdleConns: 10
   MaxOpenConns: 100

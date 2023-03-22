@@ -20,6 +20,7 @@ type Options struct {
 	Seed       func(string) `short:"s" long:"seed" description:"filePath-fileType-fileName"`
 	Ssl        func(string) `short:"g" long:"gsc" description:"Generate ssl certificate"`
 	AutoMig    func(string) `short:"a" long:"auto" description:"Initialize model"`
+	Init       func()       `short:"i" long:"init" description:"Initialize Apply initialize model and insert seed data"`
 }
 
 func Parse() error {
@@ -28,6 +29,7 @@ func Parse() error {
 	opt.Seed = seedAction
 	opt.Ssl = sslAction
 	opt.AutoMig = autoMigAction
+	opt.Init = InitAction
 
 	_, err := flags.Parse(&opt)
 
