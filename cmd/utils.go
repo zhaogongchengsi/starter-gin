@@ -21,10 +21,10 @@ var moduleMap = map[string]CreateFunc{
 }
 
 var moduleSeedMap = map[string]CreateFunc{
-	"user":      seeddata.CrateUserSeedData,
-	"router":    seeddata.CrateRouterSeedData,
+	"user": seeddata.CrateUserSeedData,
+	//"router":    seeddata.CrateRouterSeedData,
 	"languages": seeddata.CrateLanguagesSeedData,
-	"auths":     seeddata.CrateAuthouitySeedData,
+	//"auths":     seeddata.CrateAuthouitySeedData,
 }
 
 func ConnDb(file, typ, name string) (*gorm.DB, error) {
