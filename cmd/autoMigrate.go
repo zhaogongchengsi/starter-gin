@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 	"os"
 	"strings"
 )
@@ -12,6 +13,7 @@ func autoMigAction(ms string) {
 	if err != nil {
 		panic(err)
 	}
+	utils.Success("Migration successful!")
 	os.Exit(0)
 }
 
@@ -37,13 +39,13 @@ func AutoMigrateModule(ms []string) error {
 
 		defunct, ok := moduleMap[name]
 		if !ok {
-			fmt.Printf("%s model does not exist", v)
+			utils.Warning("%s model does not exist", v)
 			continue
 		}
 
 		err := defunct(db)
 		if err != nil {
-			fmt.Printf("autoMigrate Error: %v", err.Error())
+			utils.Warning("autoMigrate Error: %v", err.Error())
 		}
 	}
 

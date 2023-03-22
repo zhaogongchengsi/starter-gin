@@ -54,27 +54,41 @@ func createColor(tc int, bc ...int) (string, error) {
 	return fmt.Sprintf("%v;%vm", bgc, tc), nil
 }
 
-type Log struct {
+func CreateColor(tc int, bc ...int) (string, error) {
+	return createColor(tc, bc...)
 }
 
-func NewLog() Log {
-	return Log{}
+var Log = NewConsole()
+
+type Console struct {
 }
 
-func (Log) print(c int, format string, text ...any) {
+func NewConsole() Console {
+	return Console{}
+}
+
+func (Console) print(c int, format string, text ...any) {
 	color, _ := createColor(c)
-	fmt.Printf("\033[%s%s \033[0m", color, fmt.Sprintf(format, text...))
+	fmt.Printf("\033[%s%s\033[0m", color, fmt.Sprintf(format, text...))
 }
 
-func (Log) printWithBg(c, b int, format string, text ...any) {
+func (Console) printWithBg(c, b int, format string, text ...any) {
 	color, _ := createColor(c, b)
-	fmt.Printf("\033[%s%s \033[0m", color, fmt.Sprintf(format, text...))
+	fmt.Printf("\033[%s%s\033[0m", color, fmt.Sprintf(format, text...))
 }
 
-func (l Log) Success(format string, text ...any) {
+func (l Console) Success(format string, text ...any) {
 	l.print(GreenText, format, text...)
 }
 
-func (l Log) Warning(format string, text ...any) {
+func (l Console) Warning(format string, text ...any) {
 	l.print(YellowText, format, text...)
+}
+
+func Success(format string, text ...any) {
+	Log.Success(format, text...)
+}
+
+func Warning(format string, text ...any) {
+	Log.Warning(format, text...)
 }

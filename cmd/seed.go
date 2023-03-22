@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 	"os"
 	"strings"
 )
@@ -14,6 +15,8 @@ func seedAction(file string) {
 	if err != nil {
 		panic(err)
 	}
+
+	utils.Success("Seed planting success!")
 	os.Exit(0)
 }
 
@@ -39,7 +42,7 @@ func seed(ms []string) error {
 
 		mdc, ok := moduleSeedMap[name]
 		if !ok {
-			fmt.Printf("%s model does not exist", v)
+			utils.Warning("%s model does not exist", v)
 			continue
 		}
 

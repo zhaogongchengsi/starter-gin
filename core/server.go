@@ -3,6 +3,7 @@ package core
 import (
 	"context"
 	"fmt"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 	"net/http"
 	"os/signal"
 	"syscall"
@@ -24,20 +25,20 @@ func initServer(address string, router *gin.Engine) *http.Server {
 
 func CreateAppServer(conf *config.Config, router *gin.Engine) {
 
-	config := conf.Server
+	server := conf.Server
 
-	gin.SetMode(config.Mode)
+	gin.SetMode(server.Mode)
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	srv := initServer(fmt.Sprintf(":%d", config.Port), router)
+	srv := initServer(fmt.Sprintf(":%d", server.Port), router)
 
-	if config.Https.CertFile != "" && config.Https.KeyFile != "" {
-		fmt.Printf("\nThe service started successfully, the address is https://localhost:%d\n", config.Port)
-		go ListenAndServeTLS(srv, config.Https.CertFile, config.Https.KeyFile)
+	if server.Https.CertFile != "" && server.Https.KeyFile != "" {
+		utils.Success("\nThe service started successfully, the address is https://localhost%s\n", srv.Addr)
+		go ListenAndServeTLS(srv, server.Https.CertFile, server.Https.KeyFile)
 	} else {
-		fmt.Printf("\nThe service started successfully, the address is http://localhost:%d\n", config.Port)
+		utils.Success("\nThe service started successfully, the address is http://localhost%s\n", srv.Addr)
 		go ListenAppServe(srv)
 	}
 
