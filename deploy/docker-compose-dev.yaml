@@ -55,3 +55,13 @@ services:
     # networks:
     #   network:
     #     ipv4_address: 177.7.0.14
+  postgres_db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: root
+    ports:
+      - '8090:5432'
+    volumes:
+      - F:\postgres-v\datav1:/var/lib/postgresql/data

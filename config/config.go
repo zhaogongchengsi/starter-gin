@@ -18,6 +18,7 @@ type HttpsConfig struct {
 }
 
 type DataBase struct {
+	DbType   string
 	Username string
 	Password string
 	Port     int

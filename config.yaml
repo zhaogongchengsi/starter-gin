@@ -36,11 +36,14 @@ Zap:
   log-in-console: true
 # -------------数据库相关配置
 DataBase:
+  # postgres | mysql | ...
+  DbType: postgres
   Username: root
   Password: 123456
-  Port: 8089
+  Port: 8090
   Url: localhost
-  DbName: zzhstarter
+  # starter(mysql) | root (postgres)
+  DbName: root
   Charset: utf8mb4
   MaxIdleConns: 10
   MaxOpenConns: 100
