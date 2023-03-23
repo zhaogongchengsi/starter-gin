@@ -3,7 +3,9 @@ package global
 import (
 	"github.com/go-redis/redis/v8"
 	"github.com/zhaogongchengsi/starter-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 	"go.uber.org/zap"
+	"net/http"
 
 	// "github.com/songzhibin97/gkit/cache/local_cache"
 	"gorm.io/gorm"
@@ -12,6 +14,7 @@ import (
 var (
 	ConfigType    string = "yaml" // 配置文件类型
 	ConfigDirPath string = "./"   // 配置文件路径
+	ConfigName    string = "config"
 )
 
 var (
@@ -19,19 +22,17 @@ var (
 )
 
 var (
-
-	//Server = &http.Server{}
-
-	Db = &gorm.DB{}
-
-	Redis = &redis.Client{}
-
-	Logger = &zap.Logger{}
+	Server *http.Server  = nil
+	Db     *gorm.DB      = nil
+	Redis  *redis.Client = nil
+	Logger *zap.Logger   = nil
 	// 本地缓存
 	// LocalCache local_cache.Cache
 )
 
 func ReadConfig(ConfigDirPath, ConfigType, name string) (conf *config.Config, err error) {
+
+	utils.Success("\n正在从 [%s] 读取 [%s] 类型的配置文件：[ %s ]\n", ConfigDirPath, ConfigType, name)
 
 	sc := config.NewConfig(ConfigDirPath, ConfigType, name)
 	err = sc.ReadConfigs()
@@ -49,7 +50,8 @@ func ReadConfig(ConfigDirPath, ConfigType, name string) (conf *config.Config, er
 }
 
 func ReadAppConfig() error {
-	sc := config.NewConfig(ConfigDirPath, ConfigType, "config")
+	utils.Success("\n正在从 [ %s ] 读取 [ %s ] 类型的配置文件：[ %s ]\n", ConfigDirPath, ConfigType, ConfigName)
+	sc := config.NewConfig(ConfigDirPath, ConfigType, ConfigName)
 	err := sc.ReadConfigs()
 	if err != nil {
 		return err

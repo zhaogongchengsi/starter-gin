@@ -4,12 +4,12 @@
 version: "3"
 
 # 声明一个名为network的networks,subnet为network的子网地址,默认网关是177.7.0.1
-# networks:
-#   network:
-#     ipam:
-#       driver: default
-#       config:
-#         - subnet: '177.7.0.0/16'
+networks:
+   network:
+     ipam:
+       driver: default
+       config:
+         - subnet: '177.7.0.0/16'
         
 # 设置mysql，redis持久化保存 顶级声明可能会在其他服务用到
 volumes:
@@ -36,9 +36,9 @@ services:
       #   source: mysql
       #   target: /var/lib/mysql
       - F:\mysql8\data:/var/lib/mysql
-    # networks:
-    #   network:
-    #     ipv4_address: 177.7.0.13
+    networks:
+       network:
+         ipv4_address: 177.7.0.13
 
   redis:
     image: redis:latest
@@ -52,9 +52,9 @@ services:
       #   source: redis
       #   target: /data
       - F:\redis-v\data:/data
-    # networks:
-    #   network:
-    #     ipv4_address: 177.7.0.14
+    networks:
+       network:
+         ipv4_address: 177.7.0.14
   postgres_db:
     image: postgres:latest
     restart: always
@@ -65,3 +65,28 @@ services:
       - '8090:5432'
     volumes:
       - F:\postgres-v\datav1:/var/lib/postgresql/data
+    networks:
+      network:
+        ipv4_address: 177.7.0.15
+  server:
+    image: golang:latest
+    container_name: starter-server
+    hostname: starter-server
+    restart: always
+    ports:
+      - '3000:8888'
+    depends_on:
+      - mysql
+      - redis
+      - postgres_db
+    volumes:
+      - ..:/server
+    working_dir: /server    # 如果docker 设置了workdir 则此处不需要设置
+    command: bash -c "go env -w GOPROXY=https://goproxy.cn,direct && go mod tidy && go run main.go -n config.pro"
+    links:
+      - mysql
+      - redis
+      - postgres_db
+    networks:
+      network:
+        ipv4_address: 177.7.0.12

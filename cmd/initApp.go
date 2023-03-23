@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/zhaogongchengsi/starter-gin/cmd/seeddata"
 	"github.com/zhaogongchengsi/starter-gin/module"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 	"os"
 )
 
@@ -11,6 +12,8 @@ func InitAction() {
 	if err != nil {
 		panic(err)
 	}
+
+	utils.Success("Application initialized successfully")
 
 	os.Exit(0)
 }

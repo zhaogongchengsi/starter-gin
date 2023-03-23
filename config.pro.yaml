@@ -1,7 +1,7 @@
 # ------ 服务相关配置
 AppId: "satrter-gin"
 Server:
-  Port: 80 # 服务端口
+  Port: 8888 # 服务端口
   Host: 0.0.0.0
   #  debug release test
   Mode: debug # 运行模式
@@ -24,13 +24,26 @@ Captcha:
   Length: 4
   DotCount: 80
   MaxSkew: 0.7
+# ------ 日志相关 ---
+Zap:
+  level: info
+  format: console
+  prefix: "[starter-server]-"
+  director: logs
+  show-line: true
+  encode-level: LowercaseColorLevelEncoder
+  stacktrace-key: stacktrace
+  log-in-console: true
 # -------------数据库相关配置
 DataBase:
+  # postgres | mysql | ...
+  DbType: postgres
   Username: root
   Password: 123456
-  Port: 3306
-  Url: 177.7.0.13
-  DbName: starter
+  Port: 5432
+  Url: 177.7.0.15
+  # starter(mysql) | root (postgres)
+  DbName: root
   Charset: utf8mb4
   MaxIdleConns: 10
   MaxOpenConns: 100

@@ -1,4 +1,4 @@
-FROM golang:alpine as StarterServer
+FROM golang:alpine as starter-server
 LABEL MAINTAINER="zzg<zzh1586169624@163.com>"
 WORKDIR /usr/src/app
 COPY .. .
@@ -9,7 +9,7 @@ RUN go env -w GO111MODULE=on \
     && go env \
     && go mod tidy \
     && go build -o server .
-ENTRYPOINT ./server -c ./ -t yaml -n config.pro
+#ENTRYPOINT ./server -c ./ -t yaml -n config.pro
 EXPOSE 80
 
 #ENTRYPOINT ./server -c ./ -t yaml -n config.pro

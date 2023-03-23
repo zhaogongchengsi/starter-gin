@@ -43,7 +43,7 @@ DataBase:
   Port: 8090
   Url: localhost
   # starter(mysql) | root (postgres)
-  DbName: initdb
+  DbName: root
   Charset: utf8mb4
   MaxIdleConns: 10
   MaxOpenConns: 100
@@ -58,5 +58,5 @@ Gen:
   FieldWithTypeTag: true # 生成 gorm 标签的字段类型属性
 Redis:
   db: 0
-  addr: 127.0.0.1:8088
+  addr: localhost:8088
   password: ""

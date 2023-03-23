@@ -42,6 +42,7 @@ func Parse() error {
 	}
 
 	global.ConfigDirPath = opt.ConfigDir
+	global.ConfigName = opt.ConfigName
 	if ok := include([]string{"yaml", "json"}, opt.ConfigType); !ok {
 		global.ConfigType = "yaml"
 	} else {
