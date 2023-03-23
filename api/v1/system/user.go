@@ -30,7 +30,7 @@ type LoginReq struct {
 	Token Token       `json:"authorization"`
 }
 
-// 登录
+// Login 登录
 func Login(c *gin.Context) {
 	var loginRes LoginRes
 	err := c.ShouldBindJSON(&loginRes)
@@ -83,7 +83,7 @@ func Login(c *gin.Context) {
 	}}, msg).Send(c)
 }
 
-// 注册用户
+// Register 注册用户
 func Register(c *gin.Context) {
 	var regUser systemService.User
 	err := c.ShouldBindJSON(&regUser)
@@ -108,7 +108,7 @@ type ChangePasswordReq struct {
 	NewPassword string `json:"new_password" binding:"required"`
 }
 
-// 修改密码
+// ChangePassword 修改密码
 func ChangePassword(c *gin.Context) {
 	var changeinfo ChangePasswordReq
 	err := c.ShouldBindJSON(&changeinfo)
@@ -137,7 +137,7 @@ type DeleteUserInfo struct {
 	Email string `json:"email"`
 }
 
-// 删除用户
+// DeleteUser 删除用户
 func DeleteUser(c *gin.Context) {
 	var di DeleteUserInfo
 	err := c.ShouldBindJSON(&di)
@@ -160,3 +160,6 @@ func DeleteUser(c *gin.Context) {
 
 	common.NewOkResponse().SendAfterChangeMessage("删除成功", c)
 }
+
+// SetUserAuthority 给一个用户设置权限
+func SetUserAuthority(c *gin.Context) {}
