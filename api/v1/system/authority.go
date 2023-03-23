@@ -1,26 +1,41 @@
 package system
 
 import (
-	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zhaogongchengsi/starter-gin/common"
-	"github.com/zhaogongchengsi/starter-gin/global"
-	"github.com/zhaogongchengsi/starter-gin/service/system"
+	systemService "github.com/zhaogongchengsi/starter-gin/service/system"
 	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
 func GetAuthority(c *gin.Context) {
-	user, is := utils.GetUserWith(c)
-	if !is {
-		common.NewParamsError(c, errors.New("user not logged in"))
+	uc, ok := utils.GetUserWith(c)
+	if !ok {
+		common.NewFailResponse().SendAfterChangeMessage("用户未登录请重试", c)
 		return
 	}
 
-	global.Logger.Info("日志写入测试")
+	auth := systemService.NewAuthorityService()
 
-	authservice := system.NewAuthorityService(user)
-	authservice.GetAuths()
+	list, msg, err := auth.GetAuths(uc.UUID)
+	if err != nil {
+		common.NewFailResponse().AddError(err, msg).Send(c)
+		return
+	}
+	common.NewResponseWithData(list).Send(c)
+}
 
-	common.NewResponseWithData(user).Send(c)
+func AddAuthority(c *gin.Context) {
+	var auth systemService.AuthorityService
+	err := c.ShouldBindJSON(&auth)
+	if err != nil {
+		common.NewParamsError(c, err)
+		return
+	}
+	msg, err := auth.CreateAuth()
+	if err != nil {
+		common.NewFailResponse().AddError(err, msg).Send(c)
+		return
+	}
 
+	common.NewOkResponse().SendAfterChangeMessage(msg, c)
 }

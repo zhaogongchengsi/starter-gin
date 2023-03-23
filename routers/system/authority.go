@@ -10,5 +10,6 @@ func RegisterAuthorityRouter(group *gin.RouterGroup) {
 	authRouter := group.Group("auth").Use(middleware.JWTAuth())
 	{
 		authRouter.GET("auth_list", apiSystem.GetAuthority)
+		authRouter.POST("add_auth", apiSystem.AddAuthority)
 	}
 }

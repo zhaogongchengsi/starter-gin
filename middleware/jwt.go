@@ -3,7 +3,6 @@ package middleware
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v4"
 	"github.com/zhaogongchengsi/starter-gin/common"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/module"
@@ -54,10 +53,6 @@ func JWTAuth() gin.HandlerFunc {
 		utils.ShouldBindUserWith[module.User](c, claims)
 		c.Next()
 	}
-}
-
-func getunix(date *jwt.NumericDate) int64 {
-	return date.Time.Unix()
 }
 
 func timeprogress(startdate, enddate time.Time) int {

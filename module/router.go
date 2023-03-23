@@ -17,5 +17,5 @@ type RouterRecord struct {
 	Name       string      `json:"name" gorm:"comment:路由name"`    // 路由name
 	Hidden     bool        `json:"hidden" gorm:"comment:是否在列表隐藏"` // 是否在列表隐藏
 	Sort       int         `json:"sort" gorm:"comment:排序标记"`
-	Authoritys []Authority `json:"authoritys" gorm:"many2many:authority_routers;"`
+	Authoritys []Authority `json:"-" gorm:"many2many:authority_routers;"`
 }

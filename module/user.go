@@ -129,5 +129,6 @@ func (user *User) GetAuthoritysByPhone(db *gorm.DB) (list []Authority, err error
 	pre := "Authoritys.RouterRecords" // 用这个可以把权限内的路由一起带出来
 	//pre := "Authoritys"
 	err = db.Model(u).Where("phone = ?", user.Phone).Preload(pre).Preload(clause.Associations).First(&u).Error
+
 	return u.Authoritys, err
 }

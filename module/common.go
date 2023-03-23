@@ -1,9 +1,8 @@
 package module
 
 import (
-	"time"
-
 	"gorm.io/gorm"
+	"time"
 )
 
 type BaseMode struct {
@@ -11,9 +10,4 @@ type BaseMode struct {
 	CreatedAt time.Time      `json:"createAt"`             // 创建时间
 	UpdatedAt time.Time      `json:"updateAt"`             // 更新时间
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`       // 删除时间
-}
-
-type Crud interface {
-	SetDB(db *gorm.DB)
-	Create(db *gorm.DB) error
 }

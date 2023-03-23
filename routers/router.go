@@ -20,6 +20,7 @@ func CreateAppRouter(conf *config.Config) *gin.Engine {
 	systemRouter.RegisterBaseRouter(v1)
 	systemRouter.RegisterUserRouter(v1)
 	systemRouter.RegisterAuthorityRouter(v1)
+	systemRouter.RegisterRouterRecordRouter(v1)
 
 	return r
 }
