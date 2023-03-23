@@ -161,16 +161,16 @@ func DeleteUser(c *gin.Context) {
 	common.NewOkResponse().SendAfterChangeMessage("删除成功", c)
 }
 
-// todo: 获取用户列表
-func GetUsers(c *gin.Context) {
-	uc, ok := utils.GetUserWith(c)
-	if !ok {
-		common.NewFailResponse().SendAfterChangeMessage("获取失败", c)
-		return
-	}
-
-	common.NewResponseWithData(uc).SendAfterChangeMessage("获取成功", c)
-}
+// GetUsers todo: 获取用户列表
+//func GetUsers(c *gin.Context) {
+//	uc, ok := utils.GetUserWith(c)
+//	if !ok {
+//		common.NewFailResponse().SendAfterChangeMessage("获取失败", c)
+//		return
+//	}
+//
+//	common.NewResponseWithData(uc).SendAfterChangeMessage("获取成功", c)
+//}
 
 const (
 	router = iota

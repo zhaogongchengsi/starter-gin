@@ -1,4 +1,4 @@
-package routers
+package system
 
 import (
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ func RegisterUserRouter(group *gin.RouterGroup) {
 	userAuthRouter := group.Group("user").Use(middleware.JWTAuth())
 	{
 		userAuthRouter.POST("changepass", apiSystem.ChangePassword)
-		userAuthRouter.GET("getusers", apiSystem.GetUsers)
+		//userAuthRouter.GET("getusers", apiSystem.GetUsers)
 		userAuthRouter.DELETE("deleteuser", apiSystem.DeleteUser)
 		userAuthRouter.GET("authoritys", apiSystem.GetAuths)
 		userAuthRouter.GET("routers", apiSystem.GetUserRouters)

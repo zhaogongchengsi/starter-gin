@@ -2,6 +2,7 @@ package routers
 
 import (
 	"fmt"
+	systemRouter "github.com/zhaogongchengsi/starter-gin/routers/system"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zhaogongchengsi/starter-gin/config"
@@ -16,9 +17,9 @@ func CreateAppRouter(conf *config.Config) *gin.Engine {
 
 	v1 := r.Group(fmt.Sprintf("/%s", conf.Server.Prefix))
 
-	RegisterBaseRouter(v1)
-	RegisterUserRouter(v1)
-	RegisterAuthorityRouter(v1)
+	systemRouter.RegisterBaseRouter(v1)
+	systemRouter.RegisterUserRouter(v1)
+	systemRouter.RegisterAuthorityRouter(v1)
 
 	return r
 }
