@@ -185,3 +185,23 @@ func SetUserAuthority(c *gin.Context) {
 
 	common.NewOkResponse().SendAfterChangeMessage(msg, c)
 }
+
+// DeleteUserAuthority 删除一个用户的权限
+func DeleteUserAuthority(c *gin.Context) {
+	var ua UserAndAuthority
+	err := c.ShouldBindJSON(&ua)
+	if err != nil {
+		common.NewParamsError(c, err)
+		return
+	}
+
+	user := systemService.User{}
+	msg, err := user.DeleteAuthority(ua.Userid, ua.AuthId)
+
+	if err != nil {
+		common.NewFailResponse().AddError(err, msg).Send(c)
+		return
+	}
+
+	common.NewOkResponse().SendAfterChangeMessage(msg, c)
+}

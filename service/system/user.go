@@ -139,3 +139,18 @@ func (u *User) AddAuthority(uid int, authid int) (string, error) {
 
 	return "添加成功", err
 }
+
+func (u *User) DeleteAuthority(uid int, authid int) (string, error) {
+
+	ua := module.NewUserAuthority(uid, authid)
+	err := ua.DeleteUserAuth(global.Db)
+
+	if err != nil {
+		if errors.Is(err, module.ErrUserAuthNotExist) {
+			return "删除失败，关系不存在", err
+		}
+		return "删除失败", err
+	}
+
+	return "删除成功", err
+}

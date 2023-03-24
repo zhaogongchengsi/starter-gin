@@ -12,7 +12,8 @@ type UserAuthority struct {
 
 var (
 	// ErrUserAuthExists 关系已存在
-	ErrUserAuthExists = errors.New("err: relationship already exists")
+	ErrUserAuthExists   = errors.New("err: relationship already exists")
+	ErrUserAuthNotExist = errors.New("err: relationship does not exist")
 )
 
 func (UserAuthority) TableName() string {
@@ -28,6 +29,17 @@ func (ua UserAuthority) CreateUserAuth(db *gorm.DB) error {
 	if err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {
 			return ErrUserAuthExists
+		}
+		return err
+	}
+	return nil
+}
+
+func (ua UserAuthority) DeleteUserAuth(db *gorm.DB) error {
+	err := db.Model(ua).Where("user_id = ? AND authority_authority_id = ?", ua.UserId, ua.AuthorityId).Unscoped().Delete(&ua).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return ErrUserAuthNotExist
 		}
 		return err
 	}
