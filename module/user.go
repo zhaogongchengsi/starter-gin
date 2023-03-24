@@ -91,7 +91,11 @@ func (user *User) FirstByPhone(db *gorm.DB) (*User, error) {
 	return res, nil
 }
 
-// 明文 = 密码
+/*
+ComparePassword 明文 = 密码
+
+pass 被 CreatePassworld 加密后的密码
+*/
 func (user *User) ComparePassword(pass string) bool {
 	return BcryptCheck(user.Password, pass)
 }
@@ -131,4 +135,12 @@ func (user *User) GetAuthoritysByPhone(db *gorm.DB) (list []Authority, err error
 	err = db.Model(u).Where("phone = ?", user.Phone).Preload(pre).Preload(clause.Associations).First(&u).Error
 
 	return u.Authoritys, err
+}
+
+func (user *User) AddAssociation(db *gorm.DB) error {
+	err := db.Model(&user).Where("uuid = ?", user.UUID).Association("Authoritys").Append(user.Authoritys)
+	if err != nil {
+		return err
+	}
+	return nil
 }

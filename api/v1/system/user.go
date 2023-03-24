@@ -30,6 +30,11 @@ type LoginReq struct {
 	Token Token       `json:"authorization"`
 }
 
+type UserAndAuthority struct {
+	Uuid   string `json:"uuid"`
+	AuthId int    `json:"authId"`
+}
+
 // Login 登录
 func Login(c *gin.Context) {
 	var loginRes LoginRes
@@ -162,4 +167,21 @@ func DeleteUser(c *gin.Context) {
 }
 
 // SetUserAuthority 给一个用户设置权限
-func SetUserAuthority(c *gin.Context) {}
+func SetUserAuthority(c *gin.Context) {
+	var ua UserAndAuthority
+	err := c.ShouldBindJSON(&ua)
+	if err != nil {
+		common.NewParamsError(c, err)
+		return
+	}
+
+	user := systemService.User{}
+	msg, err := user.AddAuthority(ua.Uuid, ua.AuthId)
+
+	if err != nil {
+		common.NewFailResponse().AddError(err, msg).Send(c)
+		return
+	}
+
+	common.NewOkResponse().SendAfterChangeMessage(msg, c)
+}

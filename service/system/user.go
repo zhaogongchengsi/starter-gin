@@ -2,6 +2,7 @@ package system
 
 import (
 	"errors"
+	uuid "github.com/satori/go.uuid"
 	"github.com/zhaogongchengsi/starter-gin/module"
 
 	"github.com/zhaogongchengsi/starter-gin/global"
@@ -14,30 +15,33 @@ type User struct {
 	Email    string `json:"email" validate:"e-mail"`
 }
 
-var ErrUserNotFound = errors.New("err: user does not exist, please check and try again")
-var ErrWrongPassword = errors.New("err: wrong password")
-var ErrTokenSigningFailed = errors.New("err: Token signing failed")
-var ErrUserExt = errors.New("err: User already exists")
+var (
+	ErrWrongPassword      = errors.New("err: wrong password")
+	ErrTokenSigningFailed = errors.New("err: Token signing failed")
+	ErrUserExt            = errors.New("err: User already exists")
+	ErrUserNotFound       = errors.New("err: user does not exist, please check and try again")
+	ErrUuidInvalid        = errors.New("err: uuid is invalid")
+)
 
-func (L *User) Login() (user *module.User, msg string, err error) {
+func (u *User) Login() (*module.User, string, error) {
 
-	user = module.NewFindUser(L.Phone, L.Password)
+	user := module.NewFindUser(u.Phone, u.Password) // 准备登陆的账号
 
-	u, err := user.FirstByPhone(global.Db)
+	ut, err := user.FirstByPhone(global.Db) // 从数据库内查出来的用户
 
 	if err != nil {
 		return user, "账号不存在", ErrUserNotFound
 	}
-
-	if !user.ComparePassword(u.Password) {
+	// 用 登陆的明文密码 和 数据库内加密后的密码进行对比
+	if !user.ComparePassword(ut.Password) {
 		return user, "密码错误", ErrWrongPassword
 	}
 
-	return u, "登录成功", nil
+	return ut, "登录成功", nil
 }
 
-func (R *User) Register() (*module.User, string, error) {
-	user := module.CreateUser(R.Password, R.Phone, R.NickName, R.Email)
+func (u *User) Register() (*module.User, string, error) {
+	user := module.CreateUser(u.Password, u.Phone, u.NickName, u.Email)
 	oldu, err := user.FirstByPhone(global.Db)
 
 	if err == nil {
@@ -54,34 +58,34 @@ func (R *User) Register() (*module.User, string, error) {
 
 }
 
-func (R *User) ChangePassword(newPwd string) (*module.User, error) {
-	us, _, err := R.Login()
+func (u *User) ChangePassword(newPwd string) (*module.User, error) {
+	us, _, err := u.Login()
 
 	if err != nil {
 		return us, err
 	}
 
-	u, e := us.UpdatePwd(global.Db, newPwd)
+	ut, e := us.UpdatePwd(global.Db, newPwd)
 
 	if e != nil {
-		return u, e
+		return ut, e
 	}
 
-	return u, nil
+	return ut, nil
 }
 
-func (R *User) DeletedUser() error {
+func (u *User) DeletedUser() error {
 	user := module.User{
-		Phone: R.Phone,
-		Email: R.Email,
+		Phone: u.Phone,
+		Email: u.Email,
 	}
 
 	return user.UsePhoneDeleted(global.Db)
 }
 
-func (R *User) GetAuths() ([]module.Authority, string, error) {
+func (u *User) GetAuths() ([]module.Authority, string, error) {
 	var list []module.Authority
-	user := module.NewFindUser(R.Phone, R.Password)
+	user := module.NewFindUser(u.Phone, u.Password)
 	list, err := user.GetAuthoritysByPhone(global.Db)
 	if err != nil {
 		return list, "获取失败", err
@@ -90,8 +94,8 @@ func (R *User) GetAuths() ([]module.Authority, string, error) {
 	return list, "获取成功", nil
 }
 
-func (R *User) GetUserRouters() ([]module.RouterRecord, string, error) {
-	user := module.NewFindUser(R.Phone, R.Password)
+func (u *User) GetUserRouters() ([]module.RouterRecord, string, error) {
+	user := module.NewFindUser(u.Phone, u.Password)
 	list, err := user.GetAuthoritysByPhone(global.Db)
 	if err != nil {
 		return []module.RouterRecord{}, "获取路由失败", err
@@ -103,4 +107,25 @@ func (R *User) GetUserRouters() ([]module.RouterRecord, string, error) {
 	}
 
 	return routers, "获取成功", nil
+}
+
+func (u *User) AddAuthority(uid string, authid int) (string, error) {
+
+	id, err := uuid.FromString(uid)
+	if err != nil {
+		return "uuid 无效", ErrUuidInvalid
+	}
+
+	user := module.User{
+		UUID:       id,
+		Authoritys: []module.Authority{{AuthorityId: authid}},
+	}
+
+	err = user.AddAssociation(global.Db)
+
+	if err != nil {
+		return "添加失败", err
+	}
+
+	return "添加成功", err
 }
