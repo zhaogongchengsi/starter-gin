@@ -31,8 +31,8 @@ type LoginReq struct {
 }
 
 type UserAndAuthority struct {
-	Uuid   string `json:"uuid"`
-	AuthId int    `json:"authId"`
+	Userid int `json:"user_id"`
+	AuthId int `json:"auth_id"`
 }
 
 // Login 登录
@@ -176,7 +176,7 @@ func SetUserAuthority(c *gin.Context) {
 	}
 
 	user := systemService.User{}
-	msg, err := user.AddAuthority(ua.Uuid, ua.AuthId)
+	msg, err := user.AddAuthority(ua.Userid, ua.AuthId)
 
 	if err != nil {
 		common.NewFailResponse().AddError(err, msg).Send(c)

@@ -23,6 +23,10 @@ type User struct {
 	Authoritys []Authority `json:"-" gorm:"many2many:user_authoritys"`
 }
 
+func (*User) TableName() string {
+	return "user"
+}
+
 // AuthRelevancyKey 获取 Authority 的 关联关系的key 给 grom 使用
 func (user *User) AuthRelevancyKey() string {
 	return "Authoritys"
@@ -143,7 +147,8 @@ func (user *User) GetAuthoritysByPhone(db *gorm.DB) (list []Authority, err error
 }
 
 func (user *User) AddAuthority(db *gorm.DB, authority []Authority) error {
-	err := db.Model(&user).Where("uuid = ?", user.UUID).Association(user.AuthRelevancyKey()).Append(authority)
+	user.Authoritys = append(user.Authoritys, authority...)
+	err := db.Model(&user).Where("uuid = ?", user.UUID).Association(user.AuthRelevancyKey()).Append(user.Authoritys)
 	if err != nil {
 		return err
 	}

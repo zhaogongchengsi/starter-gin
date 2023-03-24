@@ -2,7 +2,6 @@ package system
 
 import (
 	"errors"
-	uuid "github.com/satori/go.uuid"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/module"
 )
@@ -108,16 +107,16 @@ func (u *User) GetUserRouters() ([]module.RouterRecord, string, error) {
 	return routers, "获取成功", nil
 }
 
-func (u *User) AddAuthority(uid string, authid int) (string, error) {
+func (u *User) AddAuthority(uid int, authid int) (string, error) {
 
-	id, err := uuid.FromString(uid)
-	if err != nil {
-		return "uuid 无效", ErrUuidInvalid
-	}
+	//id, err := uuid.FromString(uid)
+	//if err != nil {
+	//	return "uuid 无效", ErrUuidInvalid
+	//}
 
 	auth := module.NewAuthority(authid)
 
-	err = auth.FindAuthority(global.Db)
+	err := auth.FindAuthority(global.Db)
 
 	if err != nil {
 		if errors.Is(err, module.ErrAuthNotExist) {
@@ -126,9 +125,8 @@ func (u *User) AddAuthority(uid string, authid int) (string, error) {
 		return "未知错误", err
 	}
 
-	user := module.User{UUID: id}
-
-	err = user.AddAuthority(global.Db, []module.Authority{*auth})
+	ua := module.NewUserAuthority(uid, authid)
+	err = ua.CreateUserAuth(global.Db)
 
 	if err != nil {
 		return "添加失败", err
