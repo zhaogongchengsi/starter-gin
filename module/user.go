@@ -23,10 +23,6 @@ type User struct {
 	Authoritys []Authority `json:"-" gorm:"many2many:user_authoritys"`
 }
 
-var (
-	ErrUserNotExist = errors.New("err: user does not exist")
-)
-
 func (*User) TableName() string {
 	return "user"
 }

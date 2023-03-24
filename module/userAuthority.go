@@ -10,12 +10,6 @@ type UserAuthority struct {
 	AuthorityId int `gorm:"column:authority_authority_id"`
 }
 
-var (
-	// ErrUserAuthExists 关系已存在
-	ErrUserAuthExists   = errors.New("err: relationship already exists")
-	ErrUserAuthNotExist = errors.New("err: relationship does not exist")
-)
-
 func (UserAuthority) TableName() string {
 	return "user_authoritys"
 }

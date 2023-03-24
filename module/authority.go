@@ -7,11 +7,6 @@ import (
 	"time"
 )
 
-var (
-	ErrAuthExist    = errors.New("err: already exists")
-	ErrAuthNotExist = errors.New("err: does not exist")
-)
-
 type Authority struct {
 	CreatedAt     time.Time      `json:"createAt"`       // 创建时间
 	UpdatedAt     time.Time      `json:"updateAt"`       // 更新时间
