@@ -24,6 +24,10 @@ type Authority struct {
 	RouterRecords []RouterRecord `json:"routerRecords" gorm:"many2many:authority_routers;"`
 }
 
+func (*Authority) TableName() string {
+	return "authority"
+}
+
 func (*Authority) AuthorityIdKey() string {
 	return "authority_id"
 }

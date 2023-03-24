@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/module"
-	"gorm.io/gorm"
 )
 
 type User struct {
@@ -15,11 +14,9 @@ type User struct {
 }
 
 var (
-	ErrWrongPassword      = errors.New("err: wrong password")
-	ErrTokenSigningFailed = errors.New("err: Token signing failed")
-	ErrUserExt            = errors.New("err: User already exists")
-	ErrUserNotFound       = errors.New("err: user does not exist, please check and try again")
-	ErrUuidInvalid        = errors.New("err: uuid is invalid")
+	ErrWrongPassword = errors.New("err: wrong password")
+	ErrUserExt       = errors.New("err: User already exists")
+	ErrUserNotFound  = errors.New("err: user does not exist, please check and try again")
 )
 
 func (u *User) Login() (*module.User, string, error) {
@@ -134,7 +131,7 @@ func (u *User) AddAuthority(uid int, authid int) (string, error) {
 	err = ua.CreateUserAuth(global.Db)
 
 	if err != nil {
-		if errors.Is(err, gorm.ErrDuplicatedKey) {
+		if errors.Is(err, module.ErrUserAuthExists) {
 			return "已添加，请勿重复添加", err
 		}
 		return "添加失败", err

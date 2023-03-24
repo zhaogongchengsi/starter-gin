@@ -19,3 +19,7 @@ type RouterRecord struct {
 	Sort       int         `json:"sort" gorm:"comment:排序标记"`
 	Authoritys []Authority `json:"-" gorm:"many2many:authority_routers;"`
 }
+
+func (RouterRecord) TableName() string {
+	return "router_record"
+}

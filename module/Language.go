@@ -20,6 +20,14 @@ type Language struct {
 	LanguagesID int    `json:"languages_id"`
 }
 
+func (*Language) TableName() string {
+	return "language"
+}
+
+func (*Languages) TableName() string {
+	return "languages"
+}
+
 func (la *Language) Transform() map[string]string {
 	return map[string]string{
 		la.Key: la.Value,
