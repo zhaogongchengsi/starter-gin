@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/module"
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -109,11 +110,6 @@ func (u *User) GetUserRouters() ([]module.RouterRecord, string, error) {
 
 func (u *User) AddAuthority(uid int, authid int) (string, error) {
 
-	//id, err := uuid.FromString(uid)
-	//if err != nil {
-	//	return "uuid 无效", ErrUuidInvalid
-	//}
-
 	auth := module.NewAuthority(authid)
 
 	err := auth.FindAuthority(global.Db)
@@ -125,10 +121,22 @@ func (u *User) AddAuthority(uid int, authid int) (string, error) {
 		return "未知错误", err
 	}
 
+	user := module.User{BaseMode: module.BaseMode{ID: uint(uid)}}
+	_, err = user.FirstById(global.Db)
+	if err != nil {
+		if errors.Is(err, module.ErrUserNotExist) {
+			return "用户不存在", err
+		}
+		return "未知错误", err
+	}
+
 	ua := module.NewUserAuthority(uid, authid)
 	err = ua.CreateUserAuth(global.Db)
 
 	if err != nil {
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			return "已添加，请勿重复添加", err
+		}
 		return "添加失败", err
 	}
 

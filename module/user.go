@@ -23,6 +23,10 @@ type User struct {
 	Authoritys []Authority `json:"-" gorm:"many2many:user_authoritys"`
 }
 
+var (
+	ErrUserNotExist = errors.New("err: user does not exist")
+)
+
 func (*User) TableName() string {
 	return "user"
 }
@@ -87,7 +91,7 @@ func (user *User) FirstUser(db *gorm.DB, query any, values ...any) (*User, error
 func (user *User) FirstByEmail(db *gorm.DB) (*User, error) {
 	res, err := user.FirstUser(db, "email = ?", user.Email)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return res, gorm.ErrRecordNotFound
+		return res, ErrUserNotExist
 	}
 	return res, nil
 }
@@ -95,7 +99,15 @@ func (user *User) FirstByEmail(db *gorm.DB) (*User, error) {
 func (user *User) FirstByPhone(db *gorm.DB) (*User, error) {
 	res, err := user.FirstUser(db, "phone = ?", user.Phone)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return res, gorm.ErrRecordNotFound
+		return res, ErrUserNotExist
+	}
+	return res, nil
+}
+
+func (user *User) FirstById(db *gorm.DB) (*User, error) {
+	res, err := user.FirstUser(db, "id = ?", user.ID)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return res, ErrUserNotExist
 	}
 	return res, nil
 }
