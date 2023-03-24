@@ -23,7 +23,12 @@ type User struct {
 	Authoritys []Authority `json:"-" gorm:"many2many:user_authoritys"`
 }
 
-func CreatePassworld(paw string) string {
+// AuthRelevancyKey 获取 Authority 的 关联关系的key 给 grom 使用
+func (user *User) AuthRelevancyKey() string {
+	return "Authoritys"
+}
+
+func CreatePassword(paw string) string {
 	bytes, _ := bcrypt.GenerateFromPassword([]byte(paw), bcrypt.DefaultCost)
 	return string(bytes)
 }
@@ -40,7 +45,7 @@ func NewUser(uname, pass, phone, nname, email string) *User {
 	return &User{
 		UUID:     v4,
 		UserName: uname,
-		Password: CreatePassworld(pass),
+		Password: CreatePassword(pass),
 		Phone:    phone,
 		NickName: nname,
 		Email:    email,
@@ -53,7 +58,7 @@ func CreateUser(pass, phone, nname, email string) *User {
 	return &User{
 		UUID:     v4,
 		Phone:    phone,
-		Password: CreatePassworld(pass),
+		Password: CreatePassword(pass),
 		NickName: nname,
 		Email:    email,
 	}
@@ -113,7 +118,7 @@ func (user *User) Conditions(db *gorm.DB, query any, args ...any) *gorm.DB {
 }
 
 func (user *User) UpdatePwd(db *gorm.DB, newPwd string) (*User, error) {
-	result := user.Conditions(db, "phone = ? AND password = ?", user.Phone, user.Password).Update("password", CreatePassworld(newPwd))
+	result := user.Conditions(db, "phone = ? AND password = ?", user.Phone, user.Password).Update("password", CreatePassword(newPwd))
 	if result.Error != nil {
 		return &User{}, result.Error
 	}
@@ -137,8 +142,16 @@ func (user *User) GetAuthoritysByPhone(db *gorm.DB) (list []Authority, err error
 	return u.Authoritys, err
 }
 
-func (user *User) AddAssociation(db *gorm.DB) error {
-	err := db.Model(&user).Where("uuid = ?", user.UUID).Association("Authoritys").Append(user.Authoritys)
+func (user *User) AddAuthority(db *gorm.DB, authority []Authority) error {
+	err := db.Model(&user).Where("uuid = ?", user.UUID).Association(user.AuthRelevancyKey()).Append(authority)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (user *User) DeleteAuthority(db *gorm.DB, authority []Authority) error {
+	err := db.Model(&user).Where("uuid = ?", user.UUID).Association(user.AuthRelevancyKey()).Delete(authority)
 	if err != nil {
 		return err
 	}

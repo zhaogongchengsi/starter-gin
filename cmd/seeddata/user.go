@@ -14,7 +14,7 @@ func CreateUserTable(db *gorm.DB) error {
 var Users = []module.User{
 	{
 		Phone:      "12312312312",
-		Password:   module.CreatePassworld(utils.MD5([]byte("123456"))),
+		Password:   module.CreatePassword(utils.MD5([]byte("123456"))),
 		UUID:       uuid.NewV4(),
 		UserName:   "admin",
 		NickName:   "超级管理员",

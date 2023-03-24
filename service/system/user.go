@@ -3,9 +3,8 @@ package system
 import (
 	"errors"
 	uuid "github.com/satori/go.uuid"
-	"github.com/zhaogongchengsi/starter-gin/module"
-
 	"github.com/zhaogongchengsi/starter-gin/global"
+	"github.com/zhaogongchengsi/starter-gin/module"
 )
 
 type User struct {
@@ -116,12 +115,20 @@ func (u *User) AddAuthority(uid string, authid int) (string, error) {
 		return "uuid 无效", ErrUuidInvalid
 	}
 
-	user := module.User{
-		UUID:       id,
-		Authoritys: []module.Authority{{AuthorityId: authid}},
+	auth := module.NewAuthority(authid)
+
+	err = auth.FindAuthority(global.Db)
+
+	if err != nil {
+		if errors.Is(err, module.ErrAuthNotExist) {
+			return "权限不存在", err
+		}
+		return "未知错误", err
 	}
 
-	err = user.AddAssociation(global.Db)
+	user := module.User{UUID: id}
+
+	err = user.AddAuthority(global.Db, []module.Authority{*auth})
 
 	if err != nil {
 		return "添加失败", err

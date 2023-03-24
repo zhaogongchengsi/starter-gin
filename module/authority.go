@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	ErrAuthExist = errors.New("err: already exists")
+	ErrAuthExist    = errors.New("err: already exists")
+	ErrAuthNotExist = errors.New("err: does not exist")
 )
 
 type Authority struct {
@@ -23,26 +24,42 @@ type Authority struct {
 	RouterRecords []RouterRecord `json:"routerRecords" gorm:"many2many:authority_routers;"`
 }
 
-func NewAuthority(id, pid int, name string) Authority {
-	return Authority{
-		AuthorityName: name,
-		AuthorityId:   id,
-		ParentId:      pid,
-	}
+func (*Authority) AuthorityIdKey() string {
+	return "authority_id"
+}
+
+func NewAuthority(authorityId int) *Authority {
+	return &Authority{AuthorityId: authorityId}
+}
+
+func NewFullAuthority(authorityId, authorityPid int, name string) *Authority {
+	return &Authority{AuthorityId: authorityId, ParentId: authorityPid, AuthorityName: name}
 }
 
 func (a *Authority) GetUserAuths(uid string, db *gorm.DB) (User, error) {
-	var auth User
-	err := db.Model(&User{}).Preload("Authoritys").Where("uuid = ?", uid).First(&auth).Error
-	return auth, err
+	var user User
+	err := db.Model(&User{}).Preload(user.AuthRelevancyKey()).Where("uuid = ?", uid).First(&user).Error
+	return user, err
 }
 
-func (a Authority) CreateAuth(db *gorm.DB) error {
+func (a *Authority) CreateAuth(db *gorm.DB) error {
 	fmt.Println(a.AuthorityId, a.AuthorityName, a.ParentId)
 	err := db.Create(&a).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {
 			return ErrAuthExist
+		}
+		return err
+	}
+	return nil
+}
+
+func (a *Authority) FindAuthority(db *gorm.DB) error {
+	var au Authority
+	err := db.Model(a).Where(fmt.Sprintf("%s = ?", a.AuthorityIdKey()), a.AuthorityId).First(&au).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return ErrAuthNotExist
 		}
 		return err
 	}
