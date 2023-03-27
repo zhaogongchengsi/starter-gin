@@ -39,3 +39,8 @@ func AddAuthority(c *gin.Context) {
 
 	common.NewOkResponse().SendAfterChangeMessage(msg, c)
 }
+
+// DeleteAuthority todo: 删除权限
+func DeleteAuthority(c *gin.Context) {
+
+}

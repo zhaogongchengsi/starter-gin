@@ -205,3 +205,8 @@ func DeleteUserAuthority(c *gin.Context) {
 
 	common.NewOkResponse().SendAfterChangeMessage(msg, c)
 }
+
+// GetUserRouters todo: 获取用户所有的路由
+func GetUserRouters(c *gin.Context) {
+
+}
