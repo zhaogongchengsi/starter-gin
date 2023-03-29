@@ -2,6 +2,7 @@ package system
 
 import (
 	"errors"
+	uuid "github.com/satori/go.uuid"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/module"
 )
@@ -11,6 +12,10 @@ type User struct {
 	Password string `form:"password" json:"password" binding:"required" validate:"gte=6,lte=18"`
 	NickName string `form:"nickName" json:"nickName"`
 	Email    string `json:"email" validate:"e-mail"`
+}
+
+func NewUser() User {
+	return User{}
 }
 
 var (
@@ -79,24 +84,23 @@ func (u *User) DeletedUser() error {
 	return user.UsePhoneDeleted(global.Db)
 }
 
-func (u *User) GetAuths() ([]module.Authority, string, error) {
-	var list []module.Authority
+func (u *User) GetAuths(uuid uuid.UUID) ([]module.Authority, string, error) {
 	user := module.NewFindUser(u.Phone, u.Password)
-	list, err := user.GetAuthoritysByPhone(global.Db)
+	us, err := user.GetUserAuths(uuid, global.Db)
 	if err != nil {
-		return list, "获取失败", err
+		return us.Authorities, "获取失败", err
 	}
 
-	return list, "获取成功", nil
+	return us.Authorities, "获取成功", nil
 }
 
 func (u *User) GetUserRouters() ([]module.RouterRecord, string, error) {
 	user := module.NewFindUser(u.Phone, u.Password)
-	list, err := user.GetAuthoritysByPhone(global.Db)
+	list, err := user.GetAuthoritiesByPhone(global.Db)
+	var routers []module.RouterRecord
 	if err != nil {
-		return []module.RouterRecord{}, "获取路由失败", err
+		return routers, "获取路由失败", err
 	}
-	routers := []module.RouterRecord{}
 
 	for _, authority := range list {
 		routers = append(routers, authority.RouterRecords...)

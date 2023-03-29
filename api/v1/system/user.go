@@ -166,6 +166,23 @@ func DeleteUser(c *gin.Context) {
 	common.NewOkResponse().SendAfterChangeMessage("删除成功", c)
 }
 
+// GetUserAuthorities 获取用户权限列表
+func GetUserAuthorities(c *gin.Context) {
+	uc, ok := utils.GetUserWith(c)
+	if !ok {
+		common.NewFailResponse().SendAfterChangeMessage("用户未登录请重试", c)
+		return
+	}
+	user := systemService.NewUser()
+	list, msg, err := user.GetAuths(uc.UUID)
+	if err != nil {
+		common.NewFailResponse().AddError(err, msg).Send(c)
+		return
+	}
+
+	common.NewResponseWithData(list).SendAfterChangeMessage(msg, c)
+}
+
 // SetUserAuthority 给一个用户设置权限
 func SetUserAuthority(c *gin.Context) {
 	var ua UserAndAuthority

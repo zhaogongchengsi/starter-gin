@@ -3,13 +3,11 @@ package module
 import (
 	"errors"
 	"gorm.io/gorm"
-	"time"
 )
 
 type UserAuthority struct {
 	UserID      int `gorm:"primaryKey"`
 	AuthorityId int `gorm:"primaryKey"`
-	CreatedAt   time.Time
 	DeletedAt   gorm.DeletedAt
 }
 

@@ -7,6 +7,7 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
+// GetAuthority todo: 获取所有权限
 func GetAuthority(c *gin.Context) {
 	uc, ok := utils.GetUserWith(c)
 	if !ok {
@@ -14,14 +15,14 @@ func GetAuthority(c *gin.Context) {
 		return
 	}
 
-	auth := systemService.NewAuthorityService()
+	//auth := systemService.NewAuthorityService()
 
-	list, msg, err := auth.GetAuths(uc.UUID)
-	if err != nil {
-		common.NewFailResponse().AddError(err, msg).Send(c)
-		return
-	}
-	common.NewResponseWithData(list).Send(c)
+	//list, msg, err := auth.GetAuths(uc.UUID)
+	//if err != nil {
+	//	common.NewFailResponse().AddError(err, msg).Send(c)
+	//	return
+	//}
+	common.NewResponseWithData(uc).Send(c)
 }
 
 func AddAuthority(c *gin.Context) {

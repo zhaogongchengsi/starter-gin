@@ -29,7 +29,7 @@ func (*User) TableName() string {
 
 // AuthRelevancyKey 获取 Authority 的 关联关系的key 给 grom 使用
 func (user *User) AuthRelevancyKey() string {
-	return "Authoritys"
+	return "Authorities"
 }
 
 func CreatePassword(paw string) string {
@@ -40,21 +40,6 @@ func CreatePassword(paw string) string {
 func BcryptCheck(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
-}
-
-func NewUser(uname, pass, phone, nname, email string) *User {
-
-	v4 := uuid.NewV4()
-
-	return &User{
-		UUID:     v4,
-		UserName: uname,
-		Password: CreatePassword(pass),
-		Phone:    phone,
-		NickName: nname,
-		Email:    email,
-		Enable:   1,
-	}
 }
 
 func CreateUser(pass, phone, nname, email string) *User {
@@ -145,7 +130,13 @@ func (user *User) UsePhoneDeleted(db *gorm.DB) error {
 	return nil
 }
 
-func (user *User) GetAuthoritysByPhone(db *gorm.DB) (list []Authority, err error) {
+func (user *User) GetUserAuths(uid uuid.UUID, db *gorm.DB) (*User, error) {
+	var u User
+	err := db.Model(&User{}).Preload(u.AuthRelevancyKey()).Where("uuid = ?", uid.String()).First(&u).Error
+	return &u, err
+}
+
+func (user *User) GetAuthoritiesByPhone(db *gorm.DB) (list []Authority, err error) {
 	var u User
 	pre := "Authoritys.RouterRecords" // 用这个可以把权限内的路由一起带出来
 	//pre := "Authoritys"

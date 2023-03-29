@@ -2,7 +2,6 @@ package system
 
 import (
 	"errors"
-	uuid "github.com/satori/go.uuid"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/module"
 )
@@ -17,14 +16,14 @@ func NewAuthorityService() *AuthorityService {
 	return &AuthorityService{}
 }
 
-func (a *AuthorityService) GetAuths(uid uuid.UUID) ([]module.Authority, string, error) {
-	auth := module.NewFullAuthority(a.AuthorityId, a.ParentId, a.AuthorityName)
-	user, err := auth.GetUserAuths(uid.String(), global.Db)
-	if err != nil {
-		return user.Authorities, "获取失败", err
-	}
-	return user.Authorities, "获取成功", nil
-}
+//func (a *AuthorityService) GetAuths(uid uuid.UUID) ([]module.Authority, string, error) {
+//	auth := module.NewFullAuthority(a.AuthorityId, a.ParentId, a.AuthorityName)
+//	user, err := auth.GetUserAuths(uid.String(), global.Db)
+//	if err != nil {
+//		return user.Authorities, "获取失败", err
+//	}
+//	return user.Authorities, "获取成功", nil
+//}
 
 func (a *AuthorityService) CreateAuth() (string, error) {
 	auth := module.NewFullAuthority(a.AuthorityId, a.ParentId, a.AuthorityName)

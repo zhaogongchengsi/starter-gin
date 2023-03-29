@@ -14,8 +14,6 @@ type Authority struct {
 	Id            int            `json:"id" gorm:"not null;unique;primaryKey;comment:角色ID;size:90"`
 	AuthorityName string         `json:"authorityName" gorm:"comment:角色名"`
 	ParentId      int            `json:"pid" gorm:"comment:父角色ID"`
-	//Users         []User         `json:"users" gorm:"many2many:user_and_authorities;"`
-	Children      []Authority    `json:"children" gorm:"-"`
 	RouterRecords []RouterRecord `json:"routerRecords" gorm:"many2many:authority_routers;"`
 }
 
@@ -35,11 +33,11 @@ func NewFullAuthority(authorityId, authorityPid int, name string) *Authority {
 	return &Authority{Id: authorityId, ParentId: authorityPid, AuthorityName: name}
 }
 
-func (a *Authority) GetUserAuths(uid string, db *gorm.DB) (User, error) {
-	var user User
-	err := db.Model(&User{}).Preload(user.AuthRelevancyKey()).Where("uuid = ?", uid).First(&user).Error
-	return user, err
-}
+//func (a *Authority) GetUserAuths(uid string, db *gorm.DB) (User, error) {
+//	//var user User
+//	//err := db.Model(&User{}).Preload(user.AuthRelevancyKey()).Where("uuid = ?", uid).First(&user).Error
+//	//return user, err
+//}
 
 func (a *Authority) CreateAuth(db *gorm.DB) error {
 	fmt.Println(a.Id, a.AuthorityName, a.ParentId)

@@ -28,5 +28,9 @@ var Users = []module.User{
 }
 
 func CrateUserSeedData(db *gorm.DB) error {
+	err := db.SetupJoinTable(&module.User{}, "Authorities", &module.UserAuthority{})
+	if err != nil {
+		return err
+	}
 	return db.Model(module.User{}).Create(Users).Error
 }
