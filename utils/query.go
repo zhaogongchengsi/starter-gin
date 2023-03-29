@@ -21,6 +21,12 @@ func queryStruct[Q any](qFunc QueryFunc, q *Q) error {
 		} else {
 			value = qFunc(name)
 		}
+
+		// 如果查询的参数为空 则直接忽略
+		if value == "" {
+			continue
+		}
+
 		val := reflect.ValueOf(q)
 		typeName := field.Type.Name()
 		switch typeName {

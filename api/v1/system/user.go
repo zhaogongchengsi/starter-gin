@@ -223,17 +223,10 @@ func DeleteUserAuthority(c *gin.Context) {
 	common.NewOkResponse().SendAfterChangeMessage(msg, c)
 }
 
-type Page struct {
-	Page     int `query:"page" json:"page"`
-	PageSize int `query:"page_size" json:"pageSize"`
-}
-
 // GetUserRouters todo: 获取用户所有的路由
 // todo
 func GetUserRouters(c *gin.Context) {
-
-	var page Page
-
+	var page common.Page
 	err := utils.QueryStruct(c, &page)
 	if err != nil {
 		common.NewParamsError(c, err)

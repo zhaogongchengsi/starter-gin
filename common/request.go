@@ -1,11 +1,6 @@
 package common
 
-import "github.com/gin-gonic/gin"
-
-func ShouldBind[Response any](ree Response, c *gin.Context) (res *Response, err error) {
-	err = c.ShouldBindJSON(ree)
-	if err != nil {
-		return res, err
-	}
-	return res, nil
+type Page struct {
+	Page     int `query:"page" json:"page" form:"page"`             // 页码
+	PageSize int `query:"pageSize" json:"pageSize" form:"pageSize"` // 每页大小
 }
