@@ -22,7 +22,7 @@ func (*Authority) TableName() string {
 }
 
 func (*Authority) AuthorityIdKey() string {
-	return "authority_id"
+	return "id"
 }
 
 func NewAuthority(authorityId int) *Authority {

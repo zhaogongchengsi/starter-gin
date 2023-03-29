@@ -2,6 +2,7 @@ package module
 
 import (
 	"errors"
+	"fmt"
 	"gorm.io/gorm"
 )
 
@@ -9,6 +10,13 @@ type UserAuthority struct {
 	UserID      int `gorm:"primaryKey"`
 	AuthorityId int `gorm:"primaryKey"`
 	DeletedAt   gorm.DeletedAt
+}
+
+func (UserAuthority) UserIdKey() string {
+	return "user_id"
+}
+func (UserAuthority) UserAuthorityIdKey() string {
+	return "authority_id"
 }
 
 func (UserAuthority) TableName() string {
@@ -31,7 +39,7 @@ func (ua UserAuthority) CreateUserAuth(db *gorm.DB) error {
 }
 
 func (ua UserAuthority) DeleteUserAuth(db *gorm.DB) error {
-	err := db.Model(ua).Where("user_id = ? AND authority_authority_id = ?", ua.UserID, ua.AuthorityId).Unscoped().Delete(&ua).Error
+	err := db.Model(ua).Where(fmt.Sprintf("%s = ? AND %s = ?", ua.UserIdKey(), ua.UserAuthorityIdKey()), ua.UserID, ua.AuthorityId).Unscoped().Delete(&ua).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return ErrUserAuthNotExist

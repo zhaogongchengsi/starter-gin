@@ -192,7 +192,7 @@ func SetUserAuthority(c *gin.Context) {
 		return
 	}
 
-	user := systemService.User{}
+	user := systemService.NewUser()
 	msg, err := user.AddAuthority(ua.Userid, ua.AuthId)
 
 	if err != nil {

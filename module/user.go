@@ -144,20 +144,3 @@ func (user *User) GetAuthoritiesByPhone(db *gorm.DB) (list []Authority, err erro
 
 	return u.Authorities, err
 }
-
-func (user *User) AddAuthority(db *gorm.DB, authority []Authority) error {
-	user.Authorities = append(user.Authorities, authority...)
-	err := db.Model(&user).Where("uuid = ?", user.UUID).Association(user.AuthRelevancyKey()).Append(user.Authorities)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (user *User) DeleteAuthority(db *gorm.DB, authority []Authority) error {
-	err := db.Model(&user).Where("uuid = ?", user.UUID).Association(user.AuthRelevancyKey()).Delete(authority)
-	if err != nil {
-		return err
-	}
-	return nil
-}
