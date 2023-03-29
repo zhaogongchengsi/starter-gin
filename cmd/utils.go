@@ -17,7 +17,7 @@ var moduleMap = map[string]CreateFunc{
 	"router":    seeddata.CreateRouter,
 	"languages": seeddata.CreateLanguages,
 	"language":  seeddata.CreateLanguages,
-	"authority": seeddata.CreateAuthorityTable,
+	//"authority": seeddata.CreateAuthorityTable,
 }
 
 var moduleSeedMap = map[string]CreateFunc{

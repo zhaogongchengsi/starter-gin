@@ -8,17 +8,22 @@ import (
 )
 
 func CreateUserTable(db *gorm.DB) error {
-	return db.AutoMigrate(module.User{}, module.Authority{})
+	err := db.SetupJoinTable(&module.User{}, "Authorities", &module.UserAuthority{})
+	if err != nil {
+		return err
+	}
+
+	return db.AutoMigrate(&module.User{})
 }
 
 var Users = []module.User{
 	{
-		Phone:      "12312312312",
-		Password:   module.CreatePassword(utils.MD5([]byte("123456"))),
-		UUID:       uuid.NewV4(),
-		UserName:   "admin",
-		NickName:   "超级管理员",
-		Authoritys: Authoritys,
+		Phone:       "12312312312",
+		Password:    module.CreatePassword(utils.MD5([]byte("123456"))),
+		UUID:        uuid.NewV4(),
+		UserName:    "admin",
+		NickName:    "超级管理员",
+		Authorities: Authorities,
 	},
 }
 

@@ -21,9 +21,9 @@ func (a *AuthorityService) GetAuths(uid uuid.UUID) ([]module.Authority, string, 
 	auth := module.NewFullAuthority(a.AuthorityId, a.ParentId, a.AuthorityName)
 	user, err := auth.GetUserAuths(uid.String(), global.Db)
 	if err != nil {
-		return user.Authoritys, "获取失败", err
+		return user.Authorities, "获取失败", err
 	}
-	return user.Authoritys, "获取成功", nil
+	return user.Authorities, "获取成功", nil
 }
 
 func (a *AuthorityService) CreateAuth() (string, error) {

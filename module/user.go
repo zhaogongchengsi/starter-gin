@@ -11,16 +11,16 @@ import (
 
 type User struct {
 	BaseMode
-	UUID       uuid.UUID   `json:"uuid" gorm:"index;comment:用户UUID"`
-	UserName   string      `json:"username" gorm:"index;comment:用户登录名"`
-	NickName   string      `json:"nickname" gorm:"comment:用户昵称"`
-	Email      string      `json:"email" gorm:"comment:用户邮箱"`
-	Phone      string      `json:"phone" gorm:"comment:用户手机号"`
-	Password   string      `json:"-" gorm:"comment:用户登录密码"`
-	Mode       string      `json:"mode" gorm:"default:dark; comment:用户使用的主题  黑色(dark)或白色(light)"`
-	AvatarUrl  string      `json:"avatarUrl" gorm:"comment:用户头像url"`
-	Enable     int         `json:"enable" gorm:"default:1;comment:账号使用状态 1 正常 2 封禁"`
-	Authoritys []Authority `json:"-" gorm:"many2many:user_authoritys"`
+	UUID        uuid.UUID   `json:"uuid" gorm:"index;comment:用户UUID"`
+	UserName    string      `json:"username" gorm:"index;comment:用户登录名"`
+	NickName    string      `json:"nickname" gorm:"comment:用户昵称"`
+	Email       string      `json:"email" gorm:"comment:用户邮箱"`
+	Phone       string      `json:"phone" gorm:"comment:用户手机号"`
+	Password    string      `json:"-" gorm:"comment:用户登录密码"`
+	Mode        string      `json:"mode" gorm:"default:dark; comment:用户使用的主题  黑色(dark)或白色(light)"`
+	AvatarUrl   string      `json:"avatarUrl" gorm:"comment:用户头像url"`
+	Enable      int         `json:"enable" gorm:"default:1;comment:账号使用状态 1 正常 2 封禁"`
+	Authorities []Authority `json:"-" gorm:"many2many:user_and_authorities"`
 }
 
 func (*User) TableName() string {
@@ -151,12 +151,12 @@ func (user *User) GetAuthoritysByPhone(db *gorm.DB) (list []Authority, err error
 	//pre := "Authoritys"
 	err = db.Model(u).Where("phone = ?", user.Phone).Preload(pre).Preload(clause.Associations).First(&u).Error
 
-	return u.Authoritys, err
+	return u.Authorities, err
 }
 
 func (user *User) AddAuthority(db *gorm.DB, authority []Authority) error {
-	user.Authoritys = append(user.Authoritys, authority...)
-	err := db.Model(&user).Where("uuid = ?", user.UUID).Association(user.AuthRelevancyKey()).Append(user.Authoritys)
+	user.Authorities = append(user.Authorities, authority...)
+	err := db.Model(&user).Where("uuid = ?", user.UUID).Association(user.AuthRelevancyKey()).Append(user.Authorities)
 	if err != nil {
 		return err
 	}
