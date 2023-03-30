@@ -227,7 +227,7 @@ func DeleteUserAuthority(c *gin.Context) {
 // todo
 func GetUserRouters(c *gin.Context) {
 	var page common.Page
-	err := utils.QueryStruct(c, &page)
+	err := utils.QueryBindStruct(c, &page)
 	if err != nil {
 		common.NewParamsError(c, err)
 		return

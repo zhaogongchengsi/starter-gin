@@ -31,13 +31,25 @@ func queryStruct[Q any](qFunc QueryFunc, q *Q) error {
 		typeName := field.Type.Name()
 		switch typeName {
 		case "int":
-			parseInt, err := strconv.ParseInt(value, 10, 10)
+			parseInt, err := strconv.ParseInt(value, 10, 64)
 			if err != nil {
 				return err
 			}
 			val.Elem().FieldByName(name).SetInt(parseInt)
 		case "string":
 			val.Elem().FieldByName(name).SetString(value)
+		case "uint":
+			parseUint, err := strconv.ParseUint(value, 10, 64)
+			if err != nil {
+				return err
+			}
+			val.Elem().FieldByName(name).SetUint(parseUint)
+		case "float":
+			parseFloat, err := strconv.ParseFloat(value, 10)
+			if err != nil {
+				return err
+			}
+			val.Elem().FieldByName(name).SetFloat(parseFloat)
 			// 有需要自行添加...
 		default:
 			return fmt.Errorf("%s field, of type %s, cannot be converted", name, typeName)
@@ -46,8 +58,8 @@ func queryStruct[Q any](qFunc QueryFunc, q *Q) error {
 	return nil
 }
 
-// QueryStruct 将 url 上的参数 绑定的结构体内
-func QueryStruct[Q any](c *gin.Context, q *Q) error {
+// QueryBindStruct 将 url 上的参数 绑定的结构体内
+func QueryBindStruct[Q any](c *gin.Context, q *Q) error {
 	return queryStruct[Q](func(name string) string {
 		return c.Query(name)
 	}, q)
