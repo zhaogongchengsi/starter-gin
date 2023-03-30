@@ -7,7 +7,7 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
-// GetAuthorities todo: 获取所有权限
+// GetAuthorities 获取所有权限
 func GetAuthorities(c *gin.Context) {
 	var page common.Page
 	err := utils.QueryBindStruct(c, &page)
