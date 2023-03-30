@@ -27,6 +27,28 @@ func NewUserAuthority(userId int, authorityId int) *UserAuthority {
 	return &UserAuthority{UserID: userId, AuthorityId: authorityId}
 }
 
+func (ua UserAuthority) FindUserAuthorityByAuthIds(ids []int, db *gorm.DB) ([]UserAuthority, error) {
+	var auths []UserAuthority
+	err := db.Table(ua.TableName()).Where(ua.UserAuthorityIdKey()+" in ?", ids).Find(&auths).Error
+	if err != nil {
+		return auths, err
+	}
+	return auths, err
+}
+
+func (ua UserAuthority) FirstUserAuthorityByAuthId(id int, db *gorm.DB) (a UserAuthority, e error) {
+	e = db.Table(ua.TableName()).Where(ua.UserAuthorityIdKey()+" = ?", id).First(&a).Error
+	if e != nil {
+		return a, e
+	}
+	return a, e
+}
+
+// WhetherByAuthId 通过权限id查询是否分配给某个角色  为 false 没有分配   true 为分配
+func (ua UserAuthority) WhetherByAuthId(id int, db *gorm.DB) bool {
+	return errors.Is(db.Model(ua).Where(ua.UserAuthorityIdKey()+" = ?", id).Error, gorm.ErrRecordNotFound)
+}
+
 func (ua UserAuthority) CreateUserAuth(db *gorm.DB) error {
 	err := db.Model(ua).Create(&ua).Error
 	if err != nil {
@@ -49,11 +71,6 @@ func (ua UserAuthority) DeleteUserAuth(db *gorm.DB) error {
 	return nil
 }
 
-func (ua UserAuthority) DeleteUserAuthsByAuthIds(ids []int, db gorm.DB) error {
-	var auths []UserAuthority
-	err := db.Table(ua.TableName()).Where(ua.UserAuthorityIdKey()+" in ?", ids).Find(&auths).Error
-	if err != nil {
-		return err
-	}
-	return db.Table(ua.TableName()).Delete(&auths).Error
+func (ua UserAuthority) DeleteUserAuthsByAuthId(id int, db *gorm.DB) error {
+	return db.Table(ua.TableName()).Delete(&[]UserAuthority{}, ua.UserAuthorityIdKey()+" = ?", id).Error
 }

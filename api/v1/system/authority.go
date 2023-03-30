@@ -5,6 +5,7 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/common"
 	systemService "github.com/zhaogongchengsi/starter-gin/service/system"
 	"github.com/zhaogongchengsi/starter-gin/utils"
+	"strconv"
 )
 
 // GetAuthorities 获取所有权限
@@ -45,14 +46,13 @@ func AddAuthority(c *gin.Context) {
 
 // DeleteAuthority todo: 删除权限
 func DeleteAuthority(c *gin.Context) {
-	var ids common.IDSet[int]
-	err := c.ShouldBindJSON(&ids)
+	id, err := strconv.ParseInt(c.Query("id"), 10, 64)
 	if err != nil {
 		common.NewParamsError(c, err)
 		return
 	}
 	auth := systemService.NewAuthorityService()
-	msg, err := auth.DeleteAuths(ids.Ids)
+	msg, err := auth.DeleteAuths(int(id))
 	if err != nil {
 		common.NewFailResponse().AddError(err, msg).Send(c)
 		return
