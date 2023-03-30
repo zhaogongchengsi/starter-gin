@@ -7,22 +7,24 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
-// GetAuthority todo: 获取所有权限
-func GetAuthority(c *gin.Context) {
-	uc, ok := utils.GetUserWith(c)
-	if !ok {
-		common.NewFailResponse().SendAfterChangeMessage("用户未登录请重试", c)
+// GetAuthorities todo: 获取所有权限
+func GetAuthorities(c *gin.Context) {
+	var page common.Page
+	err := utils.QueryBindStruct(c, &page)
+	if err != nil {
+		common.NewParamsError(c, err)
 		return
 	}
 
-	//auth := systemService.NewAuthorityService()
+	auth := systemService.NewAuthorityService()
 
-	//list, msg, err := auth.GetAuths(uc.UUID)
-	//if err != nil {
-	//	common.NewFailResponse().AddError(err, msg).Send(c)
-	//	return
-	//}
-	common.NewResponseWithData(uc).Send(c)
+	list, msg, err := auth.GetAuths(page)
+	if err != nil {
+		common.NewFailResponse().AddError(err, msg).Send(c)
+		return
+	}
+
+	common.NewResponseWithData(list).SendAfterChangeMessage(msg, c)
 }
 
 func AddAuthority(c *gin.Context) {

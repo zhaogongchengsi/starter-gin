@@ -94,15 +94,15 @@ func (u *User) GetAuths(uuid uuid.UUID) ([]module.Authority, string, error) {
 	return us.Authorities, "获取成功", nil
 }
 
-func (u *User) GetUserRouters() ([]module.RouterRecord, string, error) {
-	user := module.NewFindUser(u.Phone, u.Password)
-	list, err := user.GetAuthoritiesByPhone(global.Db)
+func (u *User) GetUserRouters(uid uuid.UUID) ([]module.RouterRecord, string, error) {
+	user := module.User{UUID: uid}
+	list, err := user.GetAuthRouterRecords(global.Db)
 	var routers []module.RouterRecord
 	if err != nil {
 		return routers, "获取路由失败", err
 	}
 
-	for _, authority := range list {
+	for _, authority := range list.Authorities {
 		routers = append(routers, authority.RouterRecords...)
 	}
 

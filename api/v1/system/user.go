@@ -223,15 +223,21 @@ func DeleteUserAuthority(c *gin.Context) {
 	common.NewOkResponse().SendAfterChangeMessage(msg, c)
 }
 
-// GetUserRouters todo: 获取用户所有的路由
-// todo
+// GetUserRouters 获取用户所有的路由
 func GetUserRouters(c *gin.Context) {
-	var page common.Page
-	err := utils.QueryBindStruct(c, &page)
+	uc, ok := utils.GetUserWith(c)
+
+	if !ok {
+		common.NewFailResponse().SendAfterChangeMessage("用户未登录请重试", c)
+		return
+	}
+	user := new(systemService.User)
+
+	routers, s, err := user.GetUserRouters(uc.UUID)
 	if err != nil {
-		common.NewParamsError(c, err)
+		common.NewFailResponse().AddError(err, s).Send(c)
 		return
 	}
 
-	common.NewResponseWithData(page).Send(c)
+	common.NewResponseWithData(routers).SendAfterChangeMessage(s, c)
 }

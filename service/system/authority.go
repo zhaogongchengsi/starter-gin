@@ -2,6 +2,7 @@ package system
 
 import (
 	"errors"
+	"github.com/zhaogongchengsi/starter-gin/common"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/module"
 )
@@ -16,14 +17,14 @@ func NewAuthorityService() *AuthorityService {
 	return &AuthorityService{}
 }
 
-//func (a *AuthorityService) GetAuths(uid uuid.UUID) ([]module.Authority, string, error) {
-//	auth := module.NewFullAuthority(a.AuthorityId, a.ParentId, a.AuthorityName)
-//	user, err := auth.GetUserAuths(uid.String(), global.Db)
-//	if err != nil {
-//		return user.Authorities, "获取失败", err
-//	}
-//	return user.Authorities, "获取成功", nil
-//}
+func (a *AuthorityService) GetAuths(page common.Page) ([]module.Authority, string, error) {
+	auth := new(module.Authority)
+	as, err := auth.GetAuthorities(page, global.Db)
+	if err != nil {
+		return as, "获取失败", err
+	}
+	return as, "获取成功", nil
+}
 
 func (a *AuthorityService) CreateAuth() (string, error) {
 	auth := module.NewFullAuthority(a.AuthorityId, a.ParentId, a.AuthorityName)

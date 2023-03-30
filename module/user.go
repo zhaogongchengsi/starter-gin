@@ -2,6 +2,7 @@ package module
 
 import (
 	"errors"
+	"fmt"
 	"gorm.io/gorm/clause"
 
 	uuid "github.com/satori/go.uuid"
@@ -30,6 +31,10 @@ func (*User) TableName() string {
 // AuthRelevancyKey 获取 Authority 的 关联关系的key 给 grom 使用
 func (user *User) AuthRelevancyKey() string {
 	return "Authorities"
+}
+
+func (user *User) UuidRelevancyKey() string {
+	return "uuid"
 }
 
 func CreatePassword(paw string) string {
@@ -136,11 +141,9 @@ func (user *User) GetUserAuths(uid uuid.UUID, db *gorm.DB) (*User, error) {
 	return &u, err
 }
 
-func (user *User) GetAuthoritiesByPhone(db *gorm.DB) (list []Authority, err error) {
-	var u User
-	pre := "Authoritys.RouterRecords" // 用这个可以把权限内的路由一起带出来
-	//pre := "Authoritys"
-	err = db.Model(u).Where("phone = ?", user.Phone).Preload(pre).Preload(clause.Associations).First(&u).Error
-
-	return u.Authorities, err
+func (user *User) GetAuthRouterRecords(db *gorm.DB) (us User, err error) {
+	a := new(Authority)
+	pre := user.AuthRelevancyKey() + "." + a.RouterRecordRelevancyKey() // 用这个可以把权限内的路由一起带出来
+	err = db.Model(&user).Where(fmt.Sprintf("%s = ?", user.UuidRelevancyKey()), user.UUID).Preload(pre).Preload(clause.Associations).First(&us).Error
+	return us, err
 }

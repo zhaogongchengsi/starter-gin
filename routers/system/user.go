@@ -18,11 +18,12 @@ func RegisterUserRouter(group *gin.RouterGroup) {
 	{
 		userAuthRouter.POST("changepass", apiSystem.ChangePassword) // 修改密码
 		//userAuthRouter.GET("getusers", apiSystem.GetUsers)
-		userAuthRouter.DELETE("deleteuser", apiSystem.DeleteUser)            // 删除用户
-		userAuthRouter.GET("authoritys", apiSystem.GetUserAuthorities)       // 获取用户权限
-		userRouter.POST("set_authority", apiSystem.SetUserAuthority)         // 设置用户权限
-		userRouter.DELETE("delete_authority", apiSystem.DeleteUserAuthority) // 删除用户权限
-		userRouter.GET("getrouters", apiSystem.GetUserRouters)               // 根据用户权限 获取用户路由
+		userAuthRouter.DELETE("deleteuser", apiSystem.DeleteUser)      // 删除用户
+		userAuthRouter.GET("authoritys", apiSystem.GetUserAuthorities) // 获取用户权限
+		userAuthRouter.GET("getrouters", apiSystem.GetUserRouters)     // 根据用户权限 获取用户路由
+
+		userAuthRouter.POST("set_authority", apiSystem.SetUserAuthority)         // 设置用户权限
+		userAuthRouter.DELETE("delete_authority", apiSystem.DeleteUserAuthority) // 删除用户权限
 	}
 
 }
