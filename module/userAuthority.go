@@ -48,3 +48,12 @@ func (ua UserAuthority) DeleteUserAuth(db *gorm.DB) error {
 	}
 	return nil
 }
+
+func (ua UserAuthority) DeleteUserAuthsByAuthIds(ids []int, db gorm.DB) error {
+	var auths []UserAuthority
+	err := db.Table(ua.TableName()).Where(ua.UserAuthorityIdKey()+" in ?", ids).Find(&auths).Error
+	if err != nil {
+		return err
+	}
+	return db.Table(ua.TableName()).Delete(&auths).Error
+}

@@ -22,10 +22,12 @@ func (*Authority) TableName() string {
 	return "authority"
 }
 
+// AuthorityIdKey id
 func (*Authority) AuthorityIdKey() string {
 	return "id"
 }
 
+// RouterRecordRelevancyKey "RouterRecords"
 func (*Authority) RouterRecordRelevancyKey() string {
 	return "RouterRecords"
 }
@@ -65,4 +67,44 @@ func (a *Authority) FindAuthority(db *gorm.DB) error {
 		return err
 	}
 	return nil
+}
+
+func (a *Authority) DeleteAuthority(ids []int, db *gorm.DB) error {
+
+	return db.Transaction(func(tx *gorm.DB) error {
+		var auths []Authority
+		err := db.Model(a).Where(ids).Preload(a.RouterRecordRelevancyKey()).Find(&auths).Error
+		if err != nil {
+			return err
+		}
+		if len(auths) == 0 {
+			return nil
+		}
+
+		err = db.Model(a).Delete(&auths).Error
+		if err != nil {
+			return err
+		}
+
+		ua := new(UserAuthority)
+
+		err = ua.DeleteUserAuthsByAuthIds(ids, *tx)
+		if err != nil {
+			return err
+		}
+		//var rs []RouterRecord
+		//for _, auth := range auths {
+		//	rs = append(rs, auth.RouterRecords...)
+		//}
+		//
+		//for _, r := range rs {
+		//	fmt.Printf("id: %v, name: %s\n", r.ID, r.Name)
+		//}
+		//
+		//err = db.Model(a).Association(a.RouterRecordRelevancyKey()).Delete(&rs)
+		//if err != nil {
+		//	return err
+		//}
+		return nil
+	})
 }

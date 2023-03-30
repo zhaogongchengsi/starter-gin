@@ -45,5 +45,17 @@ func AddAuthority(c *gin.Context) {
 
 // DeleteAuthority todo: 删除权限
 func DeleteAuthority(c *gin.Context) {
-
+	var ids common.IDSet[int]
+	err := c.ShouldBindJSON(&ids)
+	if err != nil {
+		common.NewParamsError(c, err)
+		return
+	}
+	auth := systemService.NewAuthorityService()
+	msg, err := auth.DeleteAuths(ids.Ids)
+	if err != nil {
+		common.NewFailResponse().AddError(err, msg).Send(c)
+		return
+	}
+	common.NewOkResponse().SendAfterChangeMessage(msg, c)
 }

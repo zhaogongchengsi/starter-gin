@@ -37,3 +37,12 @@ func (a *AuthorityService) CreateAuth() (string, error) {
 	}
 	return "创建成功", nil
 }
+
+func (a *AuthorityService) DeleteAuths(ids []int) (string, error) {
+	auth := new(module.Authority)
+	err := auth.DeleteAuthority(ids, global.Db)
+	if err != nil {
+		return "删除失败", err
+	}
+	return "删除成功", nil
+}
