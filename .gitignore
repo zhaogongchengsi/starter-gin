@@ -39,3 +39,4 @@ static/*
 ssl/*
 upload/*
 log/*
+*.local.yaml
