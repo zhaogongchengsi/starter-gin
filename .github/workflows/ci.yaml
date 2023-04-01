@@ -27,6 +27,5 @@ jobs:
           USER: ${{ secrets.USER }}
           WORKDIR: ${{ secrets.WORKDIR }}
         run:
-          each ${USER}@${HOST}:/${WORKDIR}
-          scp -r / ${USER}@${HOST}:/${WORKDIR}/
-
+          go build -o server .
+          scp -r /server ${USER}@${HOST}:/${WORKDIR}/server
