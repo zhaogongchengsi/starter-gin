@@ -27,5 +27,6 @@ jobs:
           USER: ${{ secrets.USER }}
           WORKDIR: ${{ secrets.WORKDIR }}
         run:
+          each ${USER}@${HOST}:/${WORKDIR}
           scp -r / ${USER}@${HOST}:/${WORKDIR}/
 
