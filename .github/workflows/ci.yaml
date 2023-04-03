@@ -15,17 +15,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.19
-      - name: Build
-        run:
-          go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct && go env -w CGO_ENABLED=0 && go mod tidy && go build -o server .
+#      - name: Set up Go
+#        uses: actions/setup-go@v3
+#        with:
+#          go-version: 1.19
+#      - name: Build
+#        run:
+#          go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct && go env -w CGO_ENABLED=0 && go mod tidy && go build -o server .
       - name: Push
         env:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
           WORKDIR: ${ secrets.WORKDIR }}
         run:
+          mkdir -p ~/.ssh/ && echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
           scp -o StrictHostKeyChecking=no -r ./ ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.WORKDIR }}
