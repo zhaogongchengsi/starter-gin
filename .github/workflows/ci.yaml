@@ -24,8 +24,8 @@ jobs:
           go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct && go env -w CGO_ENABLED=0 && go mod tidy && go build -o server .
       - name: Push
         env:
-          HOST: ${{secrets.HOST}}
-          USER: ${{secrets.USER}}
-          WORKDIR: ${secrets.WORKDIR}}
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+          WORKDIR: ${ secrets.WORKDIR }}
         run:
-          scp -r ./server ${{secrets.USER}}@${{secrets.HOST}}:/${{secrets.WORKDIR}}/server
+          scp -r server ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.WORKDIR }}/server
