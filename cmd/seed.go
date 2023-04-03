@@ -22,7 +22,7 @@ func seedAction(file string) {
 
 func seed(ms []string) error {
 
-	db, err := ConnDb(*c, *t, *n)
+	db, err := ConnDb(Opt.ConfigDir, Opt.ConfigType, Opt.ConfigName)
 
 	if err != nil {
 		return fmt.Errorf("seed Error: Database connection failed, please check %s and try again", err)

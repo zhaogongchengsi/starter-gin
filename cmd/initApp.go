@@ -8,6 +8,7 @@ import (
 )
 
 func InitAction() {
+
 	err := initApp()
 	if err != nil {
 		panic(err)
@@ -19,13 +20,14 @@ func InitAction() {
 }
 
 func initApp() error {
-	db, err := ConnDb(*c, *t, *n)
+	db, err := ConnDb(Opt.ConfigDir, Opt.ConfigType, Opt.ConfigName)
 
 	if err != nil {
 		return err
 	}
 
-	err = db.AutoMigrate(module.User{}, module.Authority{}, module.File{}, &module.Languages{}, &module.Language{}, module.RouterRecord{})
+	err = db.SetupJoinTable(&module.User{}, "Authorities", &module.UserAuthority{})
+	err = db.AutoMigrate(module.User{}, module.File{}, &module.Languages{}, &module.Language{}, module.RouterRecord{})
 	if err != nil {
 		return err
 	}

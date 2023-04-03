@@ -1,17 +1,15 @@
 package cmd
 
 import (
-	"flag"
 	"os"
 
 	"github.com/jessevdk/go-flags"
 	"github.com/zhaogongchengsi/starter-gin/global"
 )
 
-var c = flag.String("c", "./", "Directory where configuration files are stored")
-var t = flag.String("t", "yaml", "Type of configuration file")
-var n = flag.String("n", "config", "Name of the configuration file")
-
+// var c = flag.String("c", "./", "Directory where configuration files are stored")
+// var t = flag.String("t", "yaml", "Type of configuration file")
+// var n = flag.String("n", "config", "Name of the configuration file")
 type Options struct {
 	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"./"`
 	ConfigType string       `short:"t" long:"configType" description:"Type of configuration file" default:"yaml"`
@@ -23,15 +21,17 @@ type Options struct {
 	Init       func()       `short:"i" long:"init" description:"Initialize Apply initialize model and insert seed data"`
 }
 
+var Opt Options
+
 func Parse() error {
 
-	var opt Options
-	opt.Seed = seedAction
-	opt.Ssl = sslAction
-	opt.AutoMig = autoMigAction
-	opt.Init = InitAction
+	//var opt Options
+	Opt.Seed = seedAction
+	Opt.Ssl = sslAction
+	Opt.AutoMig = autoMigAction
+	Opt.Init = InitAction
 
-	_, err := flags.Parse(&opt)
+	_, err := flags.Parse(&Opt)
 
 	if isH := flags.WroteHelp(err); isH {
 		os.Exit(0)
@@ -41,12 +41,12 @@ func Parse() error {
 		return err
 	}
 
-	global.ConfigDirPath = opt.ConfigDir
-	global.ConfigName = opt.ConfigName
-	if ok := include([]string{"yaml", "json"}, opt.ConfigType); !ok {
+	global.ConfigDirPath = Opt.ConfigDir
+	global.ConfigName = Opt.ConfigName
+	if ok := include([]string{"yaml", "json"}, Opt.ConfigType); !ok {
 		global.ConfigType = "yaml"
 	} else {
-		global.ConfigType = opt.ConfigType
+		global.ConfigType = Opt.ConfigType
 	}
 
 	return nil

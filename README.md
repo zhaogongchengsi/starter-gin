@@ -21,11 +21,17 @@ go build main.go
   -h, --help:        help
 ```
 
-### Precommand
+### command
 ```sh
 -c="./" # Specify the configuration file directory
 -t="yaml" # Specify configuration file type
 -n="config" # Specify the configuration file name
+```
+
+### Init 
+```shell
+# Initializing app config.local will be ignored by git
+go run main.go -c "./" -t yaml  -n "config.local" -i
 ```
 
 ### AutoMigrate

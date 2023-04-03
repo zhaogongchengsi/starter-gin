@@ -19,7 +19,7 @@ func autoMigAction(ms string) {
 
 func AutoMigrateModule(ms []string) error {
 
-	db, err := ConnDb(*c, *t, *n)
+	db, err := ConnDb(Opt.ConfigDir, Opt.ConfigType, Opt.ConfigName)
 	if err != nil {
 		return err
 	}
