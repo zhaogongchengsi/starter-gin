@@ -28,5 +28,4 @@ jobs:
           USER: ${{ secrets.USER }}
           WORKDIR: ${ secrets.WORKDIR }}
         run:
-          ls
-          scp -r -o StrictHostKeyChecking=no ./ ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.WORKDIR }}
+          scp -o StrictHostKeyChecking=no -r ./ ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.WORKDIR }}
