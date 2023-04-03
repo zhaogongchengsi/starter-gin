@@ -28,6 +28,5 @@ jobs:
           USER: ${{ secrets.USER }}
           WORKDIR: ${ secrets.WORKDIR }}
         run:
-          cwd
           ls
           scp -r -o StrictHostKeyChecking=no server ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.WORKDIR }}/server
