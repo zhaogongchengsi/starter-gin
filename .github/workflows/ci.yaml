@@ -28,4 +28,6 @@ jobs:
           USER: ${{ secrets.USER }}
           WORKDIR: ${ secrets.WORKDIR }}
         run:
-          scp -r server ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.WORKDIR }}/server
+          cwd
+          ls
+          scp -r -o StrictHostKeyChecking=no server ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.WORKDIR }}/server
