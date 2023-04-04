@@ -8,15 +8,8 @@ RUN go env -w GO111MODULE=on \
     && go env -w CGO_ENABLED=0 \
     && go env \
     && go mod tidy \
-    && go build -o server .
-#ENTRYPOINT ./server -c ./ -t yaml -n config.pro
+    && go build -o server . \
+    && sudo mkdir "logs" \
+    && sudo mkdir "upload"
+ENTRYPOINT ./server -c ./ -t yaml -n config.local
 EXPOSE 80
-
-#ENTRYPOINT ./server -c ./ -t yaml -n config.pro
-#FROM alpine:latest
-#WORKDIR /usr/src/app
-#COPY --from=0 /usr/src/app ./
-#COPY --from=0 /usr/src/app/resource ./resource/
-#COPY --from=0 /usr/src/app/config.pro.yaml ./
-
-
