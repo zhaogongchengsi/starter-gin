@@ -45,13 +45,12 @@ func main() {
 
 	global.Db = db
 
-	rdb, err := core.ConnectRedisServer(global.AppConfig)
-
-	if err != nil {
-		panic(err)
-	}
-
-	global.Redis = rdb
+	// 开启这句 连接 redis
+	//rdb, err := core.ConnectRedisServer(global.AppConfig)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//global.Redis = rdb
 
 	r := routers.CreateAppRouter(global.AppConfig)
 
