@@ -11,18 +11,19 @@ on:
 
 jobs:
 # 打开开启主分支 ci 可发送到生产环境
-#  build:
-#    if: ${{ github.event.pull_request.merged }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Push
-#        env:
-#          KEY: ${{ secrets.KEY }}
-#          HOST: ${{ secrets.HOST }}
-#          USER: ${{ secrets.USER }}
-#          WORKDIR: ${ secrets.WORKDIR }}
-#        run: |
+  build:
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Push
+        env:
+          KEY: ${{ secrets.KEY }}
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+          WORKDIR: ${ secrets.WORKDIR }}
+        run: |
+          echo "Release production environment"
 #          mkdir -p ~/.ssh/ && echo "$KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
 #          ssh-keyscan github.com >> ~/.ssh/known_hosts
 #          scp -o StrictHostKeyChecking=no -r ./* ${{ secrets.USER }}@${{ secrets.HOST }}:/${{ secrets.WORKDIR }}
