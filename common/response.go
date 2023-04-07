@@ -71,6 +71,7 @@ func (R *Response[D]) Send(c *gin.Context) {
 }
 
 func (R *Response[D]) AddError(err error, msg string) *Response[D] {
+
 	R.Error = fmt.Sprintf(`[%s] %s`, AppId, err.Error())
 	R.Message = msg
 	return R

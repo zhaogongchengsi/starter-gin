@@ -69,7 +69,7 @@ func UpLoad(c *gin.Context) {
 
 }
 
-// 多个文件上传
+// UploadMult 多个文件上传
 func UploadMult(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	files := form.File["files"]
@@ -92,6 +92,14 @@ func UploadMult(c *gin.Context) {
 }
 
 func Health(c *gin.Context) {
+
+	info := c.Query("info")
+
+	if len(info) < 1 {
+		common.NewOkResponse().SendAfterChangeMessage("ok", c)
+		return
+	}
+
 	var health utils.Health
 	os := utils.NewOs()
 	health.Os = *os
