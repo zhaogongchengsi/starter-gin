@@ -1,12 +1,10 @@
 package global
 
 import (
-	"github.com/go-redis/redis/v8"
 	"github.com/zhaogongchengsi/starter-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/core/store"
 	"github.com/zhaogongchengsi/starter-gin/utils"
 	"go.uber.org/zap"
-	"net/http"
-
 	// "github.com/songzhibin97/gkit/cache/local_cache"
 	"gorm.io/gorm"
 )
@@ -22,12 +20,15 @@ var (
 )
 
 var (
-	Server *http.Server  = nil
-	Db     *gorm.DB      = nil
-	Redis  *redis.Client = nil
-	Logger *zap.Logger   = nil
-	// 本地缓存
-	// LocalCache local_cache.Cache
+	//Server           *http.Server  = nil
+
+	Db *gorm.DB = nil
+
+	//Redis            *redis.Client = nil
+
+	Logger *zap.Logger = nil
+
+	CaptchaStore *store.CaptchaBucket = store.NewCaptchaBucket()
 )
 
 func ReadConfig(ConfigDirPath, ConfigType, name string) (conf *config.Config, err error) {

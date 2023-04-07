@@ -44,11 +44,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// 使用 redis
-	// var store = core.NewRedisStore(global.Redis)
-
 	if gin.Mode() == gin.ReleaseMode {
-		if isOk := store.Verify(loginRes.Captcha.Id, loginRes.Captcha.Value, true); isOk {
+		if isOk := global.CaptchaStore.Verify(loginRes.Captcha.Id, loginRes.Captcha.Value, true); isOk {
 			common.NewFailResponse().SendAfterChangeMessage("验证码验证失败", c)
 			return
 		}

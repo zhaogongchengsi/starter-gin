@@ -9,6 +9,7 @@ func RegisterBaseRouter(group *gin.RouterGroup) {
 	baseRouter := group.Group("base")
 	{
 		baseRouter.GET("captcha", apiSystem.Captcha)
+		baseRouter.GET("addCaptchaBlacklist", apiSystem.AddCaptchaBlacklist)
 		baseRouter.POST("upload", apiSystem.UpLoad)
 		baseRouter.POST("upload_mult", apiSystem.UploadMult)
 		baseRouter.GET("health", apiSystem.Health)
