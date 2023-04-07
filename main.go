@@ -38,6 +38,13 @@ func main() {
 	zap.ReplaceGlobals(global.Logger)
 
 	db, err := core.ConnectDataBaseServer(global.AppConfig)
+	defer func() {
+		db, _ := db.DB()
+		err := db.Close()
+		if err != nil {
+			return
+		}
+	}()
 
 	if err != nil {
 		panic(err)

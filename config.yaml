@@ -37,13 +37,13 @@ Zap:
 # -------------数据库相关配置
 DataBase:
   # postgres | mysql | ...
-  DbType: postgres
+  DbType: mysql
   Username: root
   Password: 123456
-  Port: 8090
+  Port: 8089
   Url: localhost
   # starter(mysql) | root (postgres)
-  DbName: root
+  DbName: zzhstarter
   Charset: utf8mb4
   MaxIdleConns: 10
   MaxOpenConns: 100

@@ -31,7 +31,7 @@ go build main.go
 ### Init 
 ```shell
 # Initializing app config.local will be ignored by git
-go run main.go -c "./" -t yaml  -n "config.local" -i
+go run main.go -c "./" -t yaml  -n "config" -i
 ```
 
 ### AutoMigrate

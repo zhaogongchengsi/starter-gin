@@ -29,7 +29,7 @@ go build main.go
 ### Init
 ```shell
 # 初始化app config.local 将会被git 忽略
-go run main.go -c "./" -t yaml  -n "config.local" -i
+go run main.go -c "./" -t yaml  -n "config" -i
 ```
 
 ### AutoMigrate

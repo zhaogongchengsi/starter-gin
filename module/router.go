@@ -1,5 +1,7 @@
 package module
 
+import "gorm.io/gorm"
+
 type RouterMeTa struct {
 	Title     string `json:"title" gorm:"comment:路由标题"`
 	IsMenu    bool   `json:"isMenu" gorm:"comment:是否需要在菜单栏显示"`
@@ -20,6 +22,11 @@ type RouterRecord struct {
 	Authoritys []Authority `json:"-" gorm:"many2many:authority_routers;"`
 }
 
-func (RouterRecord) TableName() string {
+func (*RouterRecord) TableName() string {
 	return "router_record"
+}
+
+func (r *RouterRecord) GetRouters(db *gorm.DB) (routers []RouterRecord, err error) {
+	err = db.Model(r).Find(&routers).Error
+	return routers, err
 }
