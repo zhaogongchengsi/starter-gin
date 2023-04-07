@@ -54,12 +54,12 @@ func CreateAppServer(conf *config.Config, router *gin.Engine) {
 
 func ListenAppServe(srv *http.Server) {
 	if err := srv.ListenAndServe(); err != nil {
-		fmt.Printf("Service startup failed %v\n", err)
+		utils.Error("Service startup failed:  %v\n", err)
+		panic(err)
 	}
 }
 
 func ListenAndServeTLS(srv *http.Server, certFile string, keyFile string) {
-
 	err := srv.ListenAndServeTLS(certFile, keyFile)
 	if err != nil {
 		fmt.Printf("Service startup failed %v\n", err)

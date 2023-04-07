@@ -115,19 +115,19 @@ type ChangePasswordReq struct {
 
 // ChangePassword 修改密码
 func ChangePassword(c *gin.Context) {
-	var changeinfo ChangePasswordReq
-	err := c.ShouldBindJSON(&changeinfo)
+	var changeling ChangePasswordReq
+	err := c.ShouldBindJSON(&changeling)
 	if err != nil {
 		common.NewParamsError(c, err)
 		return
 	}
 
 	user := systemService.User{
-		Phone:    changeinfo.Phone,
-		Password: changeinfo.OldPassword,
+		Phone:    changeling.Phone,
+		Password: changeling.OldPassword,
 	}
 
-	us, err := user.ChangePassword(changeinfo.NewPassword)
+	us, err := user.ChangePassword(changeling.NewPassword)
 
 	if err != nil {
 		common.NewFailResponse().AddError(err, "修改失败").Send(c)

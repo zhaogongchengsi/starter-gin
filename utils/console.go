@@ -85,10 +85,18 @@ func (l Console) Warning(format string, text ...any) {
 	l.print(YellowText, format, text...)
 }
 
+func (l Console) Error(format string, text ...any) {
+	l.print(ReaText, format, text...)
+}
+
 func Success(format string, text ...any) {
 	Log.Success(format, text...)
 }
 
 func Warning(format string, text ...any) {
 	Log.Warning(format, text...)
+}
+
+func Error(format string, text ...any) {
+	Log.Error(format, text...)
 }

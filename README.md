@@ -8,7 +8,20 @@ go run main.go
 go build main.go
 ```
 
-[Online API Documentation](https://www.apifox.cn/apidoc/project-2379970/api-65717385)
+[API Documentation](https://www.apifox.cn/apidoc/project-2379970/api-65717385)
+
+## Live reload for Go apps
+
+Need to install [air](https://github.com/cosmtrek/air)
+```shell
+# install
+go install github.com/cosmtrek/air@latest
+# init air
+air init
+# start
+air
+```
+
 
 
 ## Command
