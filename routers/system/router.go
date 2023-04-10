@@ -10,5 +10,7 @@ func RegisterRouterRecordRouter(group *gin.RouterGroup) {
 	router := group.Group("router").Use(middleware.JWTAuth())
 	{
 		router.GET("routers", apiSystem.GetRouters)
+		router.POST("create_router", apiSystem.CreateRouter)
+		router.DELETE("delete_router", apiSystem.DeleteRouter)
 	}
 }

@@ -25,6 +25,7 @@ var Routers = []module.RouterRecord{
 			IsMenu: true,
 			Icon:   "icon-dashboard",
 		},
+		Sort: 0,
 	},
 	{
 		Pid:       1,
@@ -37,6 +38,7 @@ var Routers = []module.RouterRecord{
 			IsMenu: true,
 			Icon:   "icon-common",
 		},
+		Sort: 1,
 	},
 	{
 		Pid:       0,
@@ -49,6 +51,7 @@ var Routers = []module.RouterRecord{
 			IsMenu: true,
 			Icon:   "icon-exclamation-polygon-fill",
 		},
+		Sort: 2,
 	},
 	{
 		Pid:       0,
@@ -61,6 +64,7 @@ var Routers = []module.RouterRecord{
 			IsMenu: true,
 			Icon:   "icon-calendar",
 		},
+		Sort: 3,
 	},
 	{
 		Pid:       4,
@@ -73,5 +77,6 @@ var Routers = []module.RouterRecord{
 			IsMenu: true,
 			Icon:   "icon-file",
 		},
+		Sort: 4,
 	},
 }

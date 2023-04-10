@@ -1,6 +1,9 @@
 package module
 
-import "gorm.io/gorm"
+import (
+	"fmt"
+	"gorm.io/gorm"
+)
 
 type RouterMeTa struct {
 	Title     string `json:"title" gorm:"comment:路由标题"`
@@ -26,7 +29,21 @@ func (*RouterRecord) TableName() string {
 	return "router_record"
 }
 
+func (*RouterRecord) GetIdKey() string {
+	return "id"
+}
+
 func (r *RouterRecord) GetRouters(db *gorm.DB) (routers []RouterRecord, err error) {
 	err = db.Model(r).Find(&routers).Error
 	return routers, err
+}
+
+func (r *RouterRecord) CreateRouter(db *gorm.DB) error {
+	return db.Model(r).Create(&r).Error
+}
+
+func (r *RouterRecord) DeleteRouterRecord(db *gorm.DB, id int) error {
+	fmt.Println(id)
+	r.BaseMode = BaseMode{ID: uint(id)}
+	return db.Model(r).Where(r.GetIdKey()+" = ?", id).Unscoped().Delete(&r).Error
 }

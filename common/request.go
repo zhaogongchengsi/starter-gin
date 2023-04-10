@@ -10,3 +10,7 @@ type Page struct {
 type IDSet[A int | uint | uint8 | string | float64 | float32] struct {
 	Ids []A `json:"ids" from:"ids" query:"pageSize"`
 }
+
+type ID[I int | uint | uint8 | uint16 | float32 | float64] struct {
+	Id I `uri:"id" json:"id" query:"id"`
+}
