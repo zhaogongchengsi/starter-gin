@@ -36,18 +36,29 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 
-		p := timeprogress(claims.IssuedAt.Time, claims.ExpiresAt.Time)
+		user := claims.Info
+
+		if global.Blacklist.IsExist(user.UUID.String()) {
+			common.NewFailResponse().AddError(err, "非法token!!!").Send(c)
+			c.Abort()
+			return
+		}
+
+		// p 为 1 - 100
+		p := timeProgress(claims.IssuedAt.Time, claims.ExpiresAt.Time)
 
 		// token 有效时间小于十分之一 重新签发新token
 		if p < 10 {
 			jwtConf := global.AppConfig.Jwt
 			it := time.Now()
 			et := it.Add(time.Duration(jwtConf.ExpiresAt) * time.Minute)
-			user := claims.Info
-			token, err = utils.CreateToken(user, jwtConf.SigningKey, it, et, jwtConf.Issuer)
-			c.Header("new-authorization", token)
+			// 续签 token 发生错误 直接忽略， token 过期后重新登陆
+			t, _ := utils.CreateToken(user, jwtConf.SigningKey, it, et, jwtConf.Issuer)
+			c.Header("new-authorization", t)
 			c.Header("new-expires-at", et.String())
 			c.Header("new-issued-at", it.String())
+			// 将 老 token 放入 黑名单中 过期时间分钟为单位 p 为 1 - 100
+			global.Blacklist.AddBucket(user.UUID.String(), token, time.Duration(p))
 		}
 
 		utils.ShouldBindUserWith[module.User](c, claims)
@@ -55,10 +66,10 @@ func JWTAuth() gin.HandlerFunc {
 	}
 }
 
-func timeprogress(startdate, enddate time.Time) int {
+func timeProgress(startDate, endDate time.Time) int {
 	now := time.Now().Unix()
-	sut := startdate.Unix()
-	eut := enddate.Unix()
+	sut := startDate.Unix()
+	eut := endDate.Unix()
 
 	if now > eut {
 		return 0
@@ -68,8 +79,8 @@ func timeprogress(startdate, enddate time.Time) int {
 		return 100
 	}
 
-	xaxised := eut - sut
-	xaxising := eut - now
+	xaxised := eut - sut  // 尺子
+	xaxising := eut - now // 进度
 
 	scale := math.Ceil(float64((xaxised) / 100)) // 计算出刻度
 	plan := math.Ceil(float64(xaxising) / scale) // 根据刻度计算出当前时间占用的进度
