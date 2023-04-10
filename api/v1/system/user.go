@@ -66,8 +66,11 @@ func Login(c *gin.Context) {
 	}
 
 	jwtConf := global.AppConfig.Jwt
+
 	// 删除隐私信息
 	user.Password = ""
+	user.Phone = ""
+
 	token := ""
 	it := time.Now()
 	et := it.Add(time.Duration(jwtConf.ExpiresAt) * time.Minute)
