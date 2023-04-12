@@ -21,7 +21,7 @@ type User struct {
 	Mode        string      `json:"mode" gorm:"default:dark; comment:用户使用的主题  黑色(dark)或白色(light)"`
 	AvatarUrl   string      `json:"avatarUrl" gorm:"comment:用户头像url"`
 	Enable      int         `json:"enable" gorm:"default:1;comment:账号使用状态 1 正常 2 封禁"`
-	Authorities []Authority `json:"-" gorm:"many2many:user_and_authorities"`
+	Authorities []Authority `json:"authorities" gorm:"many2many:user_and_authorities"`
 }
 
 func (*User) TableName() string {
@@ -67,7 +67,7 @@ func NewFindUser(phone, pass string) *User {
 
 func (user *User) FirstUser(db *gorm.DB, query any, values ...any) (*User, error) {
 	var u User
-	result := db.Model(u).Where(query, values...).First(&u)
+	result := db.Model(u).Where(query, values...).Preload(user.AuthRelevancyKey()).First(&u)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return &User{}, gorm.ErrRecordNotFound
 	}
