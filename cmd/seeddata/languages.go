@@ -33,6 +33,7 @@ var Languages = []module.Languages{
 			{Key: "router.title.abnormal", Value: "Abnormal"},
 			{Key: "router.title.toolLibrary", Value: "Tool Library"},
 			{Key: "router.title.fileSplitting", Value: "file splitting"},
+			{Key: "router.title.roles", Value: "Role management"},
 		},
 	},
 	{
@@ -55,6 +56,7 @@ var Languages = []module.Languages{
 			{Key: "router.title.abnormal", Value: "异常组件"},
 			{Key: "router.title.toolLibrary", Value: "工具库"},
 			{Key: "router.title.fileSplitting", Value: "文件切分"},
+			{Key: "router.title.roles", Value: "角色管理"},
 		},
 	},
 }
