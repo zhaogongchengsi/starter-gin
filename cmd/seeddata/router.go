@@ -14,6 +14,7 @@ func CrateRouterSeedData(db *gorm.DB) error {
 }
 
 var Routers = []module.RouterRecord{
+	// 工作台路由
 	{
 		Pid:       0,
 		Path:      "dashboard",
@@ -40,43 +41,18 @@ var Routers = []module.RouterRecord{
 		},
 		Sort: 1,
 	},
+	// 子仓库
 	{
 		Pid:       0,
-		Path:      "notComponent",
-		Component: "/views/notComponent",
-		Name:      "notExist",
+		Path:      "roles",
+		Component: "/views/roles/index.vue",
+		Name:      "roleAdmin",
 		Meta: module.RouterMeTa{
-			Title:  "router.title.abnormal",
-			Auth:   false,
+			Title:  "router.title.roles",
+			Auth:   true,
 			IsMenu: true,
-			Icon:   "icon-exclamation-polygon-fill",
+			Icon:   "icon-common",
 		},
 		Sort: 2,
-	},
-	{
-		Pid:       0,
-		Path:      "utils",
-		Component: "/views/utils",
-		Name:      "utils",
-		Meta: module.RouterMeTa{
-			Title:  "router.title.toolLibrary",
-			Auth:   false,
-			IsMenu: true,
-			Icon:   "icon-calendar",
-		},
-		Sort: 3,
-	},
-	{
-		Pid:       4,
-		Path:      "fileSplit",
-		Component: "/views/utils/FileSplit",
-		Name:      "fileSplit",
-		Meta: module.RouterMeTa{
-			Title:  "router.title.fileSplitting",
-			Auth:   false,
-			IsMenu: true,
-			Icon:   "icon-file",
-		},
-		Sort: 4,
 	},
 }

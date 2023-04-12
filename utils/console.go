@@ -89,6 +89,10 @@ func (l Console) Error(format string, text ...any) {
 	l.print(ReaText, format, text...)
 }
 
+func (l Console) Info(format string, text ...any) {
+	l.print(BlueText, format, text...)
+}
+
 func Success(format string, text ...any) {
 	Log.Success(format, text...)
 }
@@ -99,4 +103,8 @@ func Warning(format string, text ...any) {
 
 func Error(format string, text ...any) {
 	Log.Error(format, text...)
+}
+
+func Info(format string, text ...any) {
+	Log.Info(format, text...)
 }

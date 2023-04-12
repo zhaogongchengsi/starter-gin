@@ -18,6 +18,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
 }
 
 //go:generate go env -w GO111MODULE=on

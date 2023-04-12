@@ -3,6 +3,7 @@ package core
 import (
 	"errors"
 	"fmt"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 	"time"
 
 	"github.com/zhaogongchengsi/starter-gin/config"
@@ -21,6 +22,8 @@ func ConnectDataBaseServer(cfg *config.Config) (*gorm.DB, error) {
 
 	dbConfig := cfg.DataBase
 
+	utils.Info("开始连接数据库...\n")
+
 	connect, err := GetDBConnect(&dbConfig)
 
 	if err != nil {
@@ -38,6 +41,8 @@ func ConnectDataBaseServer(cfg *config.Config) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	utils.Success("✔　连接数据库完成\n")
 
 	sqlDB, err := DB.DB()
 

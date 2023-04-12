@@ -37,7 +37,7 @@ var (
 )
 
 func p(ConfigDirPath, ConfigType, name string) {
-	utils.Success("\n正在从 [%s] 读取 [%s] 类型的配置文件：[ %s ]\n", ConfigDirPath, ConfigType, name)
+	utils.Info("\n正在从 [ %s ] 读取 [ %s ] 类型的配置文件：[ %s ]\n", ConfigDirPath, ConfigType, name)
 }
 
 func ReadConfig(ConfigDirPath, ConfigType, name string) (conf *config.Config, err error) {
@@ -55,6 +55,8 @@ func ReadConfig(ConfigDirPath, ConfigType, name string) (conf *config.Config, er
 	if err != nil {
 		return conf, err
 	}
+
+	utils.Info("✔ 读取配置完成\n")
 
 	return conf, nil
 }

@@ -12,6 +12,9 @@ import (
 )
 
 func CreateLogger(cfg *config.Config) (*zap.Logger, error) {
+
+	utils.Info("开始创建日志服务...\n")
+
 	conf := cfg.Zap
 	if ok, _ := utils.DirPathExists(conf.Director); !ok {
 		fmt.Printf("Create %s folder", conf.Director)
@@ -32,6 +35,8 @@ func CreateLogger(cfg *config.Config) (*zap.Logger, error) {
 	logger := zap.New(core)
 
 	logger.Sugar()
+
+	utils.Success("✔　日志服务创建成功\n")
 
 	return logger, nil
 }

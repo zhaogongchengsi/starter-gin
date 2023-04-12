@@ -76,3 +76,5 @@ func (a *Authority) DeleteAuthority(id int, db *gorm.DB) error {
 	}
 	return nil
 }
+
+// todo: 1:给角色分配资源 2: 删除角色拥有的资源 3: 复制角色
