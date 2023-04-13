@@ -1,65 +1,46 @@
-# 使用 golang 基于 gin 框架创建的一个后端模板
+# 一个 gin 模板项目
 
-## 启动
+[英文文档](./README.md)
 
-```sh
-go run main.go
-go build main.go
-```
+[API 接口文档](https://www.apifox.cn/apidoc/project-2379970/api-65717385)
 
-[在线 Api 文档](https://www.apifox.cn/apidoc/project-2379970/api-65717385)
+[starter-vue](https://github.com/zhaogongchengsi/starter-vue) 对应的前端项目
 
 ## 命令
 
-```
-  -c, --config:      设置配置文件的路径 (默认:./)
-  -t, --configType:  设置配置文件的类型 (默认: yaml)
-  -s, --seed:        初始化一些数据库的种子数据，需要指定数据库的url
-  -g, --gsc:         生成一个本地的ssl证书
-  -h, --help:        帮助
-```
-
-### 前置指令
+### Server
+*cmd/server/main.go* 服务的入口文件
 ```sh
--c="./" # 指定配置文件目录
--t="yaml" # 指定配置文件类型
--n="config" # 指定配置文件名字
+# 启动
+go run /cmd/server/main.go
+# 打包
+go build /cmd/server/main.go
 ```
 
-### Init
+### tools
+*cmd/tools/main.go* An 一个工具类的可执行文件
+```sh
+# 如果第一次编译后 tools 下没有改动，可以不用编译
+go build /cmd/tools/main.go
+```
+
+## 热更新
+
+需要先下载[air](https://github.com/cosmtrek/air)
 ```shell
-# 初始化app config.local 将会被git 忽略
-go run main.go -c "./" -t yaml  -n "config" -i
+# install
+go install github.com/cosmtrek/air@latest
+# init air
+air init
+# start
+air
 ```
 
-### AutoMigrate
-Automatic model migration
-```sh
-go run main.go --auto all
-go run main.go -a all
-go run main.go -a "user1,user2" # 指定模型名字 多个使用逗号分隔
-go run main.go -c "./configs" -t yaml -n config -a "user" # 指定配置文件 以指定数据库
-```
-
-### Seed
-Generate seed data
-```sh
-go run main.go --seed all
-go run main.go -s all
-go run main.go -s "user1,user2" # 指定模型名字 多个使用逗号分隔
-go run main.go -c "./configs" -t yaml -n config -s "user1" # 指定配置文件 以指定数据库
-```
-
-### Gsc
-
-创建证书之前需要确认存放证书的文件夹是否存在 例如 ssl文件夹必须存在
-
-```
-go run main.go -g ssl
-```
-
-## 启动一个开发环境
+## 快速启动开发环境
 
 ```sh
-docker compose -f "docker-compose-dev.yaml" up -d --build
+# Check if the file is normal
+docker-compose -f ./deploy/docker-compose-dev.yaml config
+# start
+docker compose -f "./deploy/docker-compose-dev.yaml" up -d --build
 ```
