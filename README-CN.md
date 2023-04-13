@@ -20,8 +20,9 @@ go build /cmd/server/main.go
 ### tools
 *cmd/tools/main.go* An 一个工具类的可执行文件
 ```sh
-# 如果第一次编译后 tools 下没有改动，可以不用编译
-go build /cmd/tools/main.go
+go build -o ./bin/tool /cmd/tools/main.go
+
+./bin/tool -h
 ```
 
 ## 热更新

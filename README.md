@@ -6,6 +6,17 @@
 
 [starter-vue](https://github.com/zhaogongchengsi/starter-vue) corresponding front-end project
 
+
+## Build
+```shell
+# Build all
+make
+# Build separately
+make build-windows
+make build-linux
+make build-macos
+```
+
 ## Command
 
 ### Server
@@ -20,8 +31,9 @@ go build /cmd/server/main.go
 ### tools
 *cmd/tools/main.go* An executable of a utility class
 ```sh
-# If there are no changes in tools, you can only compile once.
-go build /cmd/tools/main.go
+go build -o bin/tool.exe ./cmd/tools/main.go
+
+./bin/tool.exe -h
 ```
 
 ## Live reload for Go apps

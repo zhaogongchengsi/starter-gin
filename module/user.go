@@ -21,7 +21,7 @@ type User struct {
 	Mode        string      `json:"mode" gorm:"default:dark; comment:用户使用的主题  黑色(dark)或白色(light)"`
 	AvatarUrl   string      `json:"avatarUrl" gorm:"comment:用户头像url"`
 	Enable      int         `json:"enable" gorm:"default:1;comment:账号使用状态 1 正常 2 封禁"`
-	Authorities []Authority `json:"authorities" gorm:"many2many:user_and_authorities"`
+	Authorities []Authority `json:"authorities" gorm:"many2many:user_authorities"`
 }
 
 func (*User) TableName() string {

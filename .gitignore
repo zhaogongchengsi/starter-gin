@@ -42,3 +42,4 @@ log/*
 *.local.yaml
 tmp/*
 .tmp/*
+bin/*

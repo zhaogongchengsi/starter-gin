@@ -20,7 +20,7 @@ func (UserAuthority) UserAuthorityIdKey() string {
 }
 
 func (UserAuthority) TableName() string {
-	return "user_and_authorities"
+	return "user_authorities"
 }
 
 func NewUserAuthority(userId int, authorityId int) *UserAuthority {
