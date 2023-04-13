@@ -5,9 +5,9 @@ tmp_dir = ".tmp"
 [build]
   args_bin = []
   bin = "tmp\\main.exe"
-  cmd = "go build -o ./tmp/main.exe ."
+  cmd = "go build -o ./tmp/main.exe cmd/server/main.go"
   delay = 0
-  exclude_dir = ["assets", "tmp", ".tmp","vendor", "testdata", ".github", "cmd", ".idea", "static", "upload", "ssl", "logs", "deploy"]
+  exclude_dir = ["assets", "tmp", ".tmp","vendor", "testdata", ".github", ".idea", "static", "upload", "ssl", "logs", "deploy"]
   exclude_file = [".gitignore", "README.md", "README-CN.md", "Dockerfile"]
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
@@ -24,7 +24,7 @@ tmp_dir = ".tmp"
   stop_on_error = false
 
 [color]
-  app = ""
+  app = "starter"
   build = "yellow"
   main = "magenta"
   runner = "green"

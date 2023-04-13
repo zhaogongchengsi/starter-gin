@@ -7,9 +7,6 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/global"
 )
 
-// var c = flag.String("c", "./", "Directory where configuration files are stored")
-// var t = flag.String("t", "yaml", "Type of configuration file")
-// var n = flag.String("n", "config", "Name of the configuration file")
 type Options struct {
 	ConfigDir  string       `short:"c" long:"config" description:"Directory where configuration files are stored" default:"./"`
 	ConfigType string       `short:"t" long:"configType" description:"Type of configuration file" default:"yaml"`
