@@ -12,16 +12,7 @@ jobs:
   publish-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
       - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y sshpass
-      - name: Add SSH key to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -p 22 ${{ secrets.HOST }} >> ~/.ssh/known_hosts
       - name: Push
         env:
           KEY: ${{ secrets.KEY }}
