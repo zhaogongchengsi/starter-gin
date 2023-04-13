@@ -1,7 +1,8 @@
-package cmd
+package actions
 
 import (
-	"github.com/zhaogongchengsi/starter-gin/cmd/seeddata"
+	"github.com/zhaogongchengsi/starter-gin/cmd/tools/options"
+	"github.com/zhaogongchengsi/starter-gin/cmd/tools/seeddata"
 	"github.com/zhaogongchengsi/starter-gin/module"
 	"github.com/zhaogongchengsi/starter-gin/utils"
 	"os"
@@ -20,7 +21,7 @@ func InitAction() {
 }
 
 func initApp() error {
-	db, err := ConnDb(Opt.ConfigDir, Opt.ConfigType, Opt.ConfigName)
+	db, err := ConnDb(options.Option.Config)
 
 	if err != nil {
 		return err

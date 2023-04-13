@@ -6,7 +6,6 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/core"
 	"github.com/zhaogongchengsi/starter-gin/global"
 	"github.com/zhaogongchengsi/starter-gin/routers"
-	"github.com/zhaogongchengsi/starter-gin/utils"
 	"go.uber.org/zap"
 )
 
@@ -17,17 +16,15 @@ import (
 
 func main() {
 	var configFile string
+	var mode string
 	flag.StringVar(&configFile, "c", "./config.yaml", "the configuration file")
+	flag.StringVar(&mode, "m", "debug", "debug, release, test")
 	flag.Parse()
-
-	utils.Info("开始读取配置文件 %s\n", configFile)
 
 	serverConfig, err := config.LoadServerConfig(configFile)
 	if err != nil {
 		panic(err)
 	}
-
-	utils.Info("✔ 读取配置文件成功 %s\n", configFile)
 
 	global.AppConfig = serverConfig
 
@@ -63,7 +60,7 @@ func main() {
 	//}
 	//global.Redis = rdb
 
-	r := routers.CreateAppRouter(global.AppConfig)
+	r := routers.CreateAppRouter(global.AppConfig, mode)
 
 	core.CreateAppServer(global.AppConfig, r)
 

@@ -1,4 +1,4 @@
-package cmd
+package actions
 
 import (
 	"os"
@@ -6,7 +6,7 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/utils"
 )
 
-func sslAction(s string) {
+func SslAction(s string) {
 	err := generateSsl(s)
 	if err != nil {
 		panic(err)

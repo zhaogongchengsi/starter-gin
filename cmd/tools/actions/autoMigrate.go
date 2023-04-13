@@ -1,13 +1,14 @@
-package cmd
+package actions
 
 import (
 	"fmt"
+	"github.com/zhaogongchengsi/starter-gin/cmd/tools/options"
 	"github.com/zhaogongchengsi/starter-gin/utils"
 	"os"
 	"strings"
 )
 
-func autoMigAction(ms string) {
+func AutoMigAction(ms string) {
 	modules := strings.Split(ms, ",")
 	err := AutoMigrateModule(modules)
 	if err != nil {
@@ -19,7 +20,7 @@ func autoMigAction(ms string) {
 
 func AutoMigrateModule(ms []string) error {
 
-	db, err := ConnDb(Opt.ConfigDir, Opt.ConfigType, Opt.ConfigName)
+	db, err := ConnDb(options.Option.Config)
 	if err != nil {
 		return err
 	}

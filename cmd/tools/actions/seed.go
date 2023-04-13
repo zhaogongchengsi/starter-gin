@@ -1,13 +1,14 @@
-package cmd
+package actions
 
 import (
 	"fmt"
+	"github.com/zhaogongchengsi/starter-gin/cmd/tools/options"
 	"github.com/zhaogongchengsi/starter-gin/utils"
 	"os"
 	"strings"
 )
 
-func seedAction(file string) {
+func SeedAction(file string) {
 	ags := strings.Split(file, ",")
 
 	err := seed(ags)
@@ -22,15 +23,15 @@ func seedAction(file string) {
 
 func seed(ms []string) error {
 
-	db, err := ConnDb(Opt.ConfigDir, Opt.ConfigType, Opt.ConfigName)
+	db, err := ConnDb(options.Option.Config)
 
 	if err != nil {
 		return fmt.Errorf("seed Error: Database connection failed, please check %s and try again", err)
 	}
 
 	if name := strings.TrimSpace(ms[0]); name == "all" {
-		for _, seedfun := range moduleSeedMap {
-			if err := seedfun(db); err != nil {
+		for _, seedFun := range moduleSeedMap {
+			if err := seedFun(db); err != nil {
 				return err
 			}
 		}

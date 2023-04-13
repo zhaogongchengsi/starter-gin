@@ -8,8 +8,9 @@ import (
 	"github.com/zhaogongchengsi/starter-gin/config"
 )
 
-func CreateAppRouter(conf *config.Config) *gin.Engine {
+func CreateAppRouter(conf *config.Config, mode string) *gin.Engine {
 	r := gin.New()
+	gin.SetMode(mode)
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
