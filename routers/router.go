@@ -2,6 +2,7 @@ package routers
 
 import (
 	"fmt"
+	"github.com/zhaogongchengsi/starter-gin/middleware"
 	systemRouter "github.com/zhaogongchengsi/starter-gin/routers/system"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,10 @@ func CreateAppRouter(conf *config.Config, mode string) *gin.Engine {
 	gin.SetMode(mode)
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+
+	// 可能会根据配置文件的配置来
+	opt := middleware.DefaultCoreOption()
+	r.Use(middleware.Cors(*opt))
 
 	RegisterStaticRouter(r)
 

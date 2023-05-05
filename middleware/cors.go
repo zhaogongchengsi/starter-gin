@@ -14,7 +14,7 @@ type CoreOption struct {
 }
 
 var defaultOpt = &CoreOption{
-	AllowHeaders: "Content-Type,AccessToken,X-CSRF-Token, Authorization, Token",
+	AllowHeaders: "Content-Type,AccessToken,X-CSRF-Token, Authorization, Token, new-token",
 	AllowMethods: "POST, GET, OPTIONS,DELETE,PUT",
 	ExpHeaders:   "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type",
 	AllCred:      "true",
