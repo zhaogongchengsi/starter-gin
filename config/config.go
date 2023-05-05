@@ -72,6 +72,14 @@ type Zap struct {
 	LogInConsole bool `mapstructure:"log-in-console" json:"log-in-console" yaml:"log-in-console"` // 输出控制台
 }
 
+type Cors struct {
+	AllowHeaders string
+	AllowMethods string
+	AllCred      string
+	ExpHeaders   string
+	Origin       string
+}
+
 type Config struct {
 	AppId    string
 	Server   Server
@@ -81,4 +89,5 @@ type Config struct {
 	Redis    Redis
 	Captcha  Captcha
 	Zap      Zap
+	Cors     Cors
 }

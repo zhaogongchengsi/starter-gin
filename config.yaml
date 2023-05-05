@@ -60,3 +60,9 @@ Redis:
   db: 0
   addr: localhost:8088
   password: ""
+Cors:
+  AllowHeaders: "Content-Type,AccessToken,X-CSRF-Token, Authorization, Token, new-token"
+  AllowMethods: "POST, GET, OPTIONS,DELETE,PUT"
+  ExpHeaders: "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type"
+  AllCred: true
+  Origin: "*"
