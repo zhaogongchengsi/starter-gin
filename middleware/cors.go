@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/zhaogongchengsi/starter-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/global"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,9 @@ import (
 func Cors(opt config.Cors) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		method := c.Request.Method
-		//origin := c.Request.Header.Get("Origin")
+		origin := c.Request.Header.Get("Origin")
+
+		global.Logger.Info("Welcome " + origin)
 
 		c.Header("Access-Control-Allow-Origin", opt.Origin)
 		c.Header("Access-Control-Allow-Headers", opt.AllowHeaders)
