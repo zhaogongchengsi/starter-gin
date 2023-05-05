@@ -44,11 +44,9 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if gin.Mode() == gin.ReleaseMode {
-		if isOk := global.CaptchaStore.Verify(loginRes.Captcha.Id, loginRes.Captcha.Value, true); isOk {
-			common.NewFailResponse().SendAfterChangeMessage("验证码验证失败", c)
-			return
-		}
+	if isOk := global.CaptchaStore.Verify(loginRes.Captcha.Id, loginRes.Captcha.Value, true); !isOk {
+		common.NewFailResponse().SendAfterChangeMessage("验证码验证失败", c)
+		return
 	}
 
 	login := systemService.User{

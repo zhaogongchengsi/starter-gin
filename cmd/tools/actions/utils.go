@@ -4,6 +4,7 @@ import (
 	"fmt"
 	seedData "github.com/zhaogongchengsi/starter-gin/cmd/tools/seeddata"
 	"github.com/zhaogongchengsi/starter-gin/config"
+	"github.com/zhaogongchengsi/starter-gin/utils"
 
 	"github.com/zhaogongchengsi/starter-gin/core"
 	"gorm.io/gorm"
@@ -30,6 +31,8 @@ var moduleSeedMap = map[string]CreateFunc{
 func ConnDb(file string) (*gorm.DB, error) {
 
 	conf, err := config.LoadServerConfig(file)
+
+	utils.Info("Connecting to %s database\n", conf.DataBase.DbName)
 
 	if err != nil {
 		return &gorm.DB{}, fmt.Errorf("seed Error: The specified parameters are wrong, and the database configuration cannot be obtained. %s %v", file, err)
