@@ -29,7 +29,7 @@ func CreateAppServer(conf *config.Config, router *gin.Engine) {
 
 	gin.SetMode(server.Mode)
 
-	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL, syscall.SIGHUP, syscall.SIGABRT)
 	defer stop()
 
 	srv := initServer(fmt.Sprintf(":%d", server.Port), router)

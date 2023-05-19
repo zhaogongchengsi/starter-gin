@@ -31,9 +31,9 @@ go build /cmd/server/main.go
 ### tools
 *cmd/tools/main.go* An executable of a utility class
 ```sh
-go build -o bin/tool.exe ./cmd/tools/main.go
+go build -o bin/tools.exe ./cmd/tools/main.go
 
-./bin/tool.exe -h
+./bin/tools.exe -h
 ```
 
 ## Live reload for Go apps

@@ -44,8 +44,8 @@ var Routers = []module.RouterRecord{
 	// 子仓库
 	{
 		Pid:       0,
-		Path:      "roles",
-		Component: "/views/roles/index.vue",
+		Path:      "rules",
+		Component: "/views/rules/index.vue",
 		Name:      "roleAdmin",
 		Meta: module.RouterMeTa{
 			Title:  "router.title.roles",

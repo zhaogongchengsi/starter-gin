@@ -49,13 +49,6 @@ DataBase:
   MaxOpenConns: 100
   TablePrefix:
   SingularTable: true
-Gen:
-  OutPath: './modules' # Can be added directly to gitignore
-  FieldNullable:  true  # generate pointer when field is nullable
-  FieldCoverable: false # generate pointer when field has default value, to fix problem zero value cannot be assign: https://gorm.io/docs/create.html#Default-Values
-  FieldSignable:  false # detect integer field's unsigned type, adjust generated data type
-  FieldWithIndexTag: false # 生成 gorm 标签的字段索引属性
-  FieldWithTypeTag: true # 生成 gorm 标签的字段类型属性
 Redis:
   db: 0
   addr: localhost:8088
