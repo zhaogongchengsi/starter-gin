@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/zhaogongchengsi/starter-gin/utils"
 	"net/http"
@@ -53,7 +54,7 @@ func CreateAppServer(conf *config.Config, router *gin.Engine) {
 }
 
 func ListenAppServe(srv *http.Server) {
-	if err := srv.ListenAndServe(); err != nil {
+	if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		utils.Error("Service startup failed:  %v\n", err)
 		panic(err)
 	}
@@ -61,7 +62,7 @@ func ListenAppServe(srv *http.Server) {
 
 func ListenAndServeTLS(srv *http.Server, certFile string, keyFile string) {
 	err := srv.ListenAndServeTLS(certFile, keyFile)
-	if err != nil {
+	if err != nil && !errors.Is(err, http.ErrServerClosed) {
 		fmt.Printf("Service startup failed %v\n", err)
 	}
 }
