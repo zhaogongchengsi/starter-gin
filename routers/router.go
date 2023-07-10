@@ -16,9 +16,9 @@ func CreateAppRouter(conf *config.Config, mode string) *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	r.Use(middleware.Cors(global.AppConfig.Cors))
+	systemRouter.RegisterStaticRouter(r)
 
-	RegisterStaticRouter(r)
+	r.Use(middleware.Cors(global.AppConfig.Cors))
 
 	v1 := r.Group(fmt.Sprintf("/%s", conf.Server.Prefix))
 	systemRouter.RegisterBaseRouter(v1)
@@ -27,11 +27,4 @@ func CreateAppRouter(conf *config.Config, mode string) *gin.Engine {
 	systemRouter.RegisterRouterRecordRouter(v1)
 
 	return r
-}
-
-func RegisterStaticRouter(r *gin.Engine) {
-	r.Static("/assets", "./static/assets")
-	r.StaticFile("/", "./static/index.html")
-	r.StaticFile("/vite.svg", "./static/vite.svg")
-	// http.Handle("/", http.FileServer(http.Dir("/static")))
 }
